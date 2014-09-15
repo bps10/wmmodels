@@ -1,0 +1,122 @@
+#
+#  demo2.rsp - This is a wm response parameter file
+#
+ 
+gui_flag         0     # When 'wm' starts, 1-open the GUI, 0-do not open GUI
+
+gui_win_w      500     # Width of main GUI window (pix)
+gui_win_h      500     # Height of main GUI window (pix)
+
+gui_win2_w     356     # Width of secondary GUI window (pix)
+gui_win2_h     356     # Height of secondary GUI window (pix)
+
+#
+#  Retina stuff
+#
+
+mesh_display_flag   0     # Real time display
+mesh_display_zoom   8.0   # For 2D mesh display
+mesh_display_n     20     # For 2D mesh display (-1 for no display)
+mesh_display_min    0.0   # For 2D mesh display, min image value, for normalize
+mesh_display_max    1.0   # For 2D mesh display, max image value, for normalize
+
+mesh_gui_winw     480     # GUI win width - 480 Makes stim mode good
+mesh_gui_winh     480     # GUI win hieght
+
+mesh_replay_file  null    # Name of .2d replay file, or "null" for none
+
+#
+#  Response monitor parameters
+# 
+#  These values set the operation of the response monitor, which can be
+#  activated from the GUI.  Set the value for 'mon_flag' to 0 if you want
+#  to turn off the action of the response monitor.
+# 
+  
+mon_flag         0       # open the monitor window if 1
+mon_t           -1       # time duration of monitor window (s), -1 use default
+mon_dt           0.002   # how often to update plot
+mon_mV_y0      -90       # y-axis minimum for milli-Volts
+mon_mV_y1      -10       # y-axis maximum
+mon_nS_y0      -10       # y-axis minimum for nano-Seimens
+mon_nS_y1       80       # y-axis maximum
+mon_nA_y0       -1       # y-axis minimum for nano-Amps
+mon_nA_y1        2       # y-axis maximum
+mon_winw      1020       # window width (pix)
+mon_winh       300       # window height (pix)
+mon_stat_t0      0.13    # start of time window for computing stats (sec)
+mon_stat_tn      0       # duration of time window for stats (sec) 0 = off
+mon_stim_flag    1       # show stimulus during simulation
+
+
+#
+#  Save file name
+#
+
+outfile         zz       # prefix for all output files
+write_ndata      *       # write spikes to output file
+
+
+#
+#  Save instructions
+#
+#  The following line tells 'wm' which responses should be saved to the output
+#  file (typically a .nd file).  An explanation of this line is given in the
+#  comments below it.
+#
+
+save_pop_unit_as_M_cone_3689      f  500  bipolar 3689 0 0  photo
+save_pop_unit_as_h1_3689      f  500  bipolar 3689 0 0  horiz
+save_pop_unit_as_h2_3689      f  500  bipolar 3689 0 0  h2
+save_pop_unit_as_bp3689_on    f  500  bipolar 3689 0 1  diff
+save_pop_unit_as_bp3689_off   f  500  bipolar 3689 0 0  diff
+save_pop_unit_as_rgc3689_on  s 1000  rgc 3689 0 1  spikes
+save_pop_unit_as_rgc3689_off s 1000  rgc 3689 0 0  spikes
+
+save_pop_unit_as_S_cone_3690      f  500  bipolar 3690 0 0  photo
+save_pop_unit_as_h1_3690      f  500  bipolar 3690 0 0  horiz
+save_pop_unit_as_h2_3690      f  500  bipolar 3690 0 0  h2
+save_pop_unit_as_bp3690_on    f  500  bipolar 3690 0 1  diff
+save_pop_unit_as_bp3690_off   f  500  bipolar 3690 0 0  diff
+save_pop_unit_as_rgc3690_on  s 1000  rgc 3690 0 1  spikes
+save_pop_unit_as_rgc3690_off s 1000  rgc 3690 0 0  spikes
+
+save_pop_unit_as_L_cone_3691      f  500  bipolar 3691 0 0  photo
+save_pop_unit_as_h1_3691      f  500  bipolar 3691 0 0  horiz
+save_pop_unit_as_h2_3691      f  500  bipolar 3691 0 0  h2
+save_pop_unit_as_bp3691_on    f  500  bipolar 3691 0 1  diff
+save_pop_unit_as_bp3691_off   f  500  bipolar 3691 0 0  diff
+save_pop_unit_as_rgc3691_on  s 1000  rgc 3691 0 1  spikes
+save_pop_unit_as_rgc3691_off s 1000  rgc 3691 0 0  spikes
+
+
+#  The line above is line is interpreted as follows:
+#
+#   "save_pop_unit_as_<name>"  - Save data for a population unit under the
+#                                  name given by <name>
+#   "ds 0 0 0"                 - Save data for the unit in the 'ds' population
+#                                  that has x,y,z coordinate 0,0,0
+#   "spikes"                   - Save the "spikes" for this unit (as opposed
+#                                  to Vm or a conductance, etc.)
+#   "s 1000"                   - Store the data as type 's' with discrete
+#                                  sampling of 1000 points per second.
+#
+#  In summary, this line will case the spike times for unit 0,0,0 in the 'ds'
+#  population to be stored with a millisecond time resolution under the channel
+#  name 'unit0' in the output ndata file (zz.nd).
+#
+#  Note the following points:
+#
+#  (1) The user may arbitrarily pick the name, 'unit0', thus the line could
+#      just as well be 'save_pop_unit_as_ds00spikes ...'.
+#
+#  (2) Any spike time data should be stored using 's 1000'
+#
+#  (3) The user may choose any unit to record, thus 'ds 0 0 0' could be
+#      replaced by 'lgn 10 10 0' or 'exs 5 5 2', assuming that these names
+#      and coordinates are valid for the particular model.
+#
+#  (4) The last value, 'spikes', is intrinsic to the model type (set by 
+#      'mod_type' in the .moo file).  For models of type 'pop', you could
+#      request 'spikes' or 'vm' or 'gx_ex' etc.
+#

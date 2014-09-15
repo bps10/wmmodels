@@ -1,0 +1,25 @@
+#------------------------------------------------------------------------------
+#
+#  sine_sf.stm
+#
+#------------------------------------------------------------------------------
+
+stim_type  sine      # Stimulus type
+stim_samp 1000.0     # Stimulus sampling rate
+
+st0          0.000   # start time (s)
+stn        100.000   # duration (s)
+cx           0       # center (deg)
+cy           0       # center (deg)
+direction    0       # Direction of drift
+sf         1.0       # Spatial period (cyc/deg)
+phase        0       # Degrees
+tf         3.0       # Temporal frequency (Hz)
+size       2.8       # Degrees of visual angle
+aptype       1       # Aperture type (0-none, 1-circ)
+bgval      0.5       # background value [0..1]
+contrast   1.0       # Contrast
+maxlum     1.0       # Maximum luminance
+stim_nrpt    1       # Number of repeats
+
+VAR_sf   0.05 0.1 0.5 1.0 2.0 4.0

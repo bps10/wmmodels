@@ -1,0 +1,31 @@
+PURPOSE:  Add and H2 horizontal cell mesh to the model.
+
+NOTES:
+
+  Orig_Ref.nd - This was created with the following command:
+                wm mod a/Ret_Mesh_H2.moo a/test.stm a/tref.rsp  tn 512
+
+PROCEDURE:
+
+  ### Run the reference test
+  wm mod a/Ret_Mesh_H2.moo a/test.stm a/tref.rsp  tn 512
+
+
+  ### Examine the cone mosaic
+  wm mod a/Ret_Mesh_H2.moo a/test.stm a/t.rsp  tn 512  gui_flag 1
+
+  ### Run the model
+  wm mod a/Ret_Mesh_H2.moo a/test.stm a/t.rsp  tn 512
+
+  ### Quick run
+  wm mod a/Ret_Mesh_H2.moo a/test1.stm a/t.rsp  tn 256
+
+  ### Stimulus test
+
+   *** Press 's' (in the main window), and then use ,.<> to move thru the
+       stimulus (use 's' to get out of stim mode)
+       Press 'h' for help.
+
+  wm mod a/Ret_Mesh_H2.moo a/test_flash.stm a/t.rsp  tn 256  gui_flag 1
+
+

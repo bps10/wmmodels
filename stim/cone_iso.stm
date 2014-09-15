@@ -1,0 +1,48 @@
+#------------------------------------------------------------------------------
+#
+#  sine_g_var.stm
+#	
+#  Vary the G gun around the isoluminant point (for L:M = 1:1 and high ss)
+#
+#------------------------------------------------------------------------------
+
+stim_type   sine     # Sinusoidal grating
+stim_samp  1000.0    # Stimulus sampling rate
+stim_form   3c       # Stimulus format, 3d, 3c, 3d_b
+#stim_smooth 0.025    # SD of Gaussian for blurring (deg)
+
+st0          0.300   # start time (s)
+stn          0.700   # duration (s)
+cx           0       # center (deg)
+cy           0       # center (deg)
+direction    0       # Direction of drift
+sf           0     # Spatial period (cyc/deg)
+phase        0       # Degrees
+tf           3.0     # Temporal frequency (cyc/sec)
+size         1.0     # Stimulus aperture diameter (deg)
+aptype       0       # Aperture type (0-none, 1-circ)
+bgval        0.5     # background value [0..1]
+contrast     1.0     # Contrast
+maxlum       1.0     # Maximum luminance
+stim_nrpt    1       # Number of repeats
+
+color0_r  0.0000     # color 0 red
+color0_g  0.0000     # color 0 green
+color0_b  0.0000     # color 0 blue
+
+color1_r  1.0000     # color 1 red
+color1_g  1.0000     # color 1 green
+color1_b  1.0000     # color 1 blue
+
+cone        0        #
+
+# 						S 		M 		L iso 
+VARLINK_cone           1       2       3
+VARLINK_color0_r     0.61024  0.88302  0.88302
+VARLINK_color0_g     0.44368  0.43298  0.49483
+VARLINK_color0_b     0.88302  0.43298  0.50007
+
+VARLINK_color1_r     0.38976  0.11697  0.11697
+VARLINK_color1_g     0.55632  0.56702  0.50516
+VARLINK_color1_b     0.11698  0.49907  0.49992
+

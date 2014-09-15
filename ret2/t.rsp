@@ -1,0 +1,82 @@
+#
+#  t.rsp
+#
+ 
+gui_flag      0
+
+gui_win_w   512
+gui_win_h   512
+
+gui_win2_w  430
+gui_win2_h  430
+
+gui_win2_x  516
+gui_win2_y  20
+
+
+#
+#  Retina stuff
+#
+
+mesh_display_flag   0     # Real time display
+mesh_display_zoom   8.0   # For 2D mesh display
+mesh_display_n     20     # For 2D mesh display (-1 for no display)
+mesh_display_min    0.0   # For 2D mesh display, min image value, for normalize
+mesh_display_max    1.0   # For 2D mesh display, max image value, for normalize
+
+mesh_gui_winw     480     # GUI win width - 480 Makes stim mode good
+mesh_gui_winh     480     # GUI win hieght
+
+mesh_replay_file  null    # Name of .2d replay file, or "null" for none
+
+
+ 
+### monitor
+  
+mon_flag	0	# open the monitor window if 1
+mon_t		-1	# time duration of monitor window (sec), -1 use default
+mon_dt		.002	# how often to update plot
+mon_mV_y0	-90	# y-axis minimum
+mon_mV_y1	-10	# y-axis maximum
+mon_nS_y0	-10	# y-axis minimum
+mon_nS_y1	80	# y-axis maximum
+mon_nA_y0	-1	# y-axis minimum
+mon_nA_y1	2	# y-axis maximum
+mon_winw	1500	# window width (pixels)
+mon_winh	300	# window height (pixels)
+mon_stat_t0	0.13	# start of time window for computing stats (sec)
+mon_stat_tn	.8	# duration of time window for stats (sec) 0 = off
+mon_stim_flag	1	# show stimulus during simulation
+
+#mon_presyn_layer_to_cell exs ds 0 0 0 spikes  # Monitor spks from 'exs' layer
+
+outfile         zz      # prefix for all output files
+write_ndata     *   	# write spikes to output file
+
+
+
+
+
+##  Green Cone
+save_pop_unit_as_cone_M_3463     f  500  bipolar 3463 0 0  photo
+
+##  Red Cone
+save_pop_unit_as_cone_L_3464     f  500  bipolar 3464 0 0  photo
+
+#save_pop_grid_as_rgc        s 1000  rgc 3230 0 1  20 1 1  spikes
+
+
+save_pop_unit_as_rgc_3240_on    s 1000  rgc 3240 0 1  spikes
+save_pop_unit_as_rgc_3240_off   s 1000  rgc 3240 0 0  spikes
+save_pop_unit_as_rgc_3241_on    s 1000  rgc 3241 0 1  spikes
+save_pop_unit_as_rgc_3241_off   s 1000  rgc 3241 0 0  spikes
+
+save_pop_unit_as_p3241      f  500  bipolar 3241 0 0  photo
+save_pop_unit_as_h3241      f  500  bipolar 3241 0 0  horiz
+save_pop_unit_as_h2_3241    f  500  bipolar 3241 0 0  h2
+save_pop_unit_as_bp3241     f  500  bipolar 3241 0 0  diff
+
+save_pop_unit_as_p3240      f  500  bipolar 3240 0 0  photo
+save_pop_unit_as_h3240      f  500  bipolar 3240 0 0  horiz
+save_pop_unit_as_h2_3240    f  500  bipolar 3240 0 0  h2
+save_pop_unit_as_bp3240     f  500  bipolar 3240 0 0  diff

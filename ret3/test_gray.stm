@@ -1,0 +1,33 @@
+#------------------------------------------------------------------------------
+#
+#  test_gray.stm
+#	
+#------------------------------------------------------------------------------
+
+stim_type   sine     # Sinusoidal grating
+stim_samp  1000.0    # Stimulus sampling rate
+stim_form   3c       # Stimulus format, 3d, 3c, 3d_b
+#stim_smooth 0.025    # SD of Gaussian for blurring (deg)
+
+st0          2.000   # start time (s)
+stn        100.000   # duration (s)
+cx           0       # center (deg)
+cy           0       # center (deg)
+direction    0       # Direction of drift
+sf           1.6     # Spatial period (cyc/deg)
+phase        0       # Degrees
+tf           3.0     # Temporal frequency (cyc/sec)
+size         1.0     # Stimulus aperture diameter (deg)
+aptype       0       # Aperture type (0-none, 1-circ)
+bgval        0.5     # background value [0..1]
+contrast     1.0     # Contrast
+maxlum       1.0     # Maximum luminance
+stim_nrpt    1       # Number of repeats
+
+color0_r   0.0000    # Equiluminant values in absence of S-input
+color0_g   0.6087    # Total cone-contrast is .1088
+color0_b   0.5
+
+color1_r   1.0000
+color1_g   0.3913
+color1_b   0.5
