@@ -8,7 +8,7 @@ from base import plot as pf
 pix_per_deg = 0.015
 mm_per_deg = 0.3
 
-def plot_data(data, invert=True):
+def plot_data(data, invert=True, normalize=True):
 	'''
 	'''
 	fig = plt.figure()
@@ -21,6 +21,9 @@ def plot_data(data, invert=True):
 	for d in data:
 		dat = data[d]
 		x_val_h1 = dat[:, 0] * pix_per_deg * mm_per_deg * 1000
+		if normalize:
+			dat[:, 1] /= dat[:, 1].max()
+
 		ax.plot(x_val_h1, dat[:, 1], 'o')
 
 	ax.set_xlabel('distance ($\mu$m)')

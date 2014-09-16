@@ -210,7 +210,7 @@ mod_trial_reset  1  # reset state between stimuli, default 1
   mesh_type           1      # Use a hexagonal mesh [0-cartesian]
 
   <h_mesh>
-      name  h1
+      name  h2
       # Note, gh, gp and dt are interpreted differently when mesh_type = 1
       gh     1.80    # Difference fraction per small time step
       gp     0.064   # Time from 1 to 1/e, if 'gh' is 0.0
@@ -221,7 +221,7 @@ mod_trial_reset  1  # reset state between stimuli, default 1
   </h_mesh>
 
   <h_mesh>
-      name  h2
+      name  h1
       gh     1.80    # Difference fraction per small time step
       gp     0.064   # Time from 1 to 1/e, if 'gh' is 0.0
       dt     0.02    # Time increment (time units); Must be <= 1.0

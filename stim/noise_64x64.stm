@@ -1,0 +1,21 @@
+#
+#  noise_64x64.stm
+#
+
+stim_type   noise     # Spatial grid white-noise stimulus
+stim_samp   1000.0    # Stimulus sampling rate
+
+st0          0.100    # Start time (s)
+stn          1.000    # Duration (s)
+cx             0.0    # Stimulus center, horizontal (deg)
+cy             0.0    # Stimulus center, vertical (deg)
+grid_w        64      # number of boxes horizontally
+grid_h        64      # number of boxes vertically
+box_w          2      # box width (pix)
+box_h          2      # box height (pix)
+dwell          1      # duration of each pixel value (pattern frames)
+contrast       1.0    # Contrast
+bgval          0.5    # Backgroud value
+maxlum         1.0    # Maximum luminance
+seed        1777      # Randomization seed
+stim_nrpt      2      # Number of times to repeat each stimulus
