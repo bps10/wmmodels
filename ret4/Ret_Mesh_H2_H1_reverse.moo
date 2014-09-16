@@ -278,7 +278,7 @@ mod_trial_reset  1  # reset state between stimuli, default 1
   #  New way of dumping, should make the above conform to this.
   #
   mesh_dump_type    null      # 'h_v_dist', 'mosaic_coord'
-  mesh_dump_file  h2.dist.pl  # File name
+  mesh_dump_file  results/pl_files/h2.dist.pl  # File name
   mesh_dump_cid     2079      # Reference cone ID for dump
   mesh_dump_tsec     -1.0     # Time reference (s), -1.0 for max time
 

@@ -15,12 +15,12 @@ echo "h2 gh is set to: $H2GH"
 echo "model is set to: $MODEL"
 echo "analysis option: $OPTS"
 
-if [[ $OPTS == "h1_rf" || $OPTS == "verbose" ]]
+if [[ $OPTS == "h1" || $OPTS == "verbose" ]]
 	then
-		if [ -e "h1.dist.pl" ] 
+		if [ -e "results/pl_files/h1.dist.pl" ] 
 			then
-				rm h1.dist.pl
-				echo "rm h1.dist.pl"
+				rm results/pl_files/h1.dist.pl
+				echo "rm results/pl_files/rm h1.dist.pl"
 		fi	
 		wm mod ${MODEL}/Ret_Mesh_H2.moo stim/test_gray.stm ${MODEL}/retina.rsp  tn 512 \
 		retina0/h_mesh.h1/gp ${H1GP} \
@@ -31,16 +31,17 @@ if [[ $OPTS == "h1_rf" || $OPTS == "verbose" ]]
 
 		if [ $OPTS != "verbose" ]
 			then
-				python results/plot_dist.py
+				python results ${OPTS} ${MODEL}
 		fi
 
 fi
 
-if [[ $OPTS == "h2_rf" || $OPTS == "verbose" ]]
+if [[ $OPTS == "h2" || $OPTS == "verbose" ]]
 	then
-		if [ -e "h2.dist.pl" ] 
+		if [ -e "results/pl_files/h2.dist.pl" ] 
 			then
-				rm h2.dist.pl
+				rm results/pl_files/h2.dist.pl
+				echo "rm results/pl_files/rm h2.dist.pl"
 		fi	
 		# Everything is reversed here!
 		wm mod ${MODEL}/Ret_Mesh_H2_H1_reverse.moo stim/test_gray.stm ${MODEL}/retina.rsp  tn 512 \
@@ -50,12 +51,12 @@ if [[ $OPTS == "h2_rf" || $OPTS == "verbose" ]]
 		retina0/stim_override 1 \
 		retina0/mesh_dump_type h_v_dist
 
-		python results/plot_dist.py
+		python results ${OPTS} ${MODEL}
 fi
 
 if [[ $OPTS == "h1_spat" || $OPTS == "verbose" ]]
 	then
-		if [ -e "zz.nd" ]
+		if [ -e "results/nd_files/zz.nd" ]
 			then
 				rm zz.nd
 		fi
@@ -66,7 +67,7 @@ if [[ $OPTS == "h1_spat" || $OPTS == "verbose" ]]
 			retina0/stim_override 1 \
 			retina0/stim_override_binary all
 
-		java -jar ~/Projects/wmbuild/nd.jar zz.nd
+		java -jar ~/Projects/wmbuild/nd.jar results/nd_files/zz.nd
 fi
 
 

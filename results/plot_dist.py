@@ -4,13 +4,14 @@ import matplotlib.pylab as plt
 
 from base import plot as pf
 
-# 0. Conversion factors
-pix_per_deg = 0.015
-mm_per_deg = 0.3
+from conversion import conversion_factors
 
-def plot_data(data, invert=True, normalize=True):
+
+def plot_dist(data, species, invert=True, normalize=True):
 	'''
 	'''
+	pix_per_deg, mm_per_deg = conversion_factors(species)
+
 	fig = plt.figure()
 	fig.set_tight_layout(True)
 	ax = fig.add_subplot(111)
@@ -38,11 +39,11 @@ if __name__ == '__main__':
 	## LOAD DATA BASED ON INPUT ARG ALLOW FOR 2 PLOTS
 	data = {}
 	try:
-		data['h1'] = np.genfromtxt('h1.dist.pl', skip_header=2)
+		data['h1'] = np.genfromtxt('results/pl_files/h1.dist.pl', skip_header=2)
 	except:
 		pass
 	try:
-		data['h2'] = np.genfromtxt('h2.dist.pl', skip_header=2)
+		data['h2'] = np.genfromtxt('results/pl_files/h2.dist.pl', skip_header=2)
 	except:
 		pass
 

@@ -53,7 +53,7 @@ mon_stim_flag    1       # show stimulus during simulation
 #  Save file name
 #
 
-outfile         zz       # prefix for all output files
+outfile         results/nd_files/zz       # prefix for all output files
 write_ndata      *       # write spikes to output file
 
 
