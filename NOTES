@@ -86,7 +86,7 @@
 
 
 #### Script for optimizing RC parameters
-./rc_params.sh 0.1 0.6 2.5 ret4 verbose # h1gp h2gp h2gh model analysis_option
+./retina.sh human 0.1 0.6 2.5 verbose # model h1gp h2gp h2gh analysis_option
 
 
 # General routines / analysis / plotting

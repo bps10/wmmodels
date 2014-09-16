@@ -1,19 +1,20 @@
 #!/bin/bash
 
 # H1 and H2 gp options
-H1GP=${1:-0.1} # Set H1 cell gp. Default = 0.1
-H2GP=${2:-0.6} # Set H2 cell gp. Default = 0.6
-H2GH=${3:-1.8} # Set H2 cell gh. Default = 1.8
-MODEL=${4:-ret4} # Set the model to use
+MODEL=${1:-human} # Set the model to use
+H1GP=${2:-0.1} # Set H1 cell gp. Default = 0.1
+H2GP=${3:-0.6} # Set H2 cell gp. Default = 0.6
+H2GH=${4:-1.8} # Set H2 cell gh. Default = 1.8
 
 # Analysis options
-OPTS=${5:-h1_rf} # Set H2 cell gp. Default =0.6
+OPTS=${5:-h1} # Set H2 cell gp. Default =0.6
 
 echo "h1 gp is set to: $H1GP"
 echo "h2 gp is set to: $H2GP"
 echo "h2 gh is set to: $H2GH"
 echo "model is set to: $MODEL"
 echo "analysis option: $OPTS"
+echo " "
 
 if [[ $OPTS == "h1" || $OPTS == "verbose" ]]
 	then

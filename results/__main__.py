@@ -7,9 +7,9 @@ from plot_dist import plot_dist
 def main():
 	'''
 	'''	
-	if 'ret4' in sys.argv:
+	if 'human' in sys.argv:
 		SPECIES = 'human'
-	elif 'ret3' in sys.argv:
+	elif 'macaque' in sys.argv:
 		SPECIES = 'macaque'
 
 	data = {}
