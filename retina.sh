@@ -1,18 +1,65 @@
 #!/bin/bash
 
-# H1 and H2 gp options
-MODEL=${1:-human} # Set the model to use
-H1GP=${2:-0.1} # Set H1 cell gp. Default = 0.1
-H2GP=${3:-0.6} # Set H2 cell gp. Default = 0.6
-H2GH=${4:-1.8} # Set H2 cell gh. Default = 1.8
+MODEL=human
+H1GP=0.1
+H2GP=0.6
+H2GH=1.8
+H2S=0.7
+H2M=0.15
+H2L=0.15
+H2W=0.3
+OPTS=h1
 
-# Analysis options
-OPTS=${5:-h1} # Set H2 cell gp. Default =0.6
+while getopts d:p:g:h:s:m:l:w:o: opt; do
+  case $opt in
+    d)
+      MODEL=$OPTARG
+      ;;
+    p)
+      H1GP=$OPTARG
+      ;;
+    g)
+      H2GP=$OPTARG
+      ;;
+    h)
+      H2GH=$OPTARG
+      ;;
+    s)
+      H2S=$OPTARG
+      ;;
+    m)
+      H2M=$OPTARG
+      ;;
+    l)
+      H2L=$OPTARG
+      ;;
+    w)
+      H2W=$OPTARG
+      ;;
+    o)
+      OPTS=$OPTARG
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument." >&2
+      exit 1
+      ;;
+  esac
+done
+
+shift $((OPTIND - 1))
 
 echo "h1 gp is set to: $H1GP"
 echo "h2 gp is set to: $H2GP"
 echo "h2 gh is set to: $H2GH"
 echo "model is set to: $MODEL"
+echo "h2 l weight is set to: $H2L"
+echo "h2 m weight is set to: $H2M"
+echo "h2 s weight is set to: $H2S"
+echo "h2 lm bioplar is et to: $H2W"
 echo "analysis option: $OPTS"
 echo " "
 
@@ -28,6 +75,10 @@ if [[ $OPTS == "h1" || $OPTS == "verbose" ]]
 		retina0/h_mesh.h1/gp ${H1GP} \
 		retina0/h_mesh.h2/gp ${H2GP} \
 		retina0/h_mesh.h2/gh ${H2GH} \
+		retina0/h_mesh.h2/w_s ${H2S} \
+		retina0/h_mesh.h2/w_m ${H2M} \
+		retina0/h_mesh.h2/w_l ${H2L} \
+		retina0/bipolar_lm_wh2 ${H2W} \
 		retina0/stim_override 1 \
 		retina0/mesh_dump_type h_v_dist
 
@@ -51,6 +102,10 @@ if [[ $OPTS == "h2" || $OPTS == "verbose" ]]
 		retina0/h_mesh.h2/gp ${H1GP} \
 		retina0/h_mesh.h1/gp ${H2GP} \
 		retina0/h_mesh.h1/gh ${H2GH} \
+		retina0/h_mesh.h2/w_s ${H2S} \
+		retina0/h_mesh.h2/w_m ${H2M} \
+		retina0/h_mesh.h2/w_l ${H2L} \
+		retina0/bipolar_lm_wh2 ${H2W} \
 		retina0/stim_override 1 \
 		retina0/mesh_dump_type h_v_dist
 
@@ -68,6 +123,10 @@ if [[ $OPTS == "h1_spat" || $OPTS == "verbose" ]]
 			retina0/h_mesh.h1/gp ${H1GP} \
 			retina0/h_mesh.h2/gp ${H2GP} \
 			retina0/h_mesh.h2/gh ${H2GH} \
+		        retina0/h_mesh.h2/w_s ${H2S} \
+		        retina0/h_mesh.h2/w_m ${H2M} \
+       		        retina0/h_mesh.h2/w_l ${H2L} \
+		        retina0/bipolar_lm_wh2 ${H2W} \
 			retina0/stim_override 1 \
 			retina0/stim_override_binary all
 
@@ -84,8 +143,11 @@ if [ $OPTS == "coneiso" ]
 		    response/retina_line.rsp tn 512 \
 		    retina0/h_mesh.h1/gp ${H1GP} \
 		    retina0/h_mesh.h2/gp ${H2GP} \
-		    retina0/h_mesh.h2/gh ${H2GP} 
-
+		    retina0/h_mesh.h2/gh ${H2GP} \
+		    retina0/h_mesh.h2/w_s ${H2S} \
+		    retina0/h_mesh.h2/w_m ${H2M} \
+		    retina0/h_mesh.h2/w_l ${H2L} \
+		    retina0/bipolar_lm_wh2 ${H2W} 
 
 		java -jar ~/Projects/wmbuild/nd.jar results/nd_files/zz.nd
 fi
@@ -101,8 +163,11 @@ if [ $OPTS == "Siso" ]
 		    response/retina_line.rsp tn 512 \
 		    retina0/h_mesh.h1/gp ${H1GP} \
 		    retina0/h_mesh.h2/gp ${H2GP} \
-		    retina0/h_mesh.h2/gh ${H2GP} 
-
+		    retina0/h_mesh.h2/gh ${H2GP} \
+		    retina0/h_mesh.h2/w_s ${H2S} \
+		    retina0/h_mesh.h2/w_m ${H2M} \
+		    retina0/h_mesh.h2/w_l ${H2L} \
+		    retina0/bipolar_lm_wh2 ${H2W}
 
 		java -jar ~/Projects/wmbuild/nd.jar results/nd_files/zz.nd
 fi
