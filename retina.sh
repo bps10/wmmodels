@@ -23,7 +23,8 @@ if [[ $OPTS == "h1" || $OPTS == "verbose" ]]
 				rm results/pl_files/h1.dist.pl
 				echo "rm results/pl_files/rm h1.dist.pl"
 		fi	
-		wm mod ${MODEL}/Ret_Mesh_H2.moo stim/test_gray.stm ${MODEL}/retina.rsp  tn 512 \
+		wm mod ${MODEL}/Ret_Mesh_H2.moo stim/test_gray.stm \
+		response/retina.rsp  tn 512 \
 		retina0/h_mesh.h1/gp ${H1GP} \
 		retina0/h_mesh.h2/gp ${H2GP} \
 		retina0/h_mesh.h2/gh ${H2GH} \
@@ -45,7 +46,8 @@ if [[ $OPTS == "h2" || $OPTS == "verbose" ]]
 				echo "rm results/pl_files/rm h2.dist.pl"
 		fi	
 		# Everything is reversed here!
-		wm mod ${MODEL}/Ret_Mesh_H2_H1_reverse.moo stim/test_gray.stm ${MODEL}/retina.rsp  tn 512 \
+		wm mod ${MODEL}/Ret_Mesh_H2_H1_reverse.moo stim/test_gray.stm \
+		response/retina.rsp  tn 512 \
 		retina0/h_mesh.h2/gp ${H1GP} \
 		retina0/h_mesh.h1/gp ${H2GP} \
 		retina0/h_mesh.h1/gh ${H2GH} \
@@ -59,9 +61,10 @@ if [[ $OPTS == "h1_spat" || $OPTS == "verbose" ]]
 	then
 		if [ -e "results/nd_files/zz.nd" ]
 			then
-				rm zz.nd
+				rm results/nd_files/zz.nd
 		fi
-		wm mod ${MODEL}/Ret_Mesh_H2.moo stim/test_gray.stm ${MODEL}/retina.rsp  tn 512 \
+		wm mod ${MODEL}/Ret_Mesh_H2.moo stim/test_gray.stm \
+		    response/retina.rsp  tn 512 \
 			retina0/h_mesh.h1/gp ${H1GP} \
 			retina0/h_mesh.h2/gp ${H2GP} \
 			retina0/h_mesh.h2/gh ${H2GH} \
@@ -71,6 +74,38 @@ if [[ $OPTS == "h1_spat" || $OPTS == "verbose" ]]
 		java -jar ~/Projects/wmbuild/nd.jar results/nd_files/zz.nd
 fi
 
+if [ $OPTS == "coneiso" ]
+	then
+		if [ -e "results/nd_files/zz.nd" ]
+			then
+				rm results/nd_files/zz.nd
+		fi
+		wm mod ${MODEL}/Ret_Mesh_H2.moo stim/cone_iso_step.stm \
+		    response/retina_line.rsp tn 512 \
+		    retina0/h_mesh.h1/gp ${H1GP} \
+		    retina0/h_mesh.h2/gp ${H2GP} \
+		    retina0/h_mesh.h2/gh ${H2GP} 
+
+
+		java -jar ~/Projects/wmbuild/nd.jar results/nd_files/zz.nd
+fi
+
+
+if [ $OPTS == "Siso" ]
+	then
+		if [ -e "results/nd_files/zz.nd" ]
+			then
+				rm results/nd_files/zz.nd
+		fi
+		wm mod ${MODEL}/Ret_Mesh_H2.moo stim/s_iso_step.stm \
+		    response/retina_line.rsp tn 512 \
+		    retina0/h_mesh.h1/gp ${H1GP} \
+		    retina0/h_mesh.h2/gp ${H2GP} \
+		    retina0/h_mesh.h2/gh ${H2GP} 
+
+
+		java -jar ~/Projects/wmbuild/nd.jar results/nd_files/zz.nd
+fi
 
 echo "end script"
 echo "--------------"
