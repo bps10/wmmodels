@@ -8,7 +8,7 @@ H2GH=1.8
 H2S=0.7
 H2M=0.15
 H2L=0.15
-H2W=0.3
+H2W=0.2
 TN=512
 OPTS=h1
 
@@ -72,15 +72,23 @@ echo "analysis option: $OPTS"
 echo " "
 
 #-- Change the model behavior based on command line input
+DUMP_CID=3689 # macaque
+if [ $MODEL == "human" ]
+then
+    DUMP_CID=2079
+fi
 
 # Default settings
 MESH_DUMP_TYPE=null
+MESH_DUMP_CID=${DUMP_CID}
 STIM_OVERRIDE=0
 STIM_FILE=test_gray
-STIM_OVERRIDE_BINARY=all 
+STIM_OVERRIDE_BINARY=${DUMP_CID}
 STIM_OVERRIDE=0
 MOO_FILE=Ret_Mesh_H2
 OUT_FILE=zz.nd
+RESP_FILE=retina
+HVAR=h2
 
 if [ $OPTS == "h1" ]
 then
@@ -90,6 +98,7 @@ then
 
 elif  [ $OPTS == "h2" ]
 then
+    HVAR=h1 # flip around so changing h2 in moo file
     MOO_FILE=Ret_Mesh_H2_H1_reverse
     OUT_FILE=h2.dist.pl
     STIM_OVERRIDE=1
@@ -99,14 +108,17 @@ then
 elif [ $OPTS == "h1_spat" ]
 then
     STIM_OVERRIDE_BINARY=all
+    STIM_OVERRIDE=1
 
 elif [ $OPTS == "coneiso" ]
 then    
     STIM_FILE=cone_iso_step
+    RESP_FILE=retina_line
 
 elif [ $OPTS == "siso" ]
 then
     STIM_FILE=s_iso_step
+    RESP_FILE=retina_line
 fi
 
 #else print some help info
@@ -125,30 +137,31 @@ fi
 if [ $OPTS == "mosaic" ]
 then
     wm mod ${MODEL}/Ret_Mesh_H2.moo stim/s_iso_step.stm \
-	retina/retina.rsp  tN ${TN}  gui_flag 1 \
+	response/retina.rsp  tN ${TN}  gui_flag 1 \
 	retina0/mesh_dump_type mosaic_coord \
 	retina0/mesh_dump_file zz.mosaic
 
 elif [ $OPTS == "gui" ]
 then
     wm mod ${MODEL}/Ret_Mesh_H2.moo stim/s_iso_step.stm \
-	retina/retina.rsp  tn ${TN}  \
-	retina0/h_mesh.h2/gp 0.6 \
+	response/retina.rsp  tn ${TN}  \
 	gui_flag 1
 else
+
 # make this a subroutine
     wm mod ${MODEL}/${MOO_FILE}.moo \
 	stim/${STIM_FILE}.stm \
-	response/retina.rsp  tn ${TN} \
+	response/${RESP_FILE}.rsp  tn ${TN} \
 	retina0/h_mesh.h1/gp ${H1GP} \
-	retina0/h_mesh.h2/gp ${H2GP} \
-	retina0/h_mesh.h2/gh ${H2GH} \
-	retina0/h_mesh.h2/w_s ${H2S} \
-	retina0/h_mesh.h2/w_m ${H2M} \
-	retina0/h_mesh.h2/w_l ${H2L} \
+	retina0/h_mesh.${HVAR}/gp ${H2GP} \
+	retina0/h_mesh.${HVAR}/gh ${H2GH} \
+	retina0/h_mesh.${HVAR}/w_s ${H2S} \
+	retina0/h_mesh.${HVAR}/w_m ${H2M} \
+	retina0/h_mesh.${HVAR}/w_l ${H2L} \
 	retina0/bipolar_lm_wh2 ${H2W} \
 	retina0/stim_override ${STIM_OVERRIDE}\
         retina0/mesh_dump_type ${MESH_DUMP_TYPE} \
+	retina0/mesh_dump_cid ${MESH_DUMP_CID} \
 	retina0/stim_override_binary ${STIM_OVERRIDE_BINARY}
 fi
 
