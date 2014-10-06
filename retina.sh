@@ -1,6 +1,7 @@
 #!/bin/bash
 
-MODEL=human
+#-- Set default parameters
+MODEL=human 
 H1GP=0.1
 H2GP=0.6
 H2GH=1.8
@@ -8,9 +9,11 @@ H2S=0.7
 H2M=0.15
 H2L=0.15
 H2W=0.3
+TN=512
 OPTS=h1
 
-while getopts d:p:g:h:s:m:l:w:o: opt; do
+#-- Handle command line args
+while getopts d:p:g:h:s:m:l:w:t:o: opt; do
   case $opt in
     d)
       MODEL=$OPTARG
@@ -36,6 +39,9 @@ while getopts d:p:g:h:s:m:l:w:o: opt; do
     w)
       H2W=$OPTARG
       ;;
+    t)
+      TN=$OPTARG
+      ;;
     o)
       OPTS=$OPTARG
       ;;
@@ -52,6 +58,8 @@ done
 
 shift $((OPTIND - 1))
 
+#-- Print some info about parameters
+# print this to a records file?
 echo "h1 gp is set to: $H1GP"
 echo "h2 gp is set to: $H2GP"
 echo "h2 gh is set to: $H2GH"
@@ -59,117 +67,101 @@ echo "model is set to: $MODEL"
 echo "h2 l weight is set to: $H2L"
 echo "h2 m weight is set to: $H2M"
 echo "h2 s weight is set to: $H2S"
-echo "h2 lm bioplar is et to: $H2W"
+echo "h2 lm bioplar is set to: $H2W"
 echo "analysis option: $OPTS"
 echo " "
 
-if [[ $OPTS == "h1" || $OPTS == "verbose" ]]
-	then
-		if [ -e "results/pl_files/h1.dist.pl" ] 
-			then
-				rm results/pl_files/h1.dist.pl
-				echo "rm results/pl_files/rm h1.dist.pl"
-		fi	
-		wm mod ${MODEL}/Ret_Mesh_H2.moo stim/test_gray.stm \
-		response/retina.rsp  tn 512 \
-		retina0/h_mesh.h1/gp ${H1GP} \
-		retina0/h_mesh.h2/gp ${H2GP} \
-		retina0/h_mesh.h2/gh ${H2GH} \
-		retina0/h_mesh.h2/w_s ${H2S} \
-		retina0/h_mesh.h2/w_m ${H2M} \
-		retina0/h_mesh.h2/w_l ${H2L} \
-		retina0/bipolar_lm_wh2 ${H2W} \
-		retina0/stim_override 1 \
-		retina0/mesh_dump_type h_v_dist
+#-- Change the model behavior based on command line input
 
-		if [ $OPTS != "verbose" ]
-			then
-				python results ${OPTS} ${MODEL}
-		fi
+# Default settings
+MESH_DUMP_TYPE=null
+STIM_OVERRIDE=0
+STIM_FILE=test_gray
+STIM_OVERRIDE_BINARY=all 
+STIM_OVERRIDE=0
+MOO_FILE=Ret_Mesh_H2
+OUT_FILE=zz.nd
 
+if [ $OPTS == "h1" ]
+then
+    OUT_FILE=h1.dist.pl
+    STIM_OVERRIDE=1
+    MESH_DUMP_TYPE=h_v_dist
+
+elif  [ $OPTS == "h2" ]
+then
+    MOO_FILE=Ret_Mesh_H2_H1_reverse
+    OUT_FILE=h2.dist.pl
+    STIM_OVERRIDE=1
+    MESH_DUMP_TYPE=h_v_dist
+    MOO_FILE=Ret_Mesh_H2_H1_reverse
+
+elif [ $OPTS == "h1_spat" ]
+then
+    STIM_OVERRIDE_BINARY=all
+
+elif [ $OPTS == "coneiso" ]
+then    
+    STIM_FILE=cone_iso_step
+
+elif [ $OPTS == "siso" ]
+then
+    STIM_FILE=s_iso_step
 fi
 
-if [[ $OPTS == "h2" || $OPTS == "verbose" ]]
-	then
-		if [ -e "results/pl_files/h2.dist.pl" ] 
-			then
-				rm results/pl_files/h2.dist.pl
-				echo "rm results/pl_files/rm h2.dist.pl"
-		fi	
-		# Everything is reversed here!
-		wm mod ${MODEL}/Ret_Mesh_H2_H1_reverse.moo stim/test_gray.stm \
-		response/retina.rsp  tn 512 \
-		retina0/h_mesh.h2/gp ${H1GP} \
-		retina0/h_mesh.h1/gp ${H2GP} \
-		retina0/h_mesh.h1/gh ${H2GH} \
-		retina0/h_mesh.h2/w_s ${H2S} \
-		retina0/h_mesh.h2/w_m ${H2M} \
-		retina0/h_mesh.h2/w_l ${H2L} \
-		retina0/bipolar_lm_wh2 ${H2W} \
-		retina0/stim_override 1 \
-		retina0/mesh_dump_type h_v_dist
+#else print some help info
 
-		python results ${OPTS} ${MODEL}
+###Handle verbose option
+
+#-- Delete old output files
+if [ -e "results/pl_files/$OUT_FILE" ] 
+then
+    rm results/pl_files/${OUT_FILE}
+    echo "rm results/pl_files/rm $OUT_FILE"
+fi	
+
+#-- Perform the simulation(s)
+
+if [ $OPTS == "mosaic" ]
+then
+    wm mod ${MODEL}/Ret_Mesh_H2.moo stim/s_iso_step.stm \
+	retina/retina.rsp  tN ${TN}  gui_flag 1 \
+	retina0/mesh_dump_type mosaic_coord \
+	retina0/mesh_dump_file zz.mosaic
+
+elif [ $OPTS == "gui" ]
+then
+    wm mod ${MODEL}/Ret_Mesh_H2.moo stim/s_iso_step.stm \
+	retina/retina.rsp  tn ${TN}  \
+	retina0/h_mesh.h2/gp 0.6 \
+	gui_flag 1
+else
+# make this a subroutine
+    wm mod ${MODEL}/${MOO_FILE}.moo \
+	stim/${STIM_FILE}.stm \
+	response/retina.rsp  tn ${TN} \
+	retina0/h_mesh.h1/gp ${H1GP} \
+	retina0/h_mesh.h2/gp ${H2GP} \
+	retina0/h_mesh.h2/gh ${H2GH} \
+	retina0/h_mesh.h2/w_s ${H2S} \
+	retina0/h_mesh.h2/w_m ${H2M} \
+	retina0/h_mesh.h2/w_l ${H2L} \
+	retina0/bipolar_lm_wh2 ${H2W} \
+	retina0/stim_override ${STIM_OVERRIDE}\
+        retina0/mesh_dump_type ${MESH_DUMP_TYPE} \
+	retina0/stim_override_binary ${STIM_OVERRIDE_BINARY}
 fi
 
-if [[ $OPTS == "h1_spat" || $OPTS == "verbose" ]]
-	then
-		if [ -e "results/nd_files/zz.nd" ]
-			then
-				rm results/nd_files/zz.nd
-		fi
-		wm mod ${MODEL}/Ret_Mesh_H2.moo stim/test_gray.stm \
-		    response/retina.rsp  tn 512 \
-			retina0/h_mesh.h1/gp ${H1GP} \
-			retina0/h_mesh.h2/gp ${H2GP} \
-			retina0/h_mesh.h2/gh ${H2GH} \
-		        retina0/h_mesh.h2/w_s ${H2S} \
-		        retina0/h_mesh.h2/w_m ${H2M} \
-       		        retina0/h_mesh.h2/w_l ${H2L} \
-		        retina0/bipolar_lm_wh2 ${H2W} \
-			retina0/stim_override 1 \
-			retina0/stim_override_binary all
-
-		java -jar ~/Projects/wmbuild/nd.jar results/nd_files/zz.nd
+#-- Plotting routines
+# Handle more options. 
+if [[ $OPTS == "h1" || $OPTS == "h2" ]]
+then
+    python results ${OPTS} ${MODEL}
 fi
 
-if [ $OPTS == "coneiso" ]
-	then
-		if [ -e "results/nd_files/zz.nd" ]
-			then
-				rm results/nd_files/zz.nd
-		fi
-		wm mod ${MODEL}/Ret_Mesh_H2.moo stim/cone_iso_step.stm \
-		    response/retina_line.rsp tn 512 \
-		    retina0/h_mesh.h1/gp ${H1GP} \
-		    retina0/h_mesh.h2/gp ${H2GP} \
-		    retina0/h_mesh.h2/gh ${H2GP} \
-		    retina0/h_mesh.h2/w_s ${H2S} \
-		    retina0/h_mesh.h2/w_m ${H2M} \
-		    retina0/h_mesh.h2/w_l ${H2L} \
-		    retina0/bipolar_lm_wh2 ${H2W} 
-
-		java -jar ~/Projects/wmbuild/nd.jar results/nd_files/zz.nd
-fi
-
-
-if [ $OPTS == "Siso" ]
-	then
-		if [ -e "results/nd_files/zz.nd" ]
-			then
-				rm results/nd_files/zz.nd
-		fi
-		wm mod ${MODEL}/Ret_Mesh_H2.moo stim/s_iso_step.stm \
-		    response/retina_line.rsp tn 512 \
-		    retina0/h_mesh.h1/gp ${H1GP} \
-		    retina0/h_mesh.h2/gp ${H2GP} \
-		    retina0/h_mesh.h2/gh ${H2GP} \
-		    retina0/h_mesh.h2/w_s ${H2S} \
-		    retina0/h_mesh.h2/w_m ${H2M} \
-		    retina0/h_mesh.h2/w_l ${H2L} \
-		    retina0/bipolar_lm_wh2 ${H2W}
-
-		java -jar ~/Projects/wmbuild/nd.jar results/nd_files/zz.nd
+if [[ $OPTS == "h1_spat" || $OPTS == "siso" ]]
+then
+    java -jar ~/Projects/wmbuild/nd.jar results/nd_files/zz.nd
 fi
 
 echo "end script"
