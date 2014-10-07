@@ -27,12 +27,20 @@ square_thresh 0.0    # make into a step function
 maxlum       1.0     # Maximum luminance
 stim_nrpt    1       # Number of repeats
 
-color0_r  0.61024     # color 0 red
-color0_g  0.44368    # color 0 green
-color0_b  0.88302    # color 0 blue
+color0_r     0.49821
+color0_g     0.49152
+color0_b     0.79116
 
-color1_r  0.38976     # color 1 red
-color1_g  0.55632    # color 1 green
-color1_b  0.11698    # color 1 blue
+color1_r     0.50179
+color1_g     0.50848
+color1_b     0.20884
+
+#color0_r  0.61024     # color 0 red
+#color0_g  0.44368    # color 0 green
+#color0_b  0.88302    # color 0 blue
+
+#color1_r  0.38976     # color 1 red
+#color1_g  0.55632    # color 1 green
+#color1_b  0.11698    # color 1 blue
 
 

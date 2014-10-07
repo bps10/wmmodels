@@ -49,7 +49,7 @@ mon_stat_tn      0       # duration of time window for stats (sec) 0 = off
 mon_stim_flag    1       # show stimulus during simulation
 
 
-outfile         zz       # prefix for all output files
+outfile         results/nd_files/zz       # prefix for all output files
 write_ndata      *       # write spikes to output file
 
 
