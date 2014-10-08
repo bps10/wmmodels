@@ -1,7 +1,6 @@
 #!/bin/bash
 
 #-- Set default parameters
-MODEL=human 
 H1GP=0.1
 H2GP=0.6
 H2GH=1.8
@@ -10,14 +9,31 @@ H2M=0.15
 H2L=0.15
 H2W=0.2
 TN=512
-OPTS=h1
+
+# Get model
+if [[ $1 == 'human' || $1 == 'macaque' ]]
+then    
+    MODEL=$1
+else
+    MODEL=macaque # default model
+fi
+
+# Get analysis option
+analysis=(siso coneiso h1 h2 h1_spat mosaic gui)
+if [[ $1 =~ $analysis ]]
+then
+    OPTS=$1
+elif [[ $2 =~ $analysis ]]
+then
+    OPTS=$2
+else
+    echo ERROR: must specify analysis option
+    exit 1
+fi
 
 #-- Handle command line args
-while getopts d:p:g:h:s:m:l:w:t:o: opt; do
+while getopts p:g:h:s:m:l:w:t: opt; do
   case $opt in
-    d)
-      MODEL=$OPTARG
-      ;;
     p)
       H1GP=$OPTARG
       ;;
@@ -41,9 +57,6 @@ while getopts d:p:g:h:s:m:l:w:t:o: opt; do
       ;;
     t)
       TN=$OPTARG
-      ;;
-    o)
-      OPTS=$OPTARG
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -164,6 +177,8 @@ else
 	retina0/mesh_dump_cid ${MESH_DUMP_CID} \
 	retina0/stim_override_binary ${STIM_OVERRIDE_BINARY}
 fi
+# dump results when necessary
+# ./wmbuild/bin/ndutil nd2text wmmodels/results/nd_files/zz.nd here.txt 
 
 #-- Plotting routines
 # Handle more options. 
