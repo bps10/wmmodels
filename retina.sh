@@ -1,5 +1,23 @@
 #!/bin/bash
 
+# make this a subroutine
+function run {
+    wm mod $1/$2.moo \
+	stim/$3.stm \
+	response/${RESP_FILE}.rsp  tn ${TN} \
+	retina0/h_mesh.h1/gp ${H1GP} \
+	retina0/h_mesh.${HVAR}/gp ${H2GP} \
+	retina0/h_mesh.${HVAR}/gh ${H2GH} \
+	retina0/h_mesh.${HVAR}/w_s ${H2S} \
+	retina0/h_mesh.${HVAR}/w_m ${H2M} \
+	retina0/h_mesh.${HVAR}/w_l ${H2L} \
+	retina0/bipolar_lm_wh2 ${H2W} \
+	retina0/stim_override ${STIM_OVERRIDE}\
+        retina0/mesh_dump_type ${MESH_DUMP_TYPE} \
+	retina0/mesh_dump_cid ${MESH_DUMP_CID} \
+	retina0/stim_override_binary ${STIM_OVERRIDE_BINARY}
+}
+
 #-- Set default parameters
 H1GP=0.1
 H2GP=0.6
@@ -31,45 +49,53 @@ else
     exit 1
 fi
 
-#-- Handle command line args
-while getopts p:g:h:s:m:l:w:t: opt; do
-  case $opt in
-    p)
-      H1GP=$OPTARG
-      ;;
-    g)
-      H2GP=$OPTARG
-      ;;
-    h)
-      H2GH=$OPTARG
-      ;;
-    s)
-      H2S=$OPTARG
-      ;;
-    m)
-      H2M=$OPTARG
-      ;;
-    l)
-      H2L=$OPTARG
-      ;;
-    w)
-      H2W=$OPTARG
-      ;;
-    t)
-      TN=$OPTARG
-      ;;
-    \?)
-      echo "Invalid option: -$OPTARG" >&2
-      exit 1
-      ;;
-    :)
-      echo "Option -$OPTARG requires an argument." >&2
-      exit 1
-      ;;
-  esac
+args=("$@")
+i=0
+while [ $i -lt $# ]; do
+    if [ ${args[$i]} == "-p" ]
+    then
+	i=$(($i+1))
+	H1GP=${args[$i]}
+    fi
+    if [ ${args[$i]} == "-g" ]
+    then
+	i=$((i+1))
+	H2GP=${args[$i]}
+    fi
+    if [ ${args[$i]} == "-h" ]
+    then
+	i=$((i+1))
+	H2GH=${args[$i]}
+    fi
+    if [ ${args[$i]} == "-s" ]
+    then
+	i=$((i+1))
+	H2S=${args[$i]}
+    fi
+    if [ ${args[$i]} == "-m" ]
+    then
+	i=$((i+1))
+	H2M=${args[$i]}
+    fi
+    if [ ${args[$i]} == "-l" ]
+    then
+	i=$((i+1))
+	H2L=${args[$i]}
+    fi
+    if [ ${args[$i]} == "-w" ]
+    then
+	i=$((i+1))
+	H2W=${args[$i]}
+    fi
+    if [ ${args[$i]} == "-t" ]
+    then
+	i=$((i+1))
+	TN=${args[$i]}
+    fi
+    i=$((i+1))
 done
 
-shift $((OPTIND - 1))
+#shift $((OPTIND - 1))
 
 #-- Print some info about parameters
 # print this to a records file?
@@ -161,21 +187,9 @@ then
 	gui_flag 1
 else
 
-# make this a subroutine
-    wm mod ${MODEL}/${MOO_FILE}.moo \
-	stim/${STIM_FILE}.stm \
-	response/${RESP_FILE}.rsp  tn ${TN} \
-	retina0/h_mesh.h1/gp ${H1GP} \
-	retina0/h_mesh.${HVAR}/gp ${H2GP} \
-	retina0/h_mesh.${HVAR}/gh ${H2GH} \
-	retina0/h_mesh.${HVAR}/w_s ${H2S} \
-	retina0/h_mesh.${HVAR}/w_m ${H2M} \
-	retina0/h_mesh.${HVAR}/w_l ${H2L} \
-	retina0/bipolar_lm_wh2 ${H2W} \
-	retina0/stim_override ${STIM_OVERRIDE}\
-        retina0/mesh_dump_type ${MESH_DUMP_TYPE} \
-	retina0/mesh_dump_cid ${MESH_DUMP_CID} \
-	retina0/stim_override_binary ${STIM_OVERRIDE_BINARY}
+# Can now loop
+run ${MODEL} ${MOO_FILE} ${STIM_FILE}
+
 fi
 # dump results when necessary
 # ./wmbuild/bin/ndutil nd2text wmmodels/results/nd_files/zz.nd here.txt 
