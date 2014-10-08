@@ -189,12 +189,12 @@ fi
 
 #-- Plotting routines
 # Handle more options. 
-if [[ $OPTS == "h1" || $OPTS == "h2" ]]
+if [[ $OPTS == "h1" || $OPTS == "h2" || $OPTS == "siso" ]]
 then
     python results ${OPTS} ${MODEL}
 fi
 
-if [[ $OPTS == "h1_spat" || $OPTS == "siso" ]]
+if [ $OPTS == "h1_spat" ]
 then
     java -jar ~/Projects/wmbuild/nd.jar results/nd_files/zz.nd
 fi

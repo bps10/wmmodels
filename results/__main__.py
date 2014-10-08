@@ -4,7 +4,7 @@ import numpy as np
 
 from plot_dist import plot_dist
 from plot_mosaic import plot_mosaic
-from plot_cones import plot_cones
+from plot_stack import plot_stack
 from parse_txt import parse_txt
 
 
@@ -32,15 +32,9 @@ def main():
 	if 'horiz' not in plots:
             plots.append('horiz')
     
-    if 'cone' in sys.argv:
+    if 'siso' in sys.argv or 'cone' in sys.argv:
         d = parse_txt()
-        data['cone'] = []
-	for key in d.keys():
-            if key[2:6] == 'cone':
-                data['cone'].append(d[key]['vals'])
-
-        time = np.arange(len(d[key]['vals']))
-        plot_cones(time, data['cone'])
+        plot_stack(d)
 
     if data is not {}:
         if 'horiz' in plots:
