@@ -28,36 +28,29 @@ H2L=0.15
 H2W=0.2
 TN=512
 
-# Get model
-if [[ $1 == 'human' || $1 == 'macaque' ]]
-then    
-    MODEL=$1
-else
-    MODEL=macaque # default model
-fi
-
 # Get analysis option
 analysis=(siso coneiso h1 h2 h1_spat mosaic gui)
-if [[ $1 =~ $analysis ]]
-then
-    OPTS=$1
-elif [[ $2 =~ $analysis ]]
-then
-    OPTS=$2
-else
-    echo ERROR: must specify analysis option
-    exit 1
-fi
 
+MODEL=macaque
+OPTS=()
 args=("$@")
 i=0
 while [ $i -lt $# ]; do
-    if [ ${args[$i]} == "-p" ]
+
+    if [[ ${args[$i]} == human ]]
+    then
+	MODEL=human
+    fi
+    if [[ ${args[$i]} =~ $analysis ]]
+    then
+	OPTS+=(${args[$i]})
+    fi
+    if [ ${args[$i]} == "-P" ]
     then
 	i=$(($i+1))
 	H1GP=${args[$i]}
     fi
-    if [ ${args[$i]} == "-g" ]
+    if [ ${args[$i]} == "-p" ]
     then
 	i=$((i+1))
 	H2GP=${args[$i]}
@@ -94,8 +87,6 @@ while [ $i -lt $# ]; do
     fi
     i=$((i+1))
 done
-
-#shift $((OPTIND - 1))
 
 #-- Print some info about parameters
 # print this to a records file?
@@ -172,7 +163,6 @@ then
 fi	
 
 #-- Perform the simulation(s)
-
 if [ $OPTS == "mosaic" ]
 then
     wm mod ${MODEL}/Ret_Mesh_H2.moo stim/s_iso_step.stm \
@@ -188,11 +178,14 @@ then
 else
 
 # Can now loop
+#for m in $MODELS; do
 run ${MODEL} ${MOO_FILE} ${STIM_FILE}
 
 fi
+
 # dump results when necessary
-# ./wmbuild/bin/ndutil nd2text wmmodels/results/nd_files/zz.nd here.txt 
+~/Projects/wmbuild/bin/ndutil nd2text results/nd_files/zz.nd \
+    results/txt_files/zz.txt 
 
 #-- Plotting routines
 # Handle more options. 
