@@ -4,7 +4,7 @@ import numpy as np
 
 from plot_dist import plot_dist
 from plot_mosaic import plot_mosaic
-from plot_stack import plot_stack
+from plot_stack import plot_stack, plot_horiz_time_const
 from parse_txt import parse_txt
 
 
@@ -21,23 +21,41 @@ def main():
 	
     plots = []
     data = {}
-    if 'h1' in sys.argv or 'verbose' in sys.argv:
-        data['h1'] = np.genfromtxt('results/pl_files/h1.dist.pl', 
-				       skip_header=2)
-	plots.append('horiz')
+    h1 = ['h1', 'verbose']
+    h2 = ['h2', 'verbose']
+    h_time = ['h_time', 'verbose']
+    stack = ['siso', 'cone', 'plotstack']
 
-    if 'h2' in sys.argv or 'verbose' in sys.argv:
-        data['h2'] = np.genfromtxt('results/pl_files/h2.dist.pl', 
+    for arg in sys.argv:
+        if arg in h1:
+            data['h1'] = np.genfromtxt('results/pl_files/h1.dist.pl',             
 				       skip_header=2)
-	if 'horiz' not in plots:
-            plots.append('horiz')
+            if 'horiz' not in plots:
+                plots.append('horiz')
+        if arg in h2:
+            data['h2'] = np.genfromtxt('results/pl_files/h2.dist.pl', 
+				       skip_header=2)            
+            if 'horiz' not in plots:
+                plots.append('horiz')
     
-    if 'siso' in sys.argv or 'cone' in sys.argv:
+        if arg in stack:
+            if 'stack' not in plots:
+                plots.append('stack')
+        if arg in h_time:
+            if 'h_time' not in plots:
+                plots.append('h_time')
+
+    if 'stack' in plots or 'h_time' in plots:
         d = parse_txt()
+
+    if 'stack' in plots:
         plot_stack(d)
 
-    if data is not {}:
-        if 'horiz' in plots:
+    if 'h_time' in plots:
+        plot_horiz_time_const(d)
+
+    if 'horiz' in plots:
+        if data is not {}:
             plot_dist(data, SPECIES)
 
 
