@@ -2,9 +2,7 @@
 import sys, os
 import numpy as np
 
-from plot_dist import plot_dist
-from plot_mosaic import plot_mosaic
-from plot_stack import plot_stack, plot_horiz_time_const
+import plot as plot
 from parse_txt import parse_txt
 
 
@@ -17,15 +15,15 @@ def main():
         SPECIES = 'macaque'
 
     if 'mosaic' in sys.argv:
-        plot_mosaic()
+        plot.mosaic()
 	
     plots = []
     data = {}
     h1 = ['h1', 'verbose']
     h2 = ['h2', 'verbose']
     h_time = ['h_time', 'verbose']
-    stack = ['siso', 'cone', 'plotstack']
-
+    stack = ['siso', 'cone', 'stack', 'coneiso']
+    
     for arg in sys.argv:
         if arg in h1:
             data['h1'] = np.genfromtxt('results/pl_files/h1.dist.pl',             
@@ -49,14 +47,14 @@ def main():
         d = parse_txt()
 
     if 'stack' in plots:
-        plot_stack(d)
+        plot.stack(d)
 
     if 'h_time' in plots:
-        plot_horiz_time_const(d)
+        plot.horiz_time_const(d)
 
     if 'horiz' in plots:
         if data is not {}:
-            plot_dist(data, SPECIES)
+            plot.dist(data, SPECIES)
 
 
 if __name__ == '__main__':

@@ -5,7 +5,7 @@ import matplotlib.pylab as plt
 from base import plot as pf
 
 
-def plot_mosaic(FILE='results/txt_files/zz.mosaic', invert=True):
+def mosaic(FILE='results/txt_files/zz.mosaic', invert=True):
     mosaic = np.genfromtxt(FILE)
     fig = plt.figure(figsize=(9, 9))
     fig.set_tight_layout(True)

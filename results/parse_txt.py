@@ -4,6 +4,8 @@ import numpy as np
 
 
 def clean_data(d):
+    '''
+    '''
     data = {}
     data['cone'] = []
     data['h1'] = []
@@ -21,8 +23,12 @@ def clean_data(d):
             data['bp'].append(d[key]['vals'])
         elif key[:3] == 'rgc':
             data['rgc'].append(d[key]['vals'])
-    data['time'] = np.arange(len(d[key]['vals']))
+
+    data['time'] = np.linspace(0, float(d['meta']['stim_samp']),
+                               float(d['meta']['MOO_tn']))
+
     return data
+
 
 def parse_txt(fname='results/txt_files/zz.txt'):
 
@@ -77,8 +83,10 @@ def parse_txt(fname='results/txt_files/zz.txt'):
                         j = 2
                     else:
                         j = 0  
-            
-                    data['meta'][line[j]] = line[j+1]
+                    try:
+                        data['meta'][line[j]] = line[j+1]
+                    except IndexError:
+                        data['meta'][line[j]] = []
             i += 1
     return data
 

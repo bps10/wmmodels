@@ -6,12 +6,11 @@ from base import plot as pf
 from parse_txt import clean_data
 
 
-def plot_stack(d):
+def stack(d):
     '''
     TO DO:
     * Figure out proper time range
     * Add rgc option
-    * Move data processing in beginning to a util.py
     '''
     data = clean_data(d)
 
@@ -46,7 +45,7 @@ def plot_stack(d):
     plt.show()
 
 
-def plot_horiz_time_const(d):
+def horiz_time_const(d):
     '''
     TO DO:
     * Figure out proper time range

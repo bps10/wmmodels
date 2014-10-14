@@ -7,7 +7,7 @@ from base import plot as pf
 from conversion import conversion_factors
 
 
-def plot_dist(data, species, invert=True, normalize=True):
+def dist(data, species, invert=True, normalize=True):
 	'''
 	'''
 	pix_per_deg, mm_per_deg = conversion_factors(species)
@@ -47,5 +47,5 @@ if __name__ == '__main__':
 	except:
 		pass
 
-	plot_data(data)
+	dist(data)
 

@@ -1,76 +1,9 @@
 #!/bin/bash
 
-function run_wm {
-    wm mod $1/$2.moo \
-	stim/$3.stm \
-	response/${RESP_FILE}.rsp  tn ${TN} \
-	retina0/h_mesh.h1/gp ${H1GP} \
-	retina0/h_mesh.${HVAR}/gp ${H2GP} \
-	retina0/h_mesh.${HVAR}/gh ${H2GH} \
-	retina0/h_mesh.${HVAR}/w_s ${H2S} \
-	retina0/h_mesh.${HVAR}/w_m ${H2M} \
-	retina0/h_mesh.${HVAR}/w_l ${H2L} \
-	retina0/bipolar_lm_wh2 ${H2W} \
-	retina0/stim_override ${STIM_OVERRIDE}\
-        retina0/mesh_dump_type ${MESH_DUMP_TYPE} \
-	retina0/mesh_dump_cid ${MESH_DUMP_CID} \
-	retina0/stim_override_binary ${STIM_OVERRIDE_BINARY}
-}
+# Import utility fuctions
+. $PWD/retina_util.sh
 
-function change_parameters {
-    DUMP_CID=3689 # macaque
-    if [ $MODEL == "human" ]
-    then
-	DUMP_CID=2079
-    fi
-
-    # Default settings
-    MESH_DUMP_TYPE=null
-    MESH_DUMP_CID=${DUMP_CID}
-    STIM_OVERRIDE=0
-    STIM_FILE=test_gray
-    STIM_OVERRIDE_BINARY=${DUMP_CID}
-    STIM_OVERRIDE=0
-    MOO_FILE=Ret_Mesh_H2
-    OUT_FILE=zz.nd
-    RESP_FILE=retina
-    HVAR=h2
-    
-    if [ $OPTS == "h1" ]
-    then
-	OUT_FILE=h1.dist.pl
-	STIM_OVERRIDE=1
-	MESH_DUMP_TYPE=h_v_dist
-
-    elif  [ $OPTS == "h2" ]
-    then
-	HVAR=h1 # flip around so changing h2 in moo file
-	MOO_FILE=Ret_Mesh_H2_H1_reverse
-	OUT_FILE=h2.dist.pl
-	STIM_OVERRIDE=1
-	MESH_DUMP_TYPE=h_v_dist
-	MOO_FILE=Ret_Mesh_H2_H1_reverse
-
-    elif [ $OPTS == "h_time" ]
-    then
-	STIM_OVERRIDE_BINARY=all
-	STIM_OVERRIDE=1
-
-    elif [ $OPTS == "coneiso" ]
-    then    
-	STIM_FILE=cone_iso_step
-	RESP_FILE=retina_line
-
-    elif [ $OPTS == "mosaic" ]
-    then
-	OUT_FILE=zz.mosaic
-
-    elif [ $OPTS == "siso" ]
-    then
-	STIM_FILE=s_iso_step
-	RESP_FILE=retina_line
-    fi
-}
+# Move exists_in() to util
 
 #-- Set default parameters
 H1GP=0.1
@@ -83,7 +16,8 @@ H2W=0.2
 TN=512
 
 # Get analysis option
-analysis=(siso coneiso h1 h2 h_time mosaic gui plotstack nd plot)
+analysis=(siso coneiso h1 h2 h_time mosaic gui stack nd plot \
+    verbose)
 
 MODEL=macaque
 OPTS=()
@@ -97,7 +31,7 @@ while [ $i -lt $# ]; do
     fi
 
     an=0
-    while [ $an -lt 10 ]; do
+    while [ $an -lt 11 ]; do
 	if [ ${args[$i]} == ${analysis[$an]} ]
 	then
 	    OPTS+=(${args[$i]})
@@ -149,17 +83,29 @@ while [ $i -lt $# ]; do
 done
 
 #-- Print some info about parameters
-# print this to a records file?
-echo "h1 gp is set to: $H1GP"
-echo "h2 gp is set to: $H2GP"
-echo "h2 gh is set to: $H2GH"
-echo "model is set to: $MODEL"
-echo "h2 l weight is set to: $H2L"
-echo "h2 m weight is set to: $H2M"
-echo "h2 s weight is set to: $H2S"
-echo "h2 lm bioplar is set to: $H2W"
-echo "analysis option: $OPTS"
-echo " "
+#if [ $OPTS == null ]
+#then
+#    echo "help"
+#    exit 1
+
+if [ $OPTS != plot ]
+then
+    echo "h1 gp is set to: $H1GP"
+    echo "h2 gp is set to: $H2GP"
+    echo "h2 gh is set to: $H2GH"
+    echo "model is set to: $MODEL"
+    echo "h2 l weight is set to: $H2L"
+    echo "h2 m weight is set to: $H2M"
+    echo "h2 s weight is set to: $H2S"
+    echo "h2 lm bioplar is set to: $H2W"
+    echo "analysis option: $OPTS"
+    echo ""
+
+else
+    echo ""
+    echo "plotting most recent simulation"
+    echo ""
+fi
 #else print some help info
 
 #-- 1. Change the model behavior based on command line input
@@ -216,9 +162,9 @@ while [ $j -lt 3  ]; do
 done
 
 #-- Plotting routines
-plots=(h1 h2 siso coneiso plotstack h_time)
+plots=(h1 h2 siso coneiso stack h_time verbose)
 j=0
-while [ $j -lt 6 ]; do
+while [ $j -lt 8 ]; do
     if [[ ${OPTS} == ${plots[$j]} ]]
     then
 	python results ${OPTS} ${MODEL}
