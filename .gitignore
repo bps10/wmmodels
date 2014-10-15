@@ -9,3 +9,5 @@ retina.sh~
 *~
 *zz.txt
 .#*
+results/img/*
+default_vars.sh

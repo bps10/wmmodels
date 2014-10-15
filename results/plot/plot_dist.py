@@ -32,6 +32,9 @@ def dist(data, species, invert=True, normalize=True):
 	if invert:
 		pf.invert(ax, fig, bk_color='k')
 
+	fig.savefig('results/img/h_space_const.svg', 
+		    facecolor=fig.get_facecolor(), edgecolor='none')
+
 	plt.show()
 
 if __name__ == '__main__':
