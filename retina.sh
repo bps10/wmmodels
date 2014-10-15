@@ -1,17 +1,10 @@
 #!/bin/bash
 
 # Import utility fuctions
-. $PWD/retina_util.sh
+. ./retina_util.sh
 
-#-- 0. Set default parameters
-H1GP=0.1
-H2GP=0.6
-H2GH=1.8
-H2S=0.7
-H2M=0.15
-H2L=0.15
-H2W=0.2
-TN=512
+# Import default parameters
+. ./default_vars.sh
 
 # setup conditions to specify behavior
 analysis=(siso coneiso h1 h2 h_time mosaic gui stack nd plot \
@@ -83,6 +76,9 @@ else
     if [ $(exists_in ${OPTS} "${runmod[*]}") == true ]
     then
 	run_wm ${MODEL} ${MOO_FILE} ${STIM_FILE}
+	
+	#-- save current variables as new defaults
+	save_defaults
 
         #-- dump results when necessary
 	if [ $(exists_in ${OPTS} "${dump[*]}") == true ]

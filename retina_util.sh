@@ -1,7 +1,5 @@
 #!/bin/bash
 
-
-
 function check_arg {
     local val=$1
     local default=$2
@@ -25,6 +23,23 @@ function exists_in {
 	fi
     done
     echo "$out"
+}
+
+function save_defaults {
+    # remove file with old values
+    rm default_vars.sh
+
+    # create new file with current values
+    echo "#! /bin/bash" >> default_vars.sh
+    echo " " >> default_vars.sh
+    echo "H1GP=$H1GP" >> default_vars.sh
+    echo "H2GP=$H2GP" >> default_vars.sh
+    echo "H2GH=$H2GH" >> default_vars.sh
+    echo "H2S=$H2S" >> default_vars.sh
+    echo "H2M=$H2M" >> default_vars.sh
+    echo "H2L=$H2L" >> default_vars.sh
+    echo "H2W=$H2W" >> default_vars.sh
+    echo "TN=$TN" >> default_vars.sh
 }
 
 function run_wm {
@@ -97,27 +112,29 @@ function change_parameters {
 }
 
 function print_info {
-if [ ${#OPTS[@]} -eq 0 ]; then
-    echo "Options not understood"
-    echo "help section to be added"
-    exit 1
+    if [ ${#OPTS[@]} -eq 0 ]; then
+	echo "Options not understood"
+	echo "help section to be added"
+	exit 1
 
-elif [ $OPTS != plot ]
-then
-    echo "h1 gp is set to: $H1GP"
-    echo "h2 gp is set to: $H2GP"
-    echo "h2 gh is set to: $H2GH"
-    echo "model is set to: $MODEL"
-    echo "h2 l weight is set to: $H2L"
-    echo "h2 m weight is set to: $H2M"
-    echo "h2 s weight is set to: $H2S"
-    echo "h2 lm bioplar is set to: $H2W"
-    echo "analysis option: $OPTS"
-    echo ""
+    else
+	echo " "
+	echo "h1 gp is set to: $H1GP"
+	echo "h2 gp is set to: $H2GP"
+	echo "h2 gh is set to: $H2GH"
+	echo "model is set to: $MODEL"
+	echo "h2 l weight is set to: $H2L"
+	echo "h2 m weight is set to: $H2M"
+	echo "h2 s weight is set to: $H2S"
+	echo "h2 lm bioplar is set to: $H2W"
+	echo "analysis option: $OPTS"
+	echo " "
+    fi
 
-else
-    echo ""
-    echo "plotting most recent simulation"
-    echo ""
-fi
+    if [ $OPTS == plot ]
+    then
+	echo ""
+	echo "plotting most recent simulation"
+	echo ""
+    fi
 }
