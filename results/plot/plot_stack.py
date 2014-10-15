@@ -9,7 +9,7 @@ from parse_txt import clean_data
 def stack(d):
     '''
     TO DO:
-    * Figure out proper time range
+    * Handle trials properly
     * Add rgc option
     '''
     data = clean_data(d)
@@ -26,15 +26,18 @@ def stack(d):
     for i in ax:
         pf.TufteAxis(ax[i], ['bottom', 'left'], [3, 3])
     
-    for dat in data['cone']:
-        # Subtract 10 points in so that zero offset
-        ax[0].plot(data['time'][1:], dat[1:] - dat[10])
-    for dat in data['h1']:
-        ax[1].plot(data['time'][1:], dat[1:] - dat[10] + 0.35)
-    for dat in data['h2']:
-        ax[1].plot(data['time'][1:], dat[1:] - dat[10] + 0.1)
-    for dat in data['bp']:
-        ax[2].plot(data['time'][1:], dat[1:] - dat[10])
+    time = data['time'][1:]
+    # Subtract 10 points in so that zero offset
+    for t in range(d['meta']['NTRIALS']):
+        _d = data[t]
+        for dat in _d['cone']:
+            ax[0].plot(time, dat[1:] - dat[10])
+        for dat in _d['h1']:
+            ax[1].plot(time, dat[1:] - dat[10] + 0.35)
+        for dat in _d['h2']:
+            ax[1].plot(time, dat[1:] - dat[10] + 0.1)
+        for dat in _d['bp']:
+            ax[2].plot(time, dat[1:] - dat[10])
 
     #ax[1].set_ylabel('response')
     ax[2].set_xlabel('time (ms)')
@@ -48,9 +51,6 @@ def stack(d):
 def horiz_time_const(d):
     '''
     TO DO:
-    * Figure out proper time range
-    * Add rgc option
-    * Move data processing in beginning to a util.py
     '''
     data = clean_data(d)
 
@@ -61,15 +61,15 @@ def horiz_time_const(d):
 
 
     pf.AxisFormat()
-
+    time = data['time'][1:]
     for i in ax:
         pf.TufteAxis(ax[i], ['bottom', 'left'], [3, 3])
-    
+        for t in range(d['meta']['NTRIALS']):
         # Subtract 10 points in so that zero offset
-        ax[0].plot(data['time'][1:], data['h1'][0][1:] - 
-                   data['h1'][0][10])
-        ax[0].plot(data['time'][1:], data['h2'][0][1:] -
-                   data['h2'][0][10])
+            ax[0].plot(time, data[t]['h1'][0][1:] - 
+                       data[t]['h1'][0][10])
+            ax[0].plot(time, data[t]['h2'][0][1:] -
+                       data[t]['h2'][0][10])
     #ax[1].set_ylabel('response')
     ax[0].set_xlabel('time (ms)')
     

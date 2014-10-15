@@ -107,7 +107,7 @@ fi
 #-- 7. Start nd viewer when appropriate
 if [[ $OPTS == "nd" ]]
 then
-    java -jar ~/Projects/wmbuild/nd.jar results/nd_files/zz.nd
+    java -jar ~/Projects/wmbuild/bin/nd.jar results/nd_files/zz.nd
 fi
 
 echo " "
