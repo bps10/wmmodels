@@ -31,7 +31,9 @@ def clean_data(d):
 
 
 def parse_txt(fname='results/txt_files/zz.txt'):
-
+    '''Not yet dealing with var link data. Need to 
+    fix this!
+    '''
     data = {'meta': {}, }
     i = 0
     with open(fname) as f:

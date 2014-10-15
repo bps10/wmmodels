@@ -1,7 +1,33 @@
 #!/bin/bash
 
-# make this a subroutine
-function run {
+
+
+function check_arg {
+    local val=$1
+    local default=$2
+    if [ $val ==  ${args[$i]} ]
+    then
+	i=$(($i+1))
+	echo ${args[$i]}
+    else
+	echo $default
+    fi
+}
+
+function exists_in {
+    local var=$1
+    local arr=($2)
+    out=false
+    for i in "${arr[@]}"; do
+	if [ $var == $i ]
+	then
+	    out=true
+	fi
+    done
+    echo "$out"
+}
+
+function run_wm {
     wm mod $1/$2.moo \
 	stim/$3.stm \
 	response/${RESP_FILE}.rsp  tn ${TN} \
@@ -68,4 +94,30 @@ function change_parameters {
 	STIM_FILE=s_iso_step
 	RESP_FILE=retina_line
     fi
+}
+
+function print_info {
+if [ ${#OPTS[@]} -eq 0 ]; then
+    echo "Options not understood"
+    echo "help section to be added"
+    exit 1
+
+elif [ $OPTS != plot ]
+then
+    echo "h1 gp is set to: $H1GP"
+    echo "h2 gp is set to: $H2GP"
+    echo "h2 gh is set to: $H2GH"
+    echo "model is set to: $MODEL"
+    echo "h2 l weight is set to: $H2L"
+    echo "h2 m weight is set to: $H2M"
+    echo "h2 s weight is set to: $H2S"
+    echo "h2 lm bioplar is set to: $H2W"
+    echo "analysis option: $OPTS"
+    echo ""
+
+else
+    echo ""
+    echo "plotting most recent simulation"
+    echo ""
+fi
 }
