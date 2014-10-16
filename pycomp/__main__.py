@@ -3,7 +3,7 @@ import sys, os
 import numpy as np
 
 import plot as plot
-from parse_txt import parse_txt
+from util import parse_txt
 
 
 def main():
@@ -22,7 +22,7 @@ def main():
     h1 = ['h1', 'verbose']
     h2 = ['h2', 'verbose']
     h_time = ['h_time', 'verbose']
-    stack = ['siso', 'cone', 'stack', 'coneiso']
+    stack = ['siso', 'miso', 'liso', 'cone', 'stack', 'coneiso']
     
     for arg in sys.argv:
         if arg in h1:

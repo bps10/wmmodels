@@ -25,24 +25,42 @@ function exists_in {
     echo "$out"
 }
 
+function stim_gen {
+
+    cat stim/iso_step.stm > stim/cone_iso_step.stm
+    if [[ $1 == siso || $1 == miso || $1 == liso ]]
+    then
+	python pycomp/cone_iso.py $1 1 >> stim/cone_iso_step.stm
+    elif [[ $1 == coneiso ]] 
+    then
+	python pycomp/cone_iso.py var_link 1 >> stim/cone_iso_step.stm
+    fi
+}
+
 function save_defaults {
     # remove file with old values
-    rm default_vars.sh
+    rm util/default_vars.sh
 
     # create new file with current values
-    echo "#! /bin/bash" >> default_vars.sh
-    echo " " >> default_vars.sh
-    echo "H1GP=$H1GP" >> default_vars.sh
-    echo "H2GP=$H2GP" >> default_vars.sh
-    echo "H2GH=$H2GH" >> default_vars.sh
-    echo "H2S=$H2S" >> default_vars.sh
-    echo "H2M=$H2M" >> default_vars.sh
-    echo "H2L=$H2L" >> default_vars.sh
-    echo "H2W=$H2W" >> default_vars.sh
-    echo "TN=$TN" >> default_vars.sh
+    echo "#! /bin/bash" >> util/default_vars.sh
+    echo " " >> util/default_vars.sh
+    echo "H1GP=$H1GP" >> util/default_vars.sh
+    echo "H2GP=$H2GP" >> util/default_vars.sh
+    echo "H2GH=$H2GH" >> util/default_vars.sh
+    echo "H2S=$H2S" >> util/default_vars.sh
+    echo "H2M=$H2M" >> util/default_vars.sh
+    echo "H2L=$H2L" >> util/default_vars.sh
+    echo "H2W=$H2W" >> util/default_vars.sh
+    echo "TN=$TN" >> util/default_vars.sh
 }
 
 function run_wm {
+    # if stimulus condition is an iso_cond then gen stim file
+    if [[ $(exists_in ${OPTS} ${iso_cond}) ]] 
+    then
+	stim_gen ${OPTS}
+    fi
+
     wm mod $1/$2.moo \
 	stim/$3.stm \
 	response/${RESP_FILE}.rsp  tn ${TN} \
@@ -99,14 +117,9 @@ function change_parameters {
 	STIM_OVERRIDE_BINARY=all
 	STIM_OVERRIDE=1
 
-    elif [ $OPTS == "coneiso" ]
+    elif [[ $(exists_in $OPTS $iso_cond) ]]
     then    
 	STIM_FILE=cone_iso_step
-	RESP_FILE=retina_line
-
-    elif [ $OPTS == "siso" ]
-    then
-	STIM_FILE=s_iso_step
 	RESP_FILE=retina_line
     fi
 }

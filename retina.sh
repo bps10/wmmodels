@@ -1,17 +1,19 @@
 #!/bin/bash
 
 # Import utility fuctions
-. ./retina_util.sh
+. ./util/retina_util.sh
 
 # Import default parameters
-. ./default_vars.sh
+. ./util/default_vars.sh
 
 # setup conditions to specify behavior
-analysis=(siso coneiso h1 h2 h_time mosaic gui stack nd plot \
+analysis=(siso coneiso h1 h2 miso liso \
+    h_time mosaic gui stack nd plot \
     verbose)
-runmod=(h1 h2 siso coneiso h_time)
-plots=(h1 h2 siso coneiso stack h_time verbose)
-dump=(siso coneiso h_time)
+runmod=(h1 h2 siso miso liso coneiso h_time)
+plots=(h1 h2 siso miso liso coneiso stack h_time verbose)
+dump=(siso miso liso coneiso h_time)
+iso_cond=(siso miso liso coneiso)
 
 #-- 1. Get analysis option
 MODEL=macaque
@@ -63,7 +65,7 @@ then
 	retina0/mesh_dump_type mosaic_coord \
 	retina0/mesh_dump_file zz.mosaic
     
-    python results mosaic
+    python pycomp mosaic
 
 elif [ $OPTS == "gui" ]
 then
@@ -94,10 +96,10 @@ fi
 #-- 6. Plotting routines
 if [ $(exists_in ${OPTS[0]} "${plots[*]}") == true ]
 then
-    python results ${OPTS} ${MODEL}
+    python pycomp ${OPTS} ${MODEL}
 elif [ $(exists_in ${OPTS[1]} "${plots[*]}") == true ]
 then
-    python results ${OPTS[1]} ${MODEL}
+    python pycomp ${OPTS[1]} ${MODEL}
 fi
 
 #-- 7. Start nd viewer when appropriate

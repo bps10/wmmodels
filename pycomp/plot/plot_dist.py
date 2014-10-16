@@ -4,7 +4,7 @@ import matplotlib.pylab as plt
 
 from base import plot as pf
 
-from conversion import conversion_factors
+from util.conversion import conversion_factors
 
 
 def dist(data, species, invert=True, normalize=True):

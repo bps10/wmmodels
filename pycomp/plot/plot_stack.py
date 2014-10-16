@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pylab as plt
 
 from base import plot as pf
-from parse_txt import clean_data
+from util.parse_txt import clean_data
 
 
 def stack(d):
