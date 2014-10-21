@@ -26,9 +26,9 @@ contrast     1.0     # Contrast
 square_thresh 0.0    # make into a step function
 maxlum       1.0     # Maximum luminance
 stim_nrpt    1       # Number of repeats
-color0_r 0.208844327414
-color0_g 0.550902172186
-color0_b 0.499064968392
-color1_r 0.791155672586
-color1_g 0.449097827814
-color1_b 0.500935031608
+color0_r 0.498211586711
+color0_g 0.491517098142
+color0_b 0.791155672586
+color1_r 0.501788413289
+color1_g 0.508482901858
+color1_b 0.208844327414

@@ -21,11 +21,11 @@ def dist(data, species, invert=True, normalize=True):
 
 	for d in data:
 		dat = data[d]
-		x_val_h1 = dat[:, 0] * pix_per_deg * mm_per_deg * 1000
+		x_val_h = dat[:, 0] * pix_per_deg * mm_per_deg * 1000
 		if normalize:
 			dat[:, 1] /= dat[:, 1].max()
 
-		ax.plot(x_val_h1, dat[:, 1], 'o')
+		ax.plot(x_val_h, dat[:, 1], 'o')
 
 	ax.set_xlabel('distance ($\mu$m)')
 
@@ -42,11 +42,13 @@ if __name__ == '__main__':
 	## LOAD DATA BASED ON INPUT ARG ALLOW FOR 2 PLOTS
 	data = {}
 	try:
-		data['h1'] = np.genfromtxt('results/pl_files/h1.dist.pl', skip_header=2)
+		data['h1'] = np.genfromtxt('results/pl_files/h1.dist.pl', 
+					   skip_header=2)
 	except:
 		pass
 	try:
-		data['h2'] = np.genfromtxt('results/pl_files/h2.dist.pl', skip_header=2)
+		data['h2'] = np.genfromtxt('results/pl_files/h2.dist.pl', 
+					   skip_header=2)
 	except:
 		pass
 

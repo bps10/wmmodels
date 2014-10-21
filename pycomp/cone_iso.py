@@ -8,7 +8,8 @@ from base import spectsens as ss
 def cone_iso(spect='stockman', print_conv_M=False, 
 	     print_S=False, print_M=False, print_L=False,
 	     print_bkgd=False, print_var_link=False):
-
+	'''Implement a % cone contrast specification.
+	'''
 	if spect == 'stockman':
 		tmp = ss.stockmanfund(minLambda=390, maxLambda=750)
 		sens = {}
@@ -36,7 +37,7 @@ def cone_iso(spect='stockman', print_conv_M=False,
 		# should make this a gaussian for better accuracy
 		lights[light]['spec'][lights[light]['ind']] = 1
 
-	# generate system matrix
+	# generate system matrix: [LMS].T = [M][RGB].T
 	M = np.array([
 			[np.sum(sens['l'] * lights[0]['spec']),
 			 np.sum(sens['l'] * lights[1]['spec']),
@@ -60,25 +61,43 @@ def cone_iso(spect='stockman', print_conv_M=False,
 	# set background - assume 1/2 max light val for now
 	bkgd = np.array([[0.5], [0.5], [0.5]])
 
-	# compute photo isomerizations for background
+	# compute relative photo isomerizations for background
 	bkgd_photo = np.dot(M, bkgd)
 
 	if print_bkgd:
 		for i in range(len(bkgd_photo)):
 			print bkgd_photo[i][0]
-
+	
+	# Find maximum we can move from background
 	bkgd_photo = bkgd_photo[np.abs(bkgd - bkgd_photo).argmax()]
+	
+	# LMS cone iso vectors
+	s_iso = np.array([[0], [0], [1]])
+	m_iso = np.array([[0], [1], [0]])
+	l_iso = np.array([[1], [0], [0]])
 
-	s_iso = np.array([[0], [0], [0.5]])
-	m_iso = np.array([[0], [0.5], [0]])
-	l_iso = np.array([[0.5], [0], [0]])
-
+	# S cone computation
 	s_iso_rgb = np.dot(inv_M, s_iso)
-
+	
 	s_delta = s_iso_rgb / np.abs(s_iso_rgb).max() * bkgd_photo
 	s_plus = bkgd + s_delta
 	s_minus = bkgd - s_delta
 	
+	# M cone computation
+	m_iso_rgb = np.dot(inv_M, m_iso)
+
+	m_delta = m_iso_rgb / np.abs(m_iso_rgb).max() * bkgd_photo
+	m_plus = bkgd + m_delta
+	m_minus = bkgd - m_delta
+
+	# L cone computation
+	l_iso_rgb = np.dot(inv_M, l_iso)
+
+	l_delta = l_iso_rgb / np.abs(l_iso_rgb).max() * bkgd_photo
+	l_plus = bkgd + l_delta
+	l_minus = bkgd - l_delta
+
+	# print outputs
 	c = ['r', 'g', 'b']
 
 	if print_S:
@@ -87,23 +106,12 @@ def cone_iso(spect='stockman', print_conv_M=False,
 		for i in range(len(s_minus)):
 			print 'color1_' + c[i] + ' ' + str(s_minus[i][0])
 
-	m_iso_rgb = np.dot(inv_M, m_iso)
-		
-	m_delta = m_iso_rgb / np.abs(m_iso_rgb).max() * bkgd_photo
-	m_plus = bkgd + m_delta
-	m_minus = bkgd - m_delta
 
 	if print_M:
 		for i in range(len(m_plus)):
 			print 'color0_' + c[i] + ' ' + str(m_plus[i][0])
 		for i in range(len(m_minus)):
 			print 'color1_' + c[i] + ' ' + str(m_minus[i][0])
-
-	l_iso_rgb = np.dot(inv_M, l_iso)
-
-	l_delta = l_iso_rgb / np.abs(l_iso_rgb).max() * bkgd_photo
-	l_plus = bkgd + l_delta
-	l_minus = bkgd - l_delta
 
 	if print_L:
 		for i in range(len(l_plus)):
@@ -141,27 +149,5 @@ if __name__ == '__main__':
 	if sys.argv[1] == 'coneiso':
 		cone_iso('stockman', print_var_link=True)
 
-	'''
-	print 'Conv Matrix'
-	cone_iso('stockman', print_conv_M=True)
-	print ''
-
-	print 'background'
-	cone_iso('stockman', print_bkgd=True)
-	print ''
-
-	print 'S'
-	cone_iso('stockman', print_S=True)
-	print ''
-
-	print 'M'
-	cone_iso('stockman', print_M=True)
-	print ''
-
-	print 'L'
-	cone_iso('stockman', print_L=True)
-	print ''
-
-	print 'VARLINK'
-	cone_iso('stockman', print_var_link=True)
-	'''
+	if sys.argv[1] == 'bkgd':
+		cone_iso('stockman', print_bkdg=True)

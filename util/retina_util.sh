@@ -31,9 +31,10 @@ function stim_gen {
     if [[ $1 == siso || $1 == miso || $1 == liso ]]
     then
 	python pycomp/cone_iso.py $1 1 >> stim/cone_iso_step.stm
-    elif [[ $1 == coneiso ]] 
+    elif [ $1 == coneiso ] 
     then
-	python pycomp/cone_iso.py var_link 1 >> stim/cone_iso_step.stm
+	python pycomp/cone_iso.py siso 1 >> stim/cone_iso_step.stm
+	python pycomp/cone_iso.py coneiso 1 >> stim/cone_iso_step.stm
     fi
 }
 
@@ -45,6 +46,7 @@ function save_defaults {
     echo "#! /bin/bash" >> util/default_vars.sh
     echo " " >> util/default_vars.sh
     echo "H1GP=$H1GP" >> util/default_vars.sh
+    echo "H1GH=$H1GH" >> util/default_vars.sh
     echo "H2GP=$H2GP" >> util/default_vars.sh
     echo "H2GH=$H2GH" >> util/default_vars.sh
     echo "H2S=$H2S" >> util/default_vars.sh
@@ -65,6 +67,7 @@ function run_wm {
 	stim/$3.stm \
 	response/${RESP_FILE}.rsp  tn ${TN} \
 	retina0/h_mesh.h1/gp ${H1GP} \
+	retina0/h_mesh.h1/gh ${H1GH} \
 	retina0/h_mesh.${HVAR}/gp ${H2GP} \
 	retina0/h_mesh.${HVAR}/gh ${H2GH} \
 	retina0/h_mesh.${HVAR}/w_s ${H2S} \
@@ -126,13 +129,26 @@ function change_parameters {
 
 function print_info {
     if [ ${#OPTS[@]} -eq 0 ]; then
-	echo "Options not understood"
-	echo "help section to be added"
+
+	echo -e "\nretina.sh\n"
+	echo -e "Options:"
+	echo -e "========================"
+	echo -e "-P\t H1GP"
+	echo -e "-H\t H1GH"
+	echo -e "-p\t H2GP"
+	echo -e "-h\t H2GH"
+	echo -e "-s\t H2S"
+	echo -e "-m\t H2M"
+	echo -e "-l\t H2L"
+	echo -e "-w\t H2W"
+	echo -e "-t\t TN"
+
 	exit 1
 
     else
 	echo " "
 	echo "h1 gp is set to: $H1GP"
+	echo "h1 gh is set to: $H1GH"
 	echo "h2 gp is set to: $H2GP"
 	echo "h2 gh is set to: $H2GH"
 	echo "model is set to: $MODEL"
@@ -143,11 +159,19 @@ function print_info {
 	echo "analysis option: $OPTS"
 	echo " "
     fi
-
+    
     if [ $OPTS == plot ]
     then
 	echo ""
 	echo "plotting most recent simulation"
 	echo ""
     fi
+}
+
+function delete_old_file {
+    if [ -e "results/pl_files/$OUT_FILE" ] 
+    then
+	rm results/pl_files/${OUT_FILE}
+	echo "rm results/pl_files/rm $OUT_FILE"
+    fi	
 }

@@ -33,6 +33,7 @@ while [ $i -lt $# ]; do
     fi
     
     H1GP=$(check_arg -P $H1GP)
+    H1GH=$(check_arg -H $H1GH)
     H2GP=$(check_arg -p $H2GP) 
     H2GH=$(check_arg -h $H2GH)
     H2S=$(check_arg -s $H2S)
@@ -51,11 +52,7 @@ print_info
 change_parameters
 
 #-- 4. Delete old output files
-if [ -e "results/pl_files/$OUT_FILE" ] 
-then
-    rm results/pl_files/${OUT_FILE}
-    echo "rm results/pl_files/rm $OUT_FILE"
-fi	
+delete_old_file
 
 #-- 5. Perform the simulation(s)
 if [ $OPTS == "mosaic" ]
