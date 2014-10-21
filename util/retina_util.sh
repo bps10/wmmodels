@@ -56,30 +56,6 @@ function save_defaults {
     echo "TN=$TN" >> util/default_vars.sh
 }
 
-function run_wm {
-    # if stimulus condition is an iso_cond then gen stim file
-    if [[ $(exists_in ${OPTS} ${iso_cond}) ]] 
-    then
-	stim_gen ${OPTS}
-    fi
-
-    wm mod $1/$2.moo \
-	stim/$3.stm \
-	response/${RESP_FILE}.rsp  tn ${TN} \
-	retina0/h_mesh.h1/gp ${H1GP} \
-	retina0/h_mesh.h1/gh ${H1GH} \
-	retina0/h_mesh.${HVAR}/gp ${H2GP} \
-	retina0/h_mesh.${HVAR}/gh ${H2GH} \
-	retina0/h_mesh.${HVAR}/w_s ${H2S} \
-	retina0/h_mesh.${HVAR}/w_m ${H2M} \
-	retina0/h_mesh.${HVAR}/w_l ${H2L} \
-	retina0/bipolar_lm_wh2 ${H2W} \
-	retina0/stim_override ${STIM_OVERRIDE}\
-        retina0/mesh_dump_type ${MESH_DUMP_TYPE} \
-	retina0/mesh_dump_cid ${MESH_DUMP_CID} \
-	retina0/stim_override_binary ${STIM_OVERRIDE_BINARY}
-}
-
 
 function change_parameters {
     DUMP_CID=3689 # macaque
@@ -174,4 +150,46 @@ function delete_old_file {
 	rm results/pl_files/${OUT_FILE}
 	echo "rm results/pl_files/rm $OUT_FILE"
     fi	
+}
+
+function run_wm {
+    # if stimulus condition is an iso_cond then gen stim file
+    if [[ $(exists_in ${OPTS} ${iso_cond}) ]] 
+    then
+	stim_gen ${OPTS}
+    fi
+
+    wm mod $1/$2.moo \
+	stim/$3.stm \
+	response/${RESP_FILE}.rsp  tn ${TN} \
+	retina0/h_mesh.h1/gp ${H1GP} \
+	retina0/h_mesh.h1/gh ${H1GH} \
+	retina0/h_mesh.${HVAR}/gp ${H2GP} \
+	retina0/h_mesh.${HVAR}/gh ${H2GH} \
+	retina0/h_mesh.${HVAR}/w_s ${H2S} \
+	retina0/h_mesh.${HVAR}/w_m ${H2M} \
+	retina0/h_mesh.${HVAR}/w_l ${H2L} \
+	retina0/bipolar_lm_wh2 ${H2W} \
+	retina0/stim_override ${STIM_OVERRIDE}\
+        retina0/mesh_dump_type ${MESH_DUMP_TYPE} \
+	retina0/mesh_dump_cid ${MESH_DUMP_CID} \
+	retina0/stim_override_binary ${STIM_OVERRIDE_BINARY}
+}
+
+
+function run_mosaic {
+    wm mod ${MODEL}/Ret_Mesh_H2.moo stim/s_iso_step.stm \
+	response/retina.rsp  tN ${TN}  gui_flag 1 \
+	retina0/mesh_dump_type mosaic_coord \
+	retina0/mesh_dump_file zz.mosaic
+    
+    python pycomp mosaic
+
+}
+
+
+function run_gui {
+    wm mod ${MODEL}/Ret_Mesh_H2.moo stim/s_iso_step.stm \
+	response/retina.rsp  tn ${TN}  \
+	gui_flag 1
 }

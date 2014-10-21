@@ -7,7 +7,8 @@ from base import spectsens as ss
 
 def cone_iso(spect='stockman', print_conv_M=False, 
 	     print_S=False, print_M=False, print_L=False,
-	     print_bkgd=False, print_var_link=False):
+	     print_bkgd=False, print_var_link=False, 
+	     max_contrast=True):
 	'''Implement a % cone contrast specification.
 	'''
 	if spect == 'stockman':
@@ -67,9 +68,18 @@ def cone_iso(spect='stockman', print_conv_M=False,
 	if print_bkgd:
 		for i in range(len(bkgd_photo)):
 			print bkgd_photo[i][0]
-	
+
 	# Find maximum we can move from background
-	bkgd_photo = bkgd_photo[np.abs(bkgd - bkgd_photo).argmax()]
+	if max_contrast:
+		if print_L is True: 
+			i = 0
+		if print_M is True: 
+			i = 1
+		if print_S is True: 
+			i = 2
+		scale = bkgd_photo[np.abs(bkgd - bkgd_photo[i]).argmax()]
+	else:
+		scale = bkgd_photo[np.abs(bkgd - bkgd_photo).argmax()]
 	
 	# LMS cone iso vectors
 	s_iso = np.array([[0], [0], [1]])
@@ -79,21 +89,21 @@ def cone_iso(spect='stockman', print_conv_M=False,
 	# S cone computation
 	s_iso_rgb = np.dot(inv_M, s_iso)
 	
-	s_delta = s_iso_rgb / np.abs(s_iso_rgb).max() * bkgd_photo
+	s_delta = s_iso_rgb / np.abs(s_iso_rgb).max() * scale
 	s_plus = bkgd + s_delta
 	s_minus = bkgd - s_delta
 	
 	# M cone computation
 	m_iso_rgb = np.dot(inv_M, m_iso)
 
-	m_delta = m_iso_rgb / np.abs(m_iso_rgb).max() * bkgd_photo
+	m_delta = m_iso_rgb / np.abs(m_iso_rgb).max() * scale
 	m_plus = bkgd + m_delta
 	m_minus = bkgd - m_delta
 
 	# L cone computation
 	l_iso_rgb = np.dot(inv_M, l_iso)
 
-	l_delta = l_iso_rgb / np.abs(l_iso_rgb).max() * bkgd_photo
+	l_delta = l_iso_rgb / np.abs(l_iso_rgb).max() * scale
 	l_plus = bkgd + l_delta
 	l_minus = bkgd - l_delta
 
@@ -105,20 +115,31 @@ def cone_iso(spect='stockman', print_conv_M=False,
 			print 'color0_' + c[i] + ' ' + str(s_plus[i][0])
 		for i in range(len(s_minus)):
 			print 'color1_' + c[i] + ' ' + str(s_minus[i][0])
-
+		cc = cone_contrast(M, bkgd_photo, s_plus)
+		print '# cone contrast:'
+		for i in range(len(s_minus)):
+			print '# ' + str(cc[i][0])
 
 	if print_M:
 		for i in range(len(m_plus)):
 			print 'color0_' + c[i] + ' ' + str(m_plus[i][0])
 		for i in range(len(m_minus)):
 			print 'color1_' + c[i] + ' ' + str(m_minus[i][0])
+		cc = cone_contrast(M, bkgd_photo, m_plus)
+		print '# cone contrast:'
+		for i in range(len(s_minus)):
+			print '# ' + str(cc[i][0])
 
 	if print_L:
 		for i in range(len(l_plus)):
 			print 'color0_' + c[i] + ' ' + str(l_plus[i][0])
 		for i in range(len(l_minus)):
 			print 'color1_' + c[i] + ' ' + str(l_minus[i][0])
-	
+		cc = cone_contrast(M, bkgd_photo, l_plus)
+		print '# cone contrast:'
+		for i in range(len(s_minus)):
+			print '# ' + str(cc[i][0])
+
 	if print_var_link:
 		print ' '
 		print 'cone 0'
@@ -134,6 +155,13 @@ def cone_iso(spect='stockman', print_conv_M=False,
 			       str(s_minus[i][0]) + ' ' + 
 			       str(m_minus[i][0]) + ' ' + 
 			       str(l_minus[i][0]))
+
+
+def cone_contrast(M, bkgd, rgb1):
+	a = bkgd
+	b = np.dot(M, rgb1)
+	diff = (np.abs(b - a) / a)
+	return  diff
 
 if __name__ == '__main__':
 

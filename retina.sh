@@ -57,20 +57,13 @@ delete_old_file
 #-- 5. Perform the simulation(s)
 if [ $OPTS == "mosaic" ]
 then
-    wm mod ${MODEL}/Ret_Mesh_H2.moo stim/s_iso_step.stm \
-	response/retina.rsp  tN ${TN}  gui_flag 1 \
-	retina0/mesh_dump_type mosaic_coord \
-	retina0/mesh_dump_file zz.mosaic
-    
-    python pycomp mosaic
+    run_mosaic
 
 elif [ $OPTS == "gui" ]
 then
-    wm mod ${MODEL}/Ret_Mesh_H2.moo stim/s_iso_step.stm \
-	response/retina.rsp  tn ${TN}  \
-	gui_flag 1
-else
+    run_gui
 
+else
 
     if [ $(exists_in ${OPTS} "${runmod[*]}") == true ]
     then
