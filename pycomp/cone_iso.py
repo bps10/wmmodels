@@ -9,7 +9,7 @@ def cone_iso(spect='stockman', print_conv_M=False,
 	     print_S=False, print_M=False, print_L=False,
 	     print_bkgd=False, print_var_link=False, 
 	     max_contrast=True):
-	'''Implement a % cone contrast specification.
+	'''Outputs cone iso stimuli.
 	'''
 	if spect == 'stockman':
 		tmp = ss.stockmanfund(minLambda=390, maxLambda=750)
@@ -52,35 +52,36 @@ def cone_iso(spect='stockman', print_conv_M=False,
 			 np.sum(sens['s'] * lights[1]['spec']),
 			 np.sum(sens['s'] * lights[2]['spec'])],
 			])
-
-	if print_conv_M:
-		print M
 	
 	# generate inversion matrix for later
 	inv_M = np.linalg.inv(M)
 	
-	# set background - assume 1/2 max light val for now
-	bkgd = np.array([[0.5], [0.5], [0.5]])
+	# set background - assume 1/2 for each cone
+	bkgd_photo = np.array([[0.5], [0.5], [0.5]])
 
-	# compute relative photo isomerizations for background
-	bkgd_photo = np.dot(M, bkgd)
-
+	# compute relative intensities to create equal adaptation
+	bkgd = np.dot(inv_M, bkgd_photo)
 	if print_bkgd:
 		for i in range(len(bkgd_photo)):
 			print bkgd_photo[i][0]
-
+			
 	# Find maximum we can move from background
-	if max_contrast:
-		if print_L is True: 
+	scale = {'l': 0, 'm': 0, 's': 0}
+	for k in scale:
+		if k == 'l':
 			i = 0
-		if print_M is True: 
+		if k == 'm': 
 			i = 1
-		if print_S is True: 
+		if k == 's':
 			i = 2
-		scale = bkgd_photo[np.abs(bkgd - bkgd_photo[i]).argmax()]
-	else:
-		scale = bkgd_photo[np.abs(bkgd - bkgd_photo).argmax()]
-	
+		if max_contrast:
+			scale[k] = bkgd[i]
+		else:
+			scale[k] = bkgd[np.abs(bkgd - 
+					       bkgd_photo).argmax()]
+		if scale[k] > 0.5:
+			scale[k] = 1 - scale[k]
+
 	# LMS cone iso vectors
 	s_iso = np.array([[0], [0], [1]])
 	m_iso = np.array([[0], [1], [0]])
@@ -89,26 +90,29 @@ def cone_iso(spect='stockman', print_conv_M=False,
 	# S cone computation
 	s_iso_rgb = np.dot(inv_M, s_iso)
 	
-	s_delta = s_iso_rgb / np.abs(s_iso_rgb).max() * scale
+	s_delta = s_iso_rgb / np.abs(s_iso_rgb).max() * scale['s']
 	s_plus = bkgd + s_delta
 	s_minus = bkgd - s_delta
 	
 	# M cone computation
 	m_iso_rgb = np.dot(inv_M, m_iso)
 
-	m_delta = m_iso_rgb / np.abs(m_iso_rgb).max() * scale
+	m_delta = m_iso_rgb / np.abs(m_iso_rgb).max() * scale['m']
 	m_plus = bkgd + m_delta
 	m_minus = bkgd - m_delta
 
 	# L cone computation
 	l_iso_rgb = np.dot(inv_M, l_iso)
 
-	l_delta = l_iso_rgb / np.abs(l_iso_rgb).max() * scale
+	l_delta = l_iso_rgb / np.abs(l_iso_rgb).max() * scale['l']
 	l_plus = bkgd + l_delta
 	l_minus = bkgd - l_delta
 
 	# print outputs
 	c = ['r', 'g', 'b']
+
+	if print_conv_M:
+		print M
 
 	if print_S:
 		for i in range(len(s_plus)):
@@ -162,6 +166,7 @@ def cone_contrast(M, bkgd, rgb1):
 	b = np.dot(M, rgb1)
 	diff = (np.abs(b - a) / a)
 	return  diff
+
 
 if __name__ == '__main__':
 

@@ -16,22 +16,17 @@ dump=(siso miso liso coneiso h_time)
 iso_cond=(siso miso liso coneiso)
 
 #-- 1. Get analysis option
-MODEL=macaque
 OPTS=()
 args=("$@")
 i=0
 while [ $i -lt $# ]; do
-
-    if [[ ${args[$i]} == human ]]
-    then
-	MODEL=human
-    fi
 
     if [ $(exists_in ${args[$i]} "${analysis[*]}") == true ]
     then
 	OPTS+=(${args[$i]})
     fi
     
+    MODEL=$(check_arg -model $MODEL)
     H1GP=$(check_arg -P $H1GP)
     H1GH=$(check_arg -H $H1GH)
     H2GP=$(check_arg -p $H2GP) 

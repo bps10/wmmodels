@@ -1,11 +1,12 @@
 #! /bin/bash
- 
+
+MODEL=macaque 
 H1GP=0.1
 H1GH=3.0
-H2GP=0.7
+H2GP=0.75
 H2GH=0.8
 H2S=1
-H2M=0.15
-H2L=0.15
-H2W=0.5
+H2M=0.1
+H2L=0.1
+H2W=0.7
 TN=512

@@ -26,13 +26,23 @@ contrast     1.0     # Contrast
 square_thresh 0.0    # make into a step function
 maxlum       1.0     # Maximum luminance
 stim_nrpt    1       # Number of repeats
-color0_r 0.997617072984
-color0_g 0.493297629598
-color0_b 0.500123117027
-color1_r 0.00238292701573
-color1_g 0.506702370402
-color1_b 0.499876882973
-[[ 0.      ]
- [ 0.153598]
- [ 0.      ]]
-None
+color0_r 0.507745869346
+color0_g 0.486427309912
+color0_b 1.0
+color1_r 0.509399266685
+color1_g 0.494269796567
+color1_b 0.730825074367
+# cone contrast:
+# 0.0
+# 1.11022302463e-16
+# 0.153833920683
+ 
+cone 0
+ 
+VARLINK_cone 1 2 3
+VARLINK_color0_r 0.507745869346 0.0182240147762 1.0
+VARLINK_color0_g 0.486427309912 0.576075224014 0.48372955069
+VARLINK_color0_b 1.0 0.863837807788 0.865534122811
+VARLINK_color1_r 0.509399266685 0.998921121255 0.0171451360315
+VARLINK_color1_g 0.494269796567 0.404621882465 0.496967555789
+VARLINK_color1_b 0.730825074367 0.866987266578 0.865290951556

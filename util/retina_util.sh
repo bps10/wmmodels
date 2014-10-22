@@ -45,6 +45,7 @@ function save_defaults {
     # create new file with current values
     echo "#! /bin/bash" >> util/default_vars.sh
     echo " " >> util/default_vars.sh
+    echo "MODEL=$MODEL" >> util/default_vars.sh
     echo "H1GP=$H1GP" >> util/default_vars.sh
     echo "H1GH=$H1GH" >> util/default_vars.sh
     echo "H2GP=$H2GP" >> util/default_vars.sh
@@ -109,6 +110,7 @@ function print_info {
 	echo -e "\nretina.sh\n"
 	echo -e "Options:"
 	echo -e "========================"
+	echo -e "-model\t MODEL"
 	echo -e "-P\t H1GP"
 	echo -e "-H\t H1GH"
 	echo -e "-p\t H2GP"
