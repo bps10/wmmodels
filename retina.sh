@@ -27,6 +27,7 @@ while [ $i -lt $# ]; do
     fi
     
     MODEL=$(check_arg -model $MODEL)
+    FUND=$(check_arg -fund $FUND)
     H1GP=$(check_arg -P $H1GP)
     H1GH=$(check_arg -H $H1GH)
     H2GP=$(check_arg -p $H2GP) 
@@ -46,6 +47,9 @@ print_info
 #-- 3. Change the model behavior based on command line input
 change_parameters
 
+sys=$(python pycomp/cone_iso.py sys ${FUND})
+perl -p -e "s/rgb_here/$sys/g" ${MODEL}/${MOO_FILE}.moo > ${MODEL}/run.moo
+
 #-- 4. Delete old output files
 delete_old_file
 
@@ -62,18 +66,13 @@ else
 
     if [ $(exists_in ${OPTS} "${runmod[*]}") == true ]
     then
-	run_wm ${MODEL} ${MOO_FILE} ${STIM_FILE}
+	run_wm ${MODEL} ${STIM_FILE}
 	
 	#-- save current variables as new defaults
 	save_defaults
 
         #-- dump results when necessary
-	if [ $(exists_in ${OPTS} "${dump[*]}") == true ]
-	then
-	    ~/Projects/wmbuild/bin/ndutil nd2text \
-		results/nd_files/zz.nd \
-		results/txt_files/zz.txt 
-	fi
+	dump_results
     fi
 
 fi

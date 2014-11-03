@@ -5,11 +5,14 @@ import sys
 from base import spectsens as ss
 
 
-def cone_iso(spect='stockman', print_conv_M=False, 
+def cone_iso(spect='stockman', print_sys_M=False, 
 	     print_S=False, print_M=False, print_L=False,
 	     print_bkgd=False, print_var_link=False, 
 	     max_contrast=True):
 	'''Outputs cone iso stimuli.
+	TO DO
+	=====
+	* Simplify script. Dict and loops.
 	'''
 	if spect == 'stockman':
 		tmp = ss.stockmanfund(minLambda=390, maxLambda=750)
@@ -18,12 +21,14 @@ def cone_iso(spect='stockman', print_conv_M=False,
 		sens['m'] = tmp[:, 1]
 		sens['s'] = tmp[:, 2]
 		
-	elif spect == 'neitz':
+	if spect == 'neitz':
 		sens = ss.load_spect(speak=420, mpeak=530, lpeak=559,
 				     lambdamin=390, lambdamax=750, 
-				     OD=[0.3, 0.4, 0.4],
+				     OD=[0.3, 0.35, 0.35],
 				     add_filters=True, LOG=False)
-
+		for cone in sens:
+			sens[cone] /= sens[cone].max()
+	
 	spectrum = np.arange(390, 751, 1)
 
 	lights = {
@@ -64,7 +69,7 @@ def cone_iso(spect='stockman', print_conv_M=False,
 	if print_bkgd:
 		for i in range(len(bkgd_photo)):
 			print bkgd_photo[i][0]
-			
+
 	# Find maximum we can move from background
 	scale = {'l': 0, 'm': 0, 's': 0}
 	for k in scale:
@@ -79,6 +84,7 @@ def cone_iso(spect='stockman', print_conv_M=False,
 		else:
 			scale[k] = bkgd[np.abs(bkgd - 
 					       bkgd_photo).argmax()]
+
 		if scale[k] > 0.5:
 			scale[k] = 1 - scale[k]
 
@@ -110,9 +116,15 @@ def cone_iso(spect='stockman', print_conv_M=False,
 
 	# print outputs
 	c = ['r', 'g', 'b']
-
-	if print_conv_M:
-		print M
+	m = ['L', 'M', 'S']
+	if print_sys_M: 
+		line = ''
+		for i in range(3):
+			line  += m[i] + '_rgb '
+			for j in range(3):
+				line += str(round(M[i, j], 6)) + ' '
+			line += '\n'
+		print line
 
 	if print_S:
 		for i in range(len(s_plus)):
@@ -120,9 +132,6 @@ def cone_iso(spect='stockman', print_conv_M=False,
 		for i in range(len(s_minus)):
 			print 'color1_' + c[i] + ' ' + str(s_minus[i][0])
 		cc = cone_contrast(M, bkgd_photo, s_plus)
-		print '# cone contrast:'
-		for i in range(len(s_minus)):
-			print '# ' + str(cc[i][0])
 
 	if print_M:
 		for i in range(len(m_plus)):
@@ -130,9 +139,6 @@ def cone_iso(spect='stockman', print_conv_M=False,
 		for i in range(len(m_minus)):
 			print 'color1_' + c[i] + ' ' + str(m_minus[i][0])
 		cc = cone_contrast(M, bkgd_photo, m_plus)
-		print '# cone contrast:'
-		for i in range(len(s_minus)):
-			print '# ' + str(cc[i][0])
 
 	if print_L:
 		for i in range(len(l_plus)):
@@ -140,6 +146,8 @@ def cone_iso(spect='stockman', print_conv_M=False,
 		for i in range(len(l_minus)):
 			print 'color1_' + c[i] + ' ' + str(l_minus[i][0])
 		cc = cone_contrast(M, bkgd_photo, l_plus)
+
+	if print_L or print_M or print_S:
 		print '# cone contrast:'
 		for i in range(len(s_minus)):
 			print '# ' + str(cc[i][0])
@@ -170,17 +178,24 @@ def cone_contrast(M, bkgd, rgb1):
 
 if __name__ == '__main__':
 
+	fund = 'stockman'
+	if len(sys.argv) > 2:
+		fund = sys.argv[2]
+
+	if sys.argv[1] == 'sys':
+		cone_iso(fund, print_sys_M=True)
+
 	if sys.argv[1] == 'siso':
-		cone_iso('stockman', print_S=True)
+		cone_iso(fund, print_S=True)
 
 	if sys.argv[1] == 'miso':
-		cone_iso('stockman', print_M=True)
+		cone_iso(fund, print_M=True)
 
 	if sys.argv[1] == 'liso':
-		cone_iso('stockman', print_L=True)
+		cone_iso(fund, print_L=True)
 
 	if sys.argv[1] == 'coneiso':
-		cone_iso('stockman', print_var_link=True)
+		cone_iso(fund, print_var_link=True)
 
 	if sys.argv[1] == 'bkgd':
-		cone_iso('stockman', print_bkdg=True)
+		cone_iso(fund, print_bkdg=True)

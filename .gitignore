@@ -11,3 +11,5 @@ retina.sh~
 .#*
 results/img/*
 default_vars.sh
+util/default_vars.sh
+*/run.moo

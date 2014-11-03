@@ -30,11 +30,11 @@ function stim_gen {
     cat stim/iso_step.stm > stim/cone_iso_step.stm
     if [[ $1 == siso || $1 == miso || $1 == liso ]]
     then
-	python pycomp/cone_iso.py $1 1 >> stim/cone_iso_step.stm
+	python pycomp/cone_iso.py $1 ${FUND} >> stim/cone_iso_step.stm
     elif [ $1 == coneiso ] 
     then
-	python pycomp/cone_iso.py siso 1 >> stim/cone_iso_step.stm
-	python pycomp/cone_iso.py coneiso 1 >> stim/cone_iso_step.stm
+	python pycomp/cone_iso.py siso ${FUND} >> stim/cone_iso_step.stm
+	python pycomp/cone_iso.py coneiso ${FUND} >> stim/cone_iso_step.stm
     fi
 }
 
@@ -46,6 +46,7 @@ function save_defaults {
     echo "#! /bin/bash" >> util/default_vars.sh
     echo " " >> util/default_vars.sh
     echo "MODEL=$MODEL" >> util/default_vars.sh
+    echo "FUND=$FUND" >> util/default_vars.sh
     echo "H1GP=$H1GP" >> util/default_vars.sh
     echo "H1GH=$H1GH" >> util/default_vars.sh
     echo "H2GP=$H2GP" >> util/default_vars.sh
@@ -55,6 +56,16 @@ function save_defaults {
     echo "H2L=$H2L" >> util/default_vars.sh
     echo "H2W=$H2W" >> util/default_vars.sh
     echo "TN=$TN" >> util/default_vars.sh
+}
+
+
+function dump_results {
+    if [ $(exists_in ${OPTS} "${dump[*]}") == true ]
+    then
+	~/Projects/wmbuild/bin/ndutil nd2text \
+	    results/nd_files/zz.nd \
+	    results/txt_files/zz.txt 
+    fi
 }
 
 
@@ -111,6 +122,7 @@ function print_info {
 	echo -e "Options:"
 	echo -e "========================"
 	echo -e "-model\t MODEL"
+	echo -e "-fund\t FUND"
 	echo -e "-P\t H1GP"
 	echo -e "-H\t H1GH"
 	echo -e "-p\t H2GP"
@@ -130,6 +142,7 @@ function print_info {
 	echo "h2 gp is set to: $H2GP"
 	echo "h2 gh is set to: $H2GH"
 	echo "model is set to: $MODEL"
+	echo "fundamentals set to: $FUND"
 	echo "h2 l weight is set to: $H2L"
 	echo "h2 m weight is set to: $H2M"
 	echo "h2 s weight is set to: $H2S"
@@ -161,8 +174,8 @@ function run_wm {
 	stim_gen ${OPTS}
     fi
 
-    wm mod $1/$2.moo \
-	stim/$3.stm \
+    wm mod $1/run.moo \
+	stim/$2.stm \
 	response/${RESP_FILE}.rsp  tn ${TN} \
 	retina0/h_mesh.h1/gp ${H1GP} \
 	retina0/h_mesh.h1/gh ${H1GH} \

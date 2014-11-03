@@ -190,13 +190,7 @@ mod_trial_reset  1  # reset state between stimuli, default 1
     prob_s       0.0   # S cone probability [Ignored if 'regular_s' > 0]
     regular_s    3     # Leave this many cones between S cones (1,2,3,...)
 
-    L_rgb  0.1443 0.8260 0.0250
-    M_rgb  0.0129 0.9570 0.0280
-    S_rgb  0.0000 0.0105 0.5718
-
-    #L_rgb  0.0085 0.0271 0.0059   # L cone sensitivity to R G B
-    #M_rgb  0.0035 0.0281 0.0086   # M cone sensitivity to R G B
-    #S_rgb  0.0009 0.0024 0.0237   # S cone sensitivity to R G B
+    rgb_here
 
     out_id   0               # mosaic index for dump (GUI shows indices)
   </cone_mosaic>
