@@ -6,31 +6,42 @@ import numpy as np
 def clean_data(d):
     '''
     '''
+    k = d[0].keys()
+    celllist = []
+    for el in k:
+        cell = el.split('_')
+        if cell[-1] not in celllist:
+            celllist.append(cell[-1])
+
     data = {}
+    data['time'] = np.linspace(0, float(d['meta']['stim_samp']),
+                               float(d['meta']['MOO_tn']))
+    ncells = len(celllist)
+    ntime = len(data['time'])
     for t in range(d['meta']['NTRIALS']):
         _d = d[t]
 
         data[t] = {}
-        data[t]['cone'] = []
-        data[t]['h1'] = []
-        data[t]['h2'] = []
-        data[t]['bp'] = []
+        data[t]['cone'] = np.zeros((ncells, ntime))
+        data[t]['h1'] = np.zeros((ncells, ntime))
+        data[t]['h2'] = np.zeros((ncells, ntime))
+        data[t]['bp'] = np.zeros((ncells, ntime))
         data[t]['rgc'] = []
-
+        
         for key in _d.keys():
+            cell = key.split('_')[-1]
+            ind = celllist.index(cell)
+
             if key[2:6] == 'cone':
-                data[t]['cone'].append(_d[key]['vals'])
+                data[t]['cone'][ind, :] = _d[key]['vals']
             elif key[:2] == 'h1':
-                data[t]['h1'].append(_d[key]['vals'])
+                data[t]['h1'][ind, :] = _d[key]['vals']
             elif key[:2] == 'h2':
-                data[t]['h2'].append(_d[key]['vals'])
+                data[t]['h2'][ind, :] = _d[key]['vals']
             elif key[:2] == 'bp':
-                data[t]['bp'].append(_d[key]['vals'])
+                data[t]['bp'][ind, :] = _d[key]['vals']
             elif key[:3] == 'rgc':
                 data[t]['rgc'].append(_d[key]['vals'])
-
-    data['time'] = np.linspace(0, float(d['meta']['stim_samp']),
-                               float(d['meta']['MOO_tn']))
 
     return data
 

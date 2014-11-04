@@ -164,10 +164,11 @@ if __name__ == '__main__':
 
 	fund = 'stockman'
 	f = True
-	if len(sys.argv)  > 1:
+
+	if len(sys.argv)  > 2:
 		fund = sys.argv[2]
 
-	if len(sys.argv) > 2:
+	if len(sys.argv) > 3:
 		f = [False, True][sys.argv[3].lower()[0] == 't']
 
 	if sys.argv[1] == 'sys':

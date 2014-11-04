@@ -28,6 +28,7 @@ while [ $i -lt $# ]; do
     
     MODEL=$(check_arg -model $MODEL)
     FUND=$(check_arg -fund $FUND)
+    SHAPE=$(check_arg -shape $SHAPE)
     H1GP=$(check_arg -P $H1GP)
     H1GH=$(check_arg -H $H1GH)
     H2GP=$(check_arg -p $H2GP) 
@@ -47,13 +48,13 @@ print_info
 #-- 3. Change the model behavior based on command line input
 change_parameters
 
-sys=$(python pycomp/cone_iso.py sys ${FUND})
-perl -p -e "s/rgb_here/$sys/g" ${MODEL}/${MOO_FILE}.moo > ${MODEL}/run.moo
+#-- 4. Change system matrix
+change_sys_matrix
 
-#-- 4. Delete old output files
+#-- 5. Delete old output files
 delete_old_file
 
-#-- 5. Perform the simulation(s)
+#-- 6. Perform the simulation(s)
 if [ $OPTS == "mosaic" ]
 then
     run_mosaic
@@ -77,7 +78,7 @@ else
 
 fi
 
-#-- 6. Plotting routines
+#-- 7. Plotting routines
 if [ $(exists_in ${OPTS[0]} "${plots[*]}") == true ]
 then
     python pycomp ${OPTS} ${MODEL}
@@ -86,7 +87,7 @@ then
     python pycomp ${OPTS[1]} ${MODEL}
 fi
 
-#-- 7. Start nd viewer when appropriate
+#-- 8. Start nd viewer when appropriate
 if [[ $OPTS == "nd" ]]
 then
     java -jar ~/Projects/wmbuild/bin/nd.jar results/nd_files/zz.nd

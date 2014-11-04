@@ -26,8 +26,18 @@ function exists_in {
 }
 
 function stim_gen {
+    
+    # Decide which file to start with
+    local fname=iso_step
+    if [ $2 == spot ]
+    then
+        fname=step_spot
+    fi
 
-    cat stim/iso_step.stm > stim/cone_iso_step.stm
+    # Paste the first part of the stimulus file
+    cat stim/${fname}.stm > stim/cone_iso_step.stm
+
+    # Paste the second part of the stimulus file
     if [[ $1 == siso || $1 == miso || $1 == liso ]]
     then
 	python pycomp/cone_iso.py $1 ${FUND} >> stim/cone_iso_step.stm
@@ -47,6 +57,7 @@ function save_defaults {
     echo " " >> util/default_vars.sh
     echo "MODEL=$MODEL" >> util/default_vars.sh
     echo "FUND=$FUND" >> util/default_vars.sh
+    echo "SHAPE=$SHAPE" >> util/default_vars.sh
     echo "H1GP=$H1GP" >> util/default_vars.sh
     echo "H1GH=$H1GH" >> util/default_vars.sh
     echo "H2GP=$H2GP" >> util/default_vars.sh
@@ -113,7 +124,15 @@ function change_parameters {
 	STIM_FILE=cone_iso_step
 	RESP_FILE=retina_line
     fi
+
 }
+
+
+function change_sys_matrix() {
+    sys=$(python pycomp/cone_iso.py sys ${FUND})
+    perl -p -e "s/rgb_here/$sys/g" ${MODEL}/${MOO_FILE}.moo > ${MODEL}/run.moo
+}
+
 
 function print_info {
     if [ ${#OPTS[@]} -eq 0 ]; then
@@ -123,6 +142,7 @@ function print_info {
 	echo -e "========================"
 	echo -e "-model\t MODEL"
 	echo -e "-fund\t FUND"
+	echo -e "-shape\t SHAPE"
 	echo -e "-P\t H1GP"
 	echo -e "-H\t H1GH"
 	echo -e "-p\t H2GP"
@@ -137,12 +157,13 @@ function print_info {
 
     else
 	echo " "
+	echo "model is set to: $MODEL"
+	echo "fundamentals set to: $FUND"
+	echo "stim shape is set to: $SHAPE"
 	echo "h1 gp is set to: $H1GP"
 	echo "h1 gh is set to: $H1GH"
 	echo "h2 gp is set to: $H2GP"
 	echo "h2 gh is set to: $H2GH"
-	echo "model is set to: $MODEL"
-	echo "fundamentals set to: $FUND"
 	echo "h2 l weight is set to: $H2L"
 	echo "h2 m weight is set to: $H2M"
 	echo "h2 s weight is set to: $H2S"
@@ -171,7 +192,7 @@ function run_wm {
     # if stimulus condition is an iso_cond then gen stim file
     if [[ $(exists_in ${OPTS} ${iso_cond}) ]] 
     then
-	stim_gen ${OPTS}
+	stim_gen ${OPTS} ${SHAPE} 
     fi
 
     wm mod $1/run.moo \
