@@ -13,14 +13,14 @@ stim_form   3c       # Stimulus format, 3d, 3c, 3d_b
 
 st0          0.250   # start time (s)
 stn          1.000   # duration (s)
-cx           0       # center (deg)
-cy           0       # center (deg)
+cx           0.138       # center (deg)
+cy           0.138       # center (deg)
 direction    0       # Direction of drift
 sf           0       # Spatial period (cyc/deg)
 phase        90       # Degrees
 tf           2.0     # Temporal frequency (cyc/sec)
-size         1.0     # Stimulus aperture diameter (deg)
-aptype       0       # Aperture type (0-none, 1-circ)
+size         0.1     # Stimulus aperture diameter (deg)
+aptype       1       # Aperture type (0-none, 1-circ)
 bgval        0.5     # background value [0..1]
 contrast     1.0     # Contrast
 square_thresh 0.0    # make into a step function

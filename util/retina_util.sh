@@ -204,7 +204,7 @@ function run_mosaic {
 
 
 function run_gui {
-    wm mod ${MODEL}/Ret_Mesh_H2.moo stim/s_iso_step.stm \
+    wm mod ${MODEL}/run.moo stim/test_gray.stm \
 	response/retina.rsp  tn ${TN}  \
 	gui_flag 1
 }

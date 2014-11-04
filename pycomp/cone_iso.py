@@ -8,27 +8,33 @@ from base import spectsens as ss
 def cone_iso(spect='stockman', print_sys_M=False, 
 	     print_S=False, print_M=False, print_L=False,
 	     print_bkgd=False, print_var_link=False, 
-	     max_contrast=True):
+	     max_contrast=True, filters=True):
 	'''Outputs cone iso stimuli.
 	TO DO
 	=====
 	* Simplify script. Dict and loops.
 	'''
 	if spect == 'stockman':
-		tmp = ss.stockmanfund(minLambda=390, maxLambda=750)
+		if filters:
+			tmp = ss.stockmanfund(minLambda=390, maxLambda=750)
+		else:
+			tmp = ss.stockman(minLambda=390, maxLambda=750)
 		sens = {}
 		sens['l'] = tmp[:, 0]
 		sens['m'] = tmp[:, 1]
 		sens['s'] = tmp[:, 2]
 		
-	if spect == 'neitz':
+	elif spect == 'neitz':
+		
 		sens = ss.load_spect(speak=420, mpeak=530, lpeak=559,
 				     lambdamin=390, lambdamax=750, 
 				     OD=[0.3, 0.35, 0.35],
-				     add_filters=True, LOG=False)
+				     add_filters=filters, LOG=False)
 		for cone in sens:
 			sens[cone] /= sens[cone].max()
-	
+	else:
+		raise ValueError('Input error: spec must be stockman or neitz')
+
 	spectrum = np.arange(390, 751, 1)
 
 	lights = {
@@ -181,7 +187,8 @@ if __name__ == '__main__':
 	fund = 'stockman'
 	if len(sys.argv) > 2:
 		fund = sys.argv[2]
-
+	filters = True
+	#if len(sys.argv) > 3:
 	if sys.argv[1] == 'sys':
 		cone_iso(fund, print_sys_M=True)
 
