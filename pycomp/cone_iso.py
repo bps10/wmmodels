@@ -12,8 +12,9 @@ def cone_iso(spect='stockman', print_sys_M=False,
 	'''Outputs cone iso stimuli.
 	TO DO
 	=====
-	* Simplify script. Dict and loops.
+	* Cone contrast. Background white vs equal cones.
 	'''
+
 	if spect == 'stockman':
 		if filters:
 			tmp = ss.stockmanfund(minLambda=390, maxLambda=750)
@@ -43,26 +44,16 @@ def cone_iso(spect='stockman', print_sys_M=False,
 		2: {'l': 420, 'ind': 0, 'spec': np.zeros(len(spectrum)), },
 		}
 	for light in lights:
-		
 		lights[light]['ind'] = np.where(
 			spectrum == lights[light]['l'])[0]
 		# should make this a gaussian for better accuracy
 		lights[light]['spec'][lights[light]['ind']] = 1
 
 	# generate system matrix: [LMS].T = [M][RGB].T
-	M = np.array([
-			[np.sum(sens['l'] * lights[0]['spec']),
-			 np.sum(sens['l'] * lights[1]['spec']),
-			 np.sum(sens['l'] * lights[2]['spec'])],
-			
-			[np.sum(sens['m'] * lights[0]['spec']),
-			 np.sum(sens['m'] * lights[1]['spec']),
-			 np.sum(sens['m'] * lights[2]['spec'])],
-
-			[np.sum(sens['s'] * lights[0]['spec']),
-			 np.sum(sens['s'] * lights[1]['spec']),
-			 np.sum(sens['s'] * lights[2]['spec'])],
-			])
+	M = np.zeros((3, 3))
+	for i, cone in enumerate(['l', 'm', 's']):
+		for l in [0, 1, 2]:
+			M[i, l] = np.sum(sens[cone] * lights[l]['spec'])
 	
 	# generate inversion matrix for later
 	inv_M = np.linalg.inv(M)
@@ -93,37 +84,31 @@ def cone_iso(spect='stockman', print_sys_M=False,
 
 		if scale[k] > 0.5:
 			scale[k] = 1 - scale[k]
+	
+	# Create data structure
+	d = {'scale': scale, }
 
 	# LMS cone iso vectors
-	s_iso = np.array([[0], [0], [1]])
-	m_iso = np.array([[0], [1], [0]])
-	l_iso = np.array([[1], [0], [0]])
-
-	# S cone computation
-	s_iso_rgb = np.dot(inv_M, s_iso)
+	d['iso'] = {}
+	d['iso']['s'] = np.array([[0], [0], [1]])
+	d['iso']['m'] = np.array([[0], [1], [0]])
+	d['iso']['l'] = np.array([[1], [0], [0]])
 	
-	s_delta = s_iso_rgb / np.abs(s_iso_rgb).max() * scale['s']
-	s_plus = bkgd + s_delta
-	s_minus = bkgd - s_delta
-	
-	# M cone computation
-	m_iso_rgb = np.dot(inv_M, m_iso)
+	# Cone computation
+	d['rgb'] = {}
+	d['delta'] = {}
+	d['plus'] = {}
+	d['minus'] = {}
+	for c in ['s', 'm', 'l']:
+		d['rgb'][c] = np.dot(inv_M, d['iso'][c])
+		d['delta'][c] = (d['rgb'][c] / np.abs(d['rgb'][c]).max() * 
+						      d['scale'][c])
+		d['plus'][c] = bkgd + d['delta'][c]
+		d['minus'][c] = bkgd - d['delta'][c]
 
-	m_delta = m_iso_rgb / np.abs(m_iso_rgb).max() * scale['m']
-	m_plus = bkgd + m_delta
-	m_minus = bkgd - m_delta
-
-	# L cone computation
-	l_iso_rgb = np.dot(inv_M, l_iso)
-
-	l_delta = l_iso_rgb / np.abs(l_iso_rgb).max() * scale['l']
-	l_plus = bkgd + l_delta
-	l_minus = bkgd - l_delta
-
-	# print outputs
-	c = ['r', 'g', 'b']
-	m = ['L', 'M', 'S']
+	# print outputs		
 	if print_sys_M: 
+		m = ['L', 'M', 'S']
 		line = ''
 		for i in range(3):
 			line  += m[i] + '_rgb '
@@ -132,30 +117,23 @@ def cone_iso(spect='stockman', print_sys_M=False,
 			line += '\n'
 		print line
 
-	if print_S:
-		for i in range(len(s_plus)):
-			print 'color0_' + c[i] + ' ' + str(s_plus[i][0])
-		for i in range(len(s_minus)):
-			print 'color1_' + c[i] + ' ' + str(s_minus[i][0])
-		cc = cone_contrast(M, bkgd_photo, s_plus)
-
-	if print_M:
-		for i in range(len(m_plus)):
-			print 'color0_' + c[i] + ' ' + str(m_plus[i][0])
-		for i in range(len(m_minus)):
-			print 'color1_' + c[i] + ' ' + str(m_minus[i][0])
-		cc = cone_contrast(M, bkgd_photo, m_plus)
-
-	if print_L:
-		for i in range(len(l_plus)):
-			print 'color0_' + c[i] + ' ' + str(l_plus[i][0])
-		for i in range(len(l_minus)):
-			print 'color1_' + c[i] + ' ' + str(l_minus[i][0])
-		cc = cone_contrast(M, bkgd_photo, l_plus)
-
+	c = ['r', 'g', 'b']
 	if print_L or print_M or print_S:
+		if print_S:
+			key = 's'
+		if print_M:
+			key = 'm'
+		if print_L:
+			key = 'l'	
+		
+		for i in range(3):
+			print 'color0_' + c[i] + ' ' + str(d['plus'][key][i][0])
+		for i in range(3):
+			print 'color1_' + c[i] + ' ' + str(d['minus'][key][i][0])
+			cc = cone_contrast(M, bkgd_photo, d['plus'][key])
+
 		print '# cone contrast:'
-		for i in range(len(s_minus)):
+		for i in range(3):
 			print '# ' + str(cc[i][0])
 
 	if print_var_link:
@@ -163,16 +141,16 @@ def cone_iso(spect='stockman', print_sys_M=False,
 		print 'cone 0'
 		print ' ' 
 		print 'VARLINK_cone 1 2 3'
-		for i in range(len(l_plus)):
+		for i in range(3):
 			print ('VARLINK_color0_' + c[i] + ' ' + 
-			       str(s_plus[i][0]) + ' ' + 
-			       str(m_plus[i][0]) + ' ' + 
-			       str(l_plus[i][0]))
-		for i in range(len(l_minus)):
+			       str(d['plus']['s'][i][0]) + ' ' + 
+			       str(d['plus']['m'][i][0]) + ' ' + 
+			       str(d['plus']['l'][i][0]))
+		for i in range(3):
 			print ('VARLINK_color1_' + c[i] + ' ' + 
-			       str(s_minus[i][0]) + ' ' + 
-			       str(m_minus[i][0]) + ' ' + 
-			       str(l_minus[i][0]))
+			       str(d['minus']['s'][i][0]) + ' ' + 
+			       str(d['minus']['m'][i][0]) + ' ' + 
+			       str(d['minus']['l'][i][0]))
 
 
 def cone_contrast(M, bkgd, rgb1):
@@ -185,24 +163,27 @@ def cone_contrast(M, bkgd, rgb1):
 if __name__ == '__main__':
 
 	fund = 'stockman'
-	if len(sys.argv) > 2:
+	f = True
+	if len(sys.argv)  > 1:
 		fund = sys.argv[2]
-	filters = True
-	#if len(sys.argv) > 3:
+
+	if len(sys.argv) > 2:
+		f = [False, True][sys.argv[3].lower()[0] == 't']
+
 	if sys.argv[1] == 'sys':
-		cone_iso(fund, print_sys_M=True)
+		cone_iso(fund, print_sys_M=True, filters=f)
 
 	if sys.argv[1] == 'siso':
-		cone_iso(fund, print_S=True)
+		cone_iso(fund, print_S=True, filters=f)
 
 	if sys.argv[1] == 'miso':
-		cone_iso(fund, print_M=True)
+		cone_iso(fund, print_M=True, filters=f)
 
 	if sys.argv[1] == 'liso':
-		cone_iso(fund, print_L=True)
+		cone_iso(fund, print_L=True, filters=f)
 
 	if sys.argv[1] == 'coneiso':
-		cone_iso(fund, print_var_link=True)
+		cone_iso(fund, print_var_link=True, filters=f)
 
 	if sys.argv[1] == 'bkgd':
-		cone_iso(fund, print_bkdg=True)
+		cone_iso(fund, print_bkdg=True, filters=f)
