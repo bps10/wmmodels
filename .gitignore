@@ -14,3 +14,4 @@ default_vars.sh
 util/default_vars.sh
 */run.moo
 *~
+stim/cone_iso_step.stm

@@ -12,13 +12,16 @@ def stack(d):
     * Add rgc option
     '''
     data = clean_data(d)
+    ylim = [[0, 0], [0, 0], [0, 0]]
+    figs = {}
     for t in range(d['meta']['NTRIALS']):
-        fig = plt.figure(figsize=(6.5, 9))
-        fig.set_tight_layout(True)
+        figs[t] = {}
+        figs[t]['f'] = plt.figure(figsize=(6.5, 9))
+        figs[t]['f'].set_tight_layout(True)
         ax = {}
-        ax[0] = fig.add_subplot(311)
-        ax[1] = fig.add_subplot(312)
-        ax[2] = fig.add_subplot(313)
+        ax[0] = figs[t]['f'].add_subplot(311)
+        ax[1] = figs[t]['f'].add_subplot(312)
+        ax[2] = figs[t]['f'].add_subplot(313)
         
         pf.AxisFormat()
 
@@ -28,29 +31,50 @@ def stack(d):
 
         time = data['time'][1:]
         # Subtract 10 points in so that zero offset
-
         _d = data[t]
         color = ['r', 'g', 'b', 'k', 'y']
         for i, dat in enumerate(_d['cone']):
-            ax[0].plot(time, dat[1:] - dat[10], color[i])
-        for i, dat in enumerate(_d['h1']):
-            ax[1].plot(time, dat[1:] - dat[10] + 0.35, color[i])
-        for i, dat in enumerate(_d['h2']):
-            ax[1].plot(time, dat[1:] - dat[10] + 0.1, color[i])
-        for i, dat in enumerate(_d['bp']):
-            ax[2].plot(time, dat[1:] - dat[10], color[i])
+            y = dat[1:] - dat[10]
+            ax[0].plot(time, y, color[i])
+            ylim = check_lims(y, ylim, 0)
 
-    #ax[1].set_ylabel('response')
-            ax[2].set_xlabel('time (ms)')
+        for i, dat in enumerate(_d['h1']):
+            y = dat[1:] - dat[10] + 0.2
+            ax[1].plot(time, y, color[i])
+            ylim = check_lims(y, ylim, 1)
+
+        for i, dat in enumerate(_d['h2']):
+            y = dat[1:] - dat[10] + 0.1
+            ax[1].plot(time, y, color[i])
+            ylim = check_lims(y, ylim, 1)
+
+        for i, dat in enumerate(_d['bp']):
+            y = dat[1:] - dat[10]
+            ax[2].plot(time, y, color[i])
+            ylim = check_lims(y, ylim, 2)
+
+        ax[2].set_xlabel('time (ms)')        
+        figs[t]['ax'] = ax
+    
+    for t in figs:
+        for i in ax:
+            figs[t]['ax'][i].set_ylim(ylim[i])
     
         for i in ax:
             #pf.invert(ax[i], fig, bk_color='k')
-
-            fig.savefig('results/img/stack_t' + str(t) + '.svg',
-                        facecolor=fig.get_facecolor(), 
-                        edgecolor='none')
+            figs[t]['f'].savefig('results/img/stack_t' + str(t) + '.svg',
+                                 #facecolor=fig.get_facecolor(), 
+                                 edgecolor='none')
 
     plt.show()
+
+
+def check_lims(dat, lim, ind):
+    if dat.min() < lim[ind][0]:
+        lim[ind][0] = dat.min()
+    if dat.max() > lim[ind][1]:
+        lim[ind][1] = dat.max()
+    return lim
 
 
 def horiz_time_const(d):

@@ -40,11 +40,12 @@ function stim_gen {
     # Paste the second part of the stimulus file
     if [[ $1 == siso || $1 == miso || $1 == liso ]]
     then
-	python pycomp/cone_iso.py $1 ${FUND} >> stim/cone_iso_step.stm
+	python pycomp/cone_iso.py $1 stockman  ${FUND} >> stim/cone_iso_step.stm
     elif [ $1 == coneiso ] 
     then
-	python pycomp/cone_iso.py siso ${FUND} >> stim/cone_iso_step.stm
-	python pycomp/cone_iso.py coneiso ${FUND} >> stim/cone_iso_step.stm
+	python pycomp/cone_iso.py siso stockman ${FUND} >> stim/cone_iso_step.stm
+	python pycomp/cone_iso.py coneiso stockman ${FUND} >> \
+	    stim/cone_iso_step.stm
     fi
 }
 
@@ -129,7 +130,7 @@ function change_parameters {
 
 
 function change_sys_matrix() {
-    sys=$(python pycomp/cone_iso.py sys ${FUND})
+    sys=$(python pycomp/cone_iso.py sys stockman ${FUND})
     perl -p -e "s/rgb_here/$sys/g" ${MODEL}/${MOO_FILE}.moo > ${MODEL}/run.moo
 }
 

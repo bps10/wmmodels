@@ -9,7 +9,7 @@
 # setup conditions to specify behavior
 analysis=(siso coneiso h1 h2 miso liso \
     h_time mosaic gui stack nd plot \
-    verbose)
+    verbose params)
 runmod=(h1 h2 siso miso liso coneiso h_time)
 plots=(h1 h2 siso miso liso coneiso stack h_time verbose)
 dump=(siso miso liso coneiso h_time)

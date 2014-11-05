@@ -1,8 +1,8 @@
 #! /bin/bash
  
 MODEL=macaque
-FUND=neitz
-SHAPE=spot
+FUND=true
+SHAPE=full_field
 H1GP=0.1
 H1GH=3.0
 H2GP=0.8

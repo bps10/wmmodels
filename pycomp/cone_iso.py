@@ -34,7 +34,7 @@ def cone_iso(spect='stockman', print_sys_M=False,
 		for cone in sens:
 			sens[cone] /= sens[cone].max()
 	else:
-		raise ValueError('Input error: spec must be stockman or neitz')
+		raise ValueError('Error: spec must be stockman or neitz')
 
 	spectrum = np.arange(390, 751, 1)
 
