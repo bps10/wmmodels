@@ -106,7 +106,7 @@ def horiz_time_const(d):
             #pf.invert(ax[i], fig, bk_color='k')
 
             fig.savefig('results/img/h_time_const' + str(t) + '.svg', 
-                        facecolor=fig.get_facecolor(), 
+                        #facecolor=fig.get_facecolor(), 
                         edgecolor='none')
 
     plt.show()

@@ -8,7 +8,7 @@ from base import spectsens as ss
 def cone_iso(spect='stockman', print_sys_M=False, 
 	     print_S=False, print_M=False, print_L=False,
 	     print_bkgd=False, print_var_link=False, 
-	     max_contrast=True, filters=True):
+	     filters=True):
 	'''Outputs cone iso stimuli.
 	TO DO
 	=====
@@ -24,7 +24,7 @@ def cone_iso(spect='stockman', print_sys_M=False,
 		sens['l'] = tmp[:, 0]
 		sens['m'] = tmp[:, 1]
 		sens['s'] = tmp[:, 2]
-		
+
 	elif spect == 'neitz':
 		
 		sens = ss.load_spect(speak=420, mpeak=530, lpeak=559,
@@ -39,9 +39,9 @@ def cone_iso(spect='stockman', print_sys_M=False,
 	spectrum = np.arange(390, 751, 1)
 
 	lights = {
-		0: {'l': 650, 'ind': 0, 'spec': np.zeros(len(spectrum)), },
-		1: {'l': 530, 'ind': 0, 'spec': np.zeros(len(spectrum)), },
-		2: {'l': 420, 'ind': 0, 'spec': np.zeros(len(spectrum)), },
+		0: {'l': 625, 'spec': np.zeros(len(spectrum)), },
+		1: {'l': 525, 'spec': np.zeros(len(spectrum)), },
+		2: {'l': 445, 'spec': np.zeros(len(spectrum)), },
 		}
 	for light in lights:
 		lights[light]['ind'] = np.where(
@@ -54,7 +54,7 @@ def cone_iso(spect='stockman', print_sys_M=False,
 	for i, cone in enumerate(['l', 'm', 's']):
 		for l in [0, 1, 2]:
 			M[i, l] = np.sum(sens[cone] * lights[l]['spec'])
-	
+
 	# generate inversion matrix for later
 	inv_M = np.linalg.inv(M)
 	
@@ -63,25 +63,11 @@ def cone_iso(spect='stockman', print_sys_M=False,
 
 	# compute relative intensities to create equal adaptation
 	bkgd = np.dot(inv_M, bkgd_photo)
-	if print_bkgd:
-		for i in range(len(bkgd_photo)):
-			print bkgd_photo[i][0]
 
 	# Find maximum we can move from background
 	scale = {'l': 0, 'm': 0, 's': 0}
 	for k in scale:
-		if k == 'l':
-			i = 0
-		if k == 'm': 
-			i = 1
-		if k == 's':
-			i = 2
-		if max_contrast:
-			scale[k] = bkgd[i]
-		else:
-			scale[k] = bkgd[np.abs(bkgd - 
-					       bkgd_photo).argmax()]
-
+		scale[k] = bkgd[np.abs(bkgd - bkgd_photo).argmax()]
 		if scale[k] > 0.5:
 			scale[k] = 1 - scale[k]
 	
@@ -107,6 +93,10 @@ def cone_iso(spect='stockman', print_sys_M=False,
 		d['minus'][c] = bkgd - d['delta'][c]
 
 	# print outputs		
+	if print_bkgd:
+		for i in range(len(bkgd_photo)):
+			print bkgd_photo[i][0]
+
 	if print_sys_M: 
 		m = ['L', 'M', 'S']
 		line = ''
@@ -154,10 +144,8 @@ def cone_iso(spect='stockman', print_sys_M=False,
 
 
 def cone_contrast(M, bkgd, rgb1):
-	a = bkgd
-	b = np.dot(M, rgb1)
-	diff = (np.abs(b - a) / a)
-	return  diff
+	lms = np.dot(M, rgb1)
+	return  (lms - bkgd) / bkgd
 
 
 if __name__ == '__main__':
