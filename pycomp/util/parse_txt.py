@@ -3,7 +3,7 @@ import os, sys
 import numpy as np
 
 
-def clean_data(d):
+def clean_data(d, celllist=False):
     '''
     '''
     k = d[0].keys()
@@ -43,12 +43,14 @@ def clean_data(d):
             elif key[:3] == 'rgc':
                 data[t]['rgc'].append(_d[key]['vals'])
 
+    if celllist:
+        return data, celllist
+
     return data
 
 
 def parse_txt(fname='results/txt_files/zz.txt'):
-    '''Not yet dealing with var link data.
-    
+    '''
     Need to keep track of trials. Not currently doing this.
     As a result var link data does not work.
     '''
@@ -114,10 +116,11 @@ def parse_txt(fname='results/txt_files/zz.txt'):
                     except IndexError:
                         data['meta'][line[j]] = []
                 # if RTYPE is ntrials use data to setup data dict
-                if line[0] == 'NTRIALS':
-                    data['meta']['NTRIALS'] = int(line[j+1])
-                    for trial in range(0, int(line[1])):
-                        data[trial] = {}
+                if line != []:
+                    if line[0] == 'NTRIALS':
+                        data['meta']['NTRIALS'] = int(line[j+1])
+                        for trial in range(0, int(line[1])):
+                            data[trial] = {}
 
             i += 1
     return data

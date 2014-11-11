@@ -3,7 +3,7 @@
 function check_arg {
     local val=$1
     local default=$2
-    if [ $val ==  ${args[$i]} ]
+    if [ $val == ${args[$i]} ]
     then
 	i=$(($i+1))
 	echo ${args[$i]}
@@ -47,6 +47,16 @@ function stim_gen {
 	python pycomp/cone_iso.py coneiso stockman ${FUND} >> \
 	    stim/cone_iso_step.stm
     fi
+}
+
+function knn_resp {
+    
+    # Paste the first part of the stimulus file
+    cat response/header.rsp > response/knn_resp.rsp
+
+    # Paste the second part of the stimulus file
+    python pycomp/nearest_neighbor.py 3690 50 >> response/knn_resp.rsp
+
 }
 
 function save_defaults {
@@ -113,17 +123,23 @@ function change_parameters {
 	OUT_FILE=h2.dist.pl
 	STIM_OVERRIDE=1
 	MESH_DUMP_TYPE=h_v_dist
-	MOO_FILE=Ret_Mesh_H2_H1_reverse
 
     elif [ $OPTS == "h_time" ]
     then
 	STIM_OVERRIDE_BINARY=all
 	STIM_OVERRIDE=1
 
-    elif [[ $(exists_in $OPTS $iso_cond) ]]
-    then    
+    elif [ $(exists_in $OPTS $iso_cond) == true ]
+    then
 	STIM_FILE=cone_iso_step
 	RESP_FILE=retina_line
+	
+    elif [ $OPTS == "knn" ]
+    then
+	knn_resp
+	stim_gen siso ${SHAPE}
+	STIM_FILE=cone_iso_step
+	RESP_FILE=knn_resp
     fi
 
 }
@@ -191,7 +207,7 @@ function delete_old_file {
 
 function run_wm {
     # if stimulus condition is an iso_cond then gen stim file
-    if [[ $(exists_in ${OPTS} ${iso_cond}) ]] 
+    if [[ $(exists_in ${OPTS} ${iso_cond}) == true ]] 
     then
 	stim_gen ${OPTS} ${SHAPE} 
     fi
@@ -215,7 +231,7 @@ function run_wm {
 
 
 function run_mosaic {
-    wm mod ${MODEL}/Ret_Mesh_H2.moo stim/s_iso_step.stm \
+    wm mod ${MODEL}/Ret_Mesh_H2.moo stim/test_flash.stm \
 	response/retina.rsp  tN ${TN}  gui_flag 1 \
 	retina0/mesh_dump_type mosaic_coord \
 	retina0/mesh_dump_file zz.mosaic

@@ -216,6 +216,8 @@ mod_trial_reset  1  # reset state between stimuli, default 1
       w_s    0.0     # S-cone input weight to H1 mesh
       w_m    1.0     # M-cone input weight to H1 mesh
       w_l    1.0     # L-cone input weight to H1 mesh
+      percent0 0.1   # fraction [0 1] of edges skipped
+      e_seed 3413    # seed for randomization of edges skipped
   </h_mesh>
 
   <h_mesh>
@@ -226,6 +228,8 @@ mod_trial_reset  1  # reset state between stimuli, default 1
       w_s    0.7     # S-cone input weight to H2 mesh
       w_m    0.15    # M-cone input weight to H2 mesh
       w_l    0.15    # L-cone input weight to H2 mesh
+      percent0 0.4  # fraction [0 1] of edges skipped
+      e_seed 4383    # seed for randomization of edges skipped
   </h_mesh>
 
   #

@@ -23,7 +23,8 @@ def main():
     h2 = ['h2', 'verbose']
     h_time = ['h_time', 'verbose']
     stack = ['siso', 'miso', 'liso', 'cone', 'stack', 'coneiso']
-    
+    knn = ['knn']
+
     for arg in sys.argv:
         if arg in h1:
             data['h1'] = np.genfromtxt('results/pl_files/h1.dist.pl',             
@@ -42,8 +43,10 @@ def main():
         if arg in h_time:
             if 'h_time' not in plots:
                 plots.append('h_time')
+        if arg in knn:
+            plots.append('knn')
 
-    if 'stack' in plots or 'h_time' in plots:
+    if 'stack' in plots or 'h_time' in plots or 'knn' in plots:
         d = parse_txt()
 
     if 'stack' in plots:
@@ -56,6 +59,8 @@ def main():
         if data is not {}:
             plot.dist(data, SPECIES)
 
+    if 'knn' in plots:
+        plot.knn(d)
 
 if __name__ == '__main__':
 

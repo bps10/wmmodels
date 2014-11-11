@@ -2,10 +2,10 @@
  
 MODEL=macaque
 FUND=true
-SHAPE=full_field
+SHAPE=spot
 H1GP=0.1
 H1GH=3.0
-H2GP=0.8
+H2GP=1.0
 H2GH=0.2
 H2S=1.0
 H2M=0.05

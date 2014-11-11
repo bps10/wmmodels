@@ -1,0 +1,256 @@
+#
+#  header.rsp - This is a wm response parameter file
+#
+ 
+gui_flag         0     # When 'wm' starts, 1-open the GUI, 0-do not open GUI
+
+gui_win_w      500     # Width of main GUI window (pix)
+gui_win_h      500     # Height of main GUI window (pix)
+
+gui_win2_w     356     # Width of secondary GUI window (pix)
+gui_win2_h     356     # Height of secondary GUI window (pix)
+
+#
+#  Retina stuff
+#
+
+mesh_display_flag   0     # Real time display
+mesh_display_zoom   8.0   # For 2D mesh display
+mesh_display_n     20     # For 2D mesh display (-1 for no display)
+mesh_display_min    0.0   # For 2D mesh display, min image value, for normalize
+mesh_display_max    1.0   # For 2D mesh display, max image value, for normalize
+
+mesh_gui_winw     480     # GUI win width - 480 Makes stim mode good
+mesh_gui_winh     480     # GUI win hieght
+
+mesh_replay_file  null    # Name of .2d replay file, or "null" for none
+
+#
+#  Response monitor parameters
+# 
+#  These values set the operation of the response monitor, which can be
+#  activated from the GUI.  Set the value for 'mon_flag' to 0 if you want
+#  to turn off the action of the response monitor.
+# 
+  
+mon_flag         0       # open the monitor window if 1
+mon_t           -1       # time duration of monitor window (s), -1 use default
+mon_dt           0.002   # how often to update plot
+mon_mV_y0      -90       # y-axis minimum for milli-Volts
+mon_mV_y1      -10       # y-axis maximum
+mon_nS_y0      -10       # y-axis minimum for nano-Seimens
+mon_nS_y1       80       # y-axis maximum
+mon_nA_y0       -1       # y-axis minimum for nano-Amps
+mon_nA_y1        2       # y-axis maximum
+mon_winw      1020       # window width (pix)
+mon_winh       300       # window height (pix)
+mon_stat_t0      0.13    # start of time window for computing stats (sec)
+mon_stat_tn      0       # duration of time window for stats (sec) 0 = off
+mon_stim_flag    1       # show stimulus during simulation
+
+
+outfile         results/nd_files/zz       # prefix for all output files
+write_ndata      *       # write spikes to output file
+
+save_pop_unit_as_cone_3690 f 500 bipolar 3690 0 0 photo
+
+save_pop_unit_as_h1_3690 f 500 bipolar 3690 0 0 horiz
+
+save_pop_unit_as_h2_3690 f 500 bipolar 3690 0 0 h2
+
+save_pop_unit_as_h1_3616 f 500 bipolar 3616 0 0 horiz
+
+save_pop_unit_as_h2_3616 f 500 bipolar 3616 0 0 h2
+
+save_pop_unit_as_h1_3691 f 500 bipolar 3691 0 0 horiz
+
+save_pop_unit_as_h2_3691 f 500 bipolar 3691 0 0 h2
+
+save_pop_unit_as_h1_3765 f 500 bipolar 3765 0 0 horiz
+
+save_pop_unit_as_h2_3765 f 500 bipolar 3765 0 0 h2
+
+save_pop_unit_as_h1_3615 f 500 bipolar 3615 0 0 horiz
+
+save_pop_unit_as_h2_3615 f 500 bipolar 3615 0 0 h2
+
+save_pop_unit_as_h1_3764 f 500 bipolar 3764 0 0 horiz
+
+save_pop_unit_as_h2_3764 f 500 bipolar 3764 0 0 h2
+
+save_pop_unit_as_h1_3689 f 500 bipolar 3689 0 0 horiz
+
+save_pop_unit_as_h2_3689 f 500 bipolar 3689 0 0 h2
+
+save_pop_unit_as_h1_3766 f 500 bipolar 3766 0 0 horiz
+
+save_pop_unit_as_h2_3766 f 500 bipolar 3766 0 0 h2
+
+save_pop_unit_as_h1_3541 f 500 bipolar 3541 0 0 horiz
+
+save_pop_unit_as_h2_3541 f 500 bipolar 3541 0 0 h2
+
+save_pop_unit_as_h1_3614 f 500 bipolar 3614 0 0 horiz
+
+save_pop_unit_as_h2_3614 f 500 bipolar 3614 0 0 h2
+
+save_pop_unit_as_h1_3617 f 500 bipolar 3617 0 0 horiz
+
+save_pop_unit_as_h2_3617 f 500 bipolar 3617 0 0 h2
+
+save_pop_unit_as_h1_3839 f 500 bipolar 3839 0 0 horiz
+
+save_pop_unit_as_h2_3839 f 500 bipolar 3839 0 0 h2
+
+save_pop_unit_as_h1_3542 f 500 bipolar 3542 0 0 horiz
+
+save_pop_unit_as_h2_3542 f 500 bipolar 3542 0 0 h2
+
+save_pop_unit_as_h1_3763 f 500 bipolar 3763 0 0 horiz
+
+save_pop_unit_as_h2_3763 f 500 bipolar 3763 0 0 h2
+
+save_pop_unit_as_h1_3840 f 500 bipolar 3840 0 0 horiz
+
+save_pop_unit_as_h2_3840 f 500 bipolar 3840 0 0 h2
+
+save_pop_unit_as_h1_3692 f 500 bipolar 3692 0 0 horiz
+
+save_pop_unit_as_h2_3692 f 500 bipolar 3692 0 0 h2
+
+save_pop_unit_as_h1_3688 f 500 bipolar 3688 0 0 horiz
+
+save_pop_unit_as_h2_3688 f 500 bipolar 3688 0 0 h2
+
+save_pop_unit_as_h1_3540 f 500 bipolar 3540 0 0 horiz
+
+save_pop_unit_as_h2_3540 f 500 bipolar 3540 0 0 h2
+
+save_pop_unit_as_h1_3838 f 500 bipolar 3838 0 0 horiz
+
+save_pop_unit_as_h2_3838 f 500 bipolar 3838 0 0 h2
+
+save_pop_unit_as_h1_3543 f 500 bipolar 3543 0 0 horiz
+
+save_pop_unit_as_h2_3543 f 500 bipolar 3543 0 0 h2
+
+save_pop_unit_as_h1_3618 f 500 bipolar 3618 0 0 horiz
+
+save_pop_unit_as_h2_3618 f 500 bipolar 3618 0 0 h2
+
+save_pop_unit_as_h1_3467 f 500 bipolar 3467 0 0 horiz
+
+save_pop_unit_as_h2_3467 f 500 bipolar 3467 0 0 h2
+
+save_pop_unit_as_h1_3466 f 500 bipolar 3466 0 0 horiz
+
+save_pop_unit_as_h2_3466 f 500 bipolar 3466 0 0 h2
+
+save_pop_unit_as_h1_3767 f 500 bipolar 3767 0 0 horiz
+
+save_pop_unit_as_h2_3767 f 500 bipolar 3767 0 0 h2
+
+save_pop_unit_as_h1_3914 f 500 bipolar 3914 0 0 horiz
+
+save_pop_unit_as_h2_3914 f 500 bipolar 3914 0 0 h2
+
+save_pop_unit_as_h1_3613 f 500 bipolar 3613 0 0 horiz
+
+save_pop_unit_as_h2_3613 f 500 bipolar 3613 0 0 h2
+
+save_pop_unit_as_h1_3841 f 500 bipolar 3841 0 0 horiz
+
+save_pop_unit_as_h2_3841 f 500 bipolar 3841 0 0 h2
+
+save_pop_unit_as_h1_3913 f 500 bipolar 3913 0 0 horiz
+
+save_pop_unit_as_h2_3913 f 500 bipolar 3913 0 0 h2
+
+save_pop_unit_as_h1_3539 f 500 bipolar 3539 0 0 horiz
+
+save_pop_unit_as_h2_3539 f 500 bipolar 3539 0 0 h2
+
+save_pop_unit_as_h1_3837 f 500 bipolar 3837 0 0 horiz
+
+save_pop_unit_as_h2_3837 f 500 bipolar 3837 0 0 h2
+
+save_pop_unit_as_h1_3762 f 500 bipolar 3762 0 0 horiz
+
+save_pop_unit_as_h2_3762 f 500 bipolar 3762 0 0 h2
+
+save_pop_unit_as_h1_3693 f 500 bipolar 3693 0 0 horiz
+
+save_pop_unit_as_h2_3693 f 500 bipolar 3693 0 0 h2
+
+save_pop_unit_as_h1_3915 f 500 bipolar 3915 0 0 horiz
+
+save_pop_unit_as_h2_3915 f 500 bipolar 3915 0 0 h2
+
+save_pop_unit_as_h1_3468 f 500 bipolar 3468 0 0 horiz
+
+save_pop_unit_as_h2_3468 f 500 bipolar 3468 0 0 h2
+
+save_pop_unit_as_h1_3912 f 500 bipolar 3912 0 0 horiz
+
+save_pop_unit_as_h2_3912 f 500 bipolar 3912 0 0 h2
+
+save_pop_unit_as_h1_3465 f 500 bipolar 3465 0 0 horiz
+
+save_pop_unit_as_h2_3465 f 500 bipolar 3465 0 0 h2
+
+save_pop_unit_as_h1_3687 f 500 bipolar 3687 0 0 horiz
+
+save_pop_unit_as_h2_3687 f 500 bipolar 3687 0 0 h2
+
+save_pop_unit_as_h1_3544 f 500 bipolar 3544 0 0 horiz
+
+save_pop_unit_as_h2_3544 f 500 bipolar 3544 0 0 h2
+
+save_pop_unit_as_h1_3842 f 500 bipolar 3842 0 0 horiz
+
+save_pop_unit_as_h2_3842 f 500 bipolar 3842 0 0 h2
+
+save_pop_unit_as_h1_3988 f 500 bipolar 3988 0 0 horiz
+
+save_pop_unit_as_h2_3988 f 500 bipolar 3988 0 0 h2
+
+save_pop_unit_as_h1_3392 f 500 bipolar 3392 0 0 horiz
+
+save_pop_unit_as_h2_3392 f 500 bipolar 3392 0 0 h2
+
+save_pop_unit_as_h1_3768 f 500 bipolar 3768 0 0 horiz
+
+save_pop_unit_as_h2_3768 f 500 bipolar 3768 0 0 h2
+
+save_pop_unit_as_h1_3393 f 500 bipolar 3393 0 0 horiz
+
+save_pop_unit_as_h2_3393 f 500 bipolar 3393 0 0 h2
+
+save_pop_unit_as_h1_3836 f 500 bipolar 3836 0 0 horiz
+
+save_pop_unit_as_h2_3836 f 500 bipolar 3836 0 0 h2
+
+save_pop_unit_as_h1_3464 f 500 bipolar 3464 0 0 horiz
+
+save_pop_unit_as_h2_3464 f 500 bipolar 3464 0 0 h2
+
+save_pop_unit_as_h1_3469 f 500 bipolar 3469 0 0 horiz
+
+save_pop_unit_as_h2_3469 f 500 bipolar 3469 0 0 h2
+
+save_pop_unit_as_h1_3987 f 500 bipolar 3987 0 0 horiz
+
+save_pop_unit_as_h2_3987 f 500 bipolar 3987 0 0 h2
+
+save_pop_unit_as_h1_3619 f 500 bipolar 3619 0 0 horiz
+
+save_pop_unit_as_h2_3619 f 500 bipolar 3619 0 0 h2
+
+save_pop_unit_as_h1_3916 f 500 bipolar 3916 0 0 horiz
+
+save_pop_unit_as_h2_3916 f 500 bipolar 3916 0 0 h2
+
+save_pop_unit_as_h1_3911 f 500 bipolar 3911 0 0 horiz
+
+save_pop_unit_as_h2_3911 f 500 bipolar 3911 0 0 h2
+

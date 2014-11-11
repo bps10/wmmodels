@@ -15,3 +15,4 @@ util/default_vars.sh
 */run.moo
 *~
 stim/cone_iso_step.stm
+results/txt_files/*.txt
