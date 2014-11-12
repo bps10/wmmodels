@@ -24,6 +24,7 @@ def main():
     h_time = ['h_time', 'verbose']
     stack = ['siso', 'miso', 'liso', 'cone', 'stack', 'coneiso']
     knn = ['knn']
+    sf_tuning = ['h_sf']
 
     for arg in sys.argv:
         if arg in h1:
@@ -46,7 +47,11 @@ def main():
         if arg in knn:
             plots.append('knn')
 
-    if 'stack' in plots or 'h_time' in plots or 'knn' in plots:
+        if arg in sf_tuning:
+            plots.append('tuning')
+
+    if ('stack' in plots or 'h_time' in plots or 'knn' in plots or 
+        'tuning' in plots):
         d = parse_txt()
 
     if 'stack' in plots:
@@ -61,6 +66,10 @@ def main():
 
     if 'knn' in plots:
         plot.knn(d)
+
+    if 'tuning' in plots:
+        plot.sf_tuning_curve(d)
+
 
 if __name__ == '__main__':
 

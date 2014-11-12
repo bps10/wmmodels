@@ -140,6 +140,11 @@ function change_parameters {
 	stim_gen siso ${SHAPE}
 	STIM_FILE=cone_iso_step
 	RESP_FILE=knn_resp
+
+    elif [ $OPTS == "h_sf" ]
+    then
+	STIM_FILE=sine_sf
+	RESP_FILE=retina_line
     fi
 
 }

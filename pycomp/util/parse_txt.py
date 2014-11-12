@@ -3,7 +3,7 @@ import os, sys
 import numpy as np
 
 
-def clean_data(d, celllist=False):
+def clean_data(d, return_celllist=False):
     '''
     '''
     k = d[0].keys()
@@ -43,7 +43,7 @@ def clean_data(d, celllist=False):
             elif key[:3] == 'rgc':
                 data[t]['rgc'].append(_d[key]['vals'])
 
-    if celllist:
+    if return_celllist:
         return data, celllist
 
     return data
