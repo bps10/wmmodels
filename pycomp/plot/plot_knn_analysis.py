@@ -29,7 +29,7 @@ def knn(d):
     for i, cell in enumerate(data[t]['h2']):
         cellID = int(celllist[i])
         ind = np.where(cellIDs == cellID)[0]
-        #print cell.max() - cell[20], cellID, dist[ind, 4][0]
+
         amp = cell.max() - cell[20]
         distance = celldat[ind, 4][0]
         if celldat[ind, 1] == 0:
@@ -59,21 +59,21 @@ def s_cone_hist():
 
             d = parse_txt(fname)
             data, celllist = clean_data(d, True)
-
-            t = 0
+            
+            t = 0 # trial 0
             for i, cell in enumerate(data[t]['h2']):
+                # get cell info
                 cellID = int(celllist[i])
                 ind = np.where(cellIDs == cellID)[0]
 
+                # compute amplitude and find distance to S-cone
                 amp = cell.max() - cell[20]
-
                 distance = celldat[ind, 4][0]
                 
-                if amp > 0.01: # eliminate trials w no contacts
-                    if celldat[ind, 1] == 0:
-                        s.append([distance, amp])
-                    else:
-                        lm.append([distance, amp])
+                if celldat[ind, 1] == 0:
+                    s.append([distance, amp])
+                else:
+                    lm.append([distance, amp])
 
     # plotting routines
     fig1 = plt.figure()

@@ -33,24 +33,27 @@ def stack(d):
         # Subtract 10 points in so that zero offset
         _d = data[t]
         color = ['r', 'g', 'b', 'k', 'y']
+        for i in ax:
+            ax[i].set_color_cycle(['r', 'g', 'b', 'c', 'm', 'y', 'k'])
+
         for i, dat in enumerate(_d['cone']):
             y = dat[1:] - dat[10]
-            ax[0].plot(time, y, color[i])
+            ax[0].plot(time, y)
             ylim = check_lims(y, ylim, 0)
 
         for i, dat in enumerate(_d['h1']):
             y = dat[1:] - dat[10] + 0.2
-            ax[1].plot(time, y, color[i])
+            ax[1].plot(time, y)
             ylim = check_lims(y, ylim, 1)
 
         for i, dat in enumerate(_d['h2']):
             y = dat[1:] - dat[10] + 0.1
-            ax[1].plot(time, y, color[i])
+            ax[1].plot(time, y)
             ylim = check_lims(y, ylim, 1)
 
         for i, dat in enumerate(_d['bp']):
             y = dat[1:] - dat[10]
-            ax[2].plot(time, y, color[i])
+            ax[2].plot(time, y)
             ylim = check_lims(y, ylim, 2)
 
         ax[2].set_xlabel('time (ms)')        
@@ -63,7 +66,6 @@ def stack(d):
         for i in ax:
             #pf.invert(ax[i], fig, bk_color='k')
             figs[t]['f'].savefig('results/img/stack_t' + str(t) + '.svg',
-                                 #facecolor=fig.get_facecolor(), 
                                  edgecolor='none')
 
     plt.show()
@@ -90,7 +92,7 @@ def horiz_time_const(d):
     pf.AxisFormat()
     pf.TufteAxis(ax, ['bottom', 'left'], [3, 3])
 
-    for t in range(d['meta']['NTRIALS']):
+    for t in data['meta']['trials']:
     
         # Subtract 10 points in so that zero offset
         ax.plot(time, data[t]['h1'][0][1:] - 
@@ -126,14 +128,14 @@ def sf_tuning_curve(d):
     pf.TufteAxis(ax2, ['top', ], [4, 4])
 
     # Load these from param files? Or send from retina.sh?
-    tf = 5 # temporal frequency (Hz)
-    N = 512 # time steps
-    sf = np.array([0.1, 0.25, 0.5, 1.0, 2.0, 4.0]) # switch to microns
-    deg2um = 0.00534 # macaque conversion
+    tf = data['meta']['tf'] # temporal frequency (Hz)
+    N = data['meta']['MOO_tn'] # time steps
+    sf = data['meta']['VAR_sf'] # spatial freq (cpd)
+    deg2um = 0.00534 # macaque conversion (cpd to micron)
 
     h1cells = np.zeros((ncells, len(sf)))
     h2cells = np.zeros((ncells, len(sf)))
-    for t in data:
+    for t in data['meta']['trials']:
         if t != 'time': 
             for i, cell in enumerate(data[t]['h1']):
                 fft =  np.fft.fft(cell)

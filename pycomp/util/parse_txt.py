@@ -14,11 +14,13 @@ def clean_data(d, return_celllist=False):
             celllist.append(cell[-1])
 
     data = {}
-    data['time'] = np.linspace(0, float(d['meta']['stim_samp']),
-                               float(d['meta']['MOO_tn']))
+    data['meta'] = d['meta']
+    data['meta']['trials'] = range(int(data['meta']['NTRIALS']))
+    data['time'] = np.linspace(0, d['meta']['stim_samp'], d['meta']['MOO_tn'])
+
     ncells = len(celllist)
     ntime = len(data['time'])
-    for t in range(d['meta']['NTRIALS']):
+    for t in data['meta']['trials']:
         _d = d[t]
 
         data[t] = {}
@@ -102,6 +104,7 @@ def parse_txt(fname='results/txt_files/zz.txt'):
                     except IndexError:
                         pass
             else:
+                
                 try:
                     line.remove('')
                 except ValueError:
@@ -112,18 +115,38 @@ def parse_txt(fname='results/txt_files/zz.txt'):
                     else:
                         j = 0  
                     try:
-                        data['meta'][line[j]] = line[j+1]
+                        if len(line) < 5:
+                            data['meta'][line[j]] = num(line[j+1])
+                        else: # it is an array, save as such
+                            tmp = []
+                            for ii in range(len(line[j+1:])):
+                                tmp.append(num(line[j+1+ii]))
+                            data['meta'][line[j]] = np.asarray(tmp)
+
                     except IndexError:
                         data['meta'][line[j]] = []
+
                 # if RTYPE is ntrials use data to setup data dict
                 if line != []:
                     if line[0] == 'NTRIALS':
                         data['meta']['NTRIALS'] = int(line[j+1])
                         for trial in range(0, int(line[1])):
                             data[trial] = {}
-
             i += 1
+
     return data
+
+
+def num(s):
+    '''Convert to an int or a float depending upon string
+    '''
+    try:
+        return int(s)
+    except ValueError:
+        try:
+            return float(s)
+        except ValueError: # case when actually is a string
+            return s
 
 
 if __name__ == '__main__':
