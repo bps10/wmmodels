@@ -25,7 +25,7 @@ def main():
     stack = ['siso', 'miso', 'liso', 'cone', 'stack', 'coneiso']
     knn = ['knn']
     sf_tuning = ['h_sf']
-
+    s_dist = ['s_dist']
     for arg in sys.argv:
         if arg in h1:
             data['h1'] = np.genfromtxt('results/pl_files/h1.dist.pl',             
@@ -50,6 +50,9 @@ def main():
         if arg in sf_tuning:
             plots.append('tuning')
 
+        if arg in s_dist:
+            plots.append('s_dist')
+
     if ('stack' in plots or 'h_time' in plots or 'knn' in plots or 
         'tuning' in plots):
         d = parse_txt()
@@ -69,6 +72,9 @@ def main():
 
     if 'tuning' in plots:
         plot.sf_tuning_curve(d)
+
+    if 's_dist' in plots:
+        plot.s_cone_hist()
 
 
 if __name__ == '__main__':

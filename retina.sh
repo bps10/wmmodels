@@ -7,11 +7,12 @@
 . ./util/default_vars.sh
 
 # setup conditions to specify behavior
-analysis=(siso coneiso h1 h2 miso liso \
+analysis=(siso miso liso coneiso h1 h2 \
     h_time mosaic gui stack nd plot \
-    verbose params knn h_sf)
+    verbose params knn h_sf s_dist)
 runmod=(h1 h2 siso miso liso coneiso h_time knn h_sf)
-plots=(h1 h2 siso miso liso coneiso stack h_time verbose knn h_sf)
+plots=(h1 h2 siso miso liso coneiso stack h_time verbose knn h_sf \
+    s_dist)
 dump=(siso miso liso coneiso h_time knn h_sf)
 iso_cond=(siso miso liso coneiso)
 
@@ -31,13 +32,17 @@ while [ $i -lt $# ]; do
     SHAPE=$(check_arg -shape $SHAPE)
     H1GP=$(check_arg -P $H1GP)
     H1GH=$(check_arg -H $H1GH)
+    H1P0=$(check_arg -T $H1P0)
+    H1ES=$(check_arg -E $H1ES)
     H2GP=$(check_arg -p $H2GP) 
     H2GH=$(check_arg -h $H2GH)
+    H2P0=$(check_arg -t $H2P0)
+    H2ES=$(check_arg -e $H2ES)
     H2S=$(check_arg -s $H2S)
     H2M=$(check_arg -m $H2M)
     H2L=$(check_arg -l $H2L)
     H2W=$(check_arg -w $H2W)
-    TN=$(check_arg -t $TN)
+    TN=$(check_arg -tn $TN)
 
     i=$((i+1))
 done
@@ -62,6 +67,10 @@ then
 elif [ $OPTS == "gui" ]
 then
     run_gui
+
+elif [ $OPTS == "s_dist" ]
+then
+    run_s_dist_analysis
 
 else
 

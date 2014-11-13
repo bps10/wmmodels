@@ -71,8 +71,12 @@ function save_defaults {
     echo "SHAPE=$SHAPE" >> util/default_vars.sh
     echo "H1GP=$H1GP" >> util/default_vars.sh
     echo "H1GH=$H1GH" >> util/default_vars.sh
+    echo "H1P0=$H1P0" >> util/default_vars.sh
+    echo "H1ES=$H1ES" >> util/default_vars.sh
     echo "H2GP=$H2GP" >> util/default_vars.sh
     echo "H2GH=$H2GH" >> util/default_vars.sh
+    echo "H2GH=$H2GH" >> util/default_vars.sh
+    echo "H2P0=$H2P0" >> util/default_vars.sh
     echo "H2S=$H2S" >> util/default_vars.sh
     echo "H2M=$H2M" >> util/default_vars.sh
     echo "H2L=$H2L" >> util/default_vars.sh
@@ -82,7 +86,7 @@ function save_defaults {
 
 
 function dump_results {
-    if [ $(exists_in ${OPTS} "${dump[*]}") == true ]
+    if [[ $(exists_in ${OPTS} "${dump[*]}") == true  || $1 == -f ]]
     then
 	~/Projects/wmbuild/bin/ndutil nd2text \
 	    results/nd_files/zz.nd \
@@ -134,7 +138,7 @@ function change_parameters {
 	STIM_FILE=cone_iso_step
 	RESP_FILE=retina_line
 	
-    elif [ $OPTS == "knn" ]
+    elif [[ $OPTS == "knn" || $OPTS == "s_dist" ]]
     then
 	knn_resp
 	stim_gen siso ${SHAPE}
@@ -145,6 +149,7 @@ function change_parameters {
     then
 	STIM_FILE=sine_sf
 	RESP_FILE=retina_line
+
     fi
 
 }
@@ -167,8 +172,12 @@ function print_info {
 	echo -e "-shape\t SHAPE"
 	echo -e "-P\t H1GP"
 	echo -e "-H\t H1GH"
+	echo -e "-T\t H1P0 (percent0)"
+	echo -e "-E\t H1ES (e_seed)"
 	echo -e "-p\t H2GP"
 	echo -e "-h\t H2GH"
+	echo -e "-t\t H2P0 (percent0)"
+	echo -e "-e\t H2ES (e_seed)"
 	echo -e "-s\t H2S"
 	echo -e "-m\t H2M"
 	echo -e "-l\t H2L"
@@ -184,8 +193,12 @@ function print_info {
 	echo "stim shape is set to: $SHAPE"
 	echo "h1 gp is set to: $H1GP"
 	echo "h1 gh is set to: $H1GH"
+	echo "h1 percent0 is set to: $H1P0"
+	echo "h1 e_seed is set to: $H1ES"
 	echo "h2 gp is set to: $H2GP"
 	echo "h2 gh is set to: $H2GH"
+	echo "h2 percent0 is set to: $H2P0"
+	echo "h2 e_seed is set to: $H2ES"
 	echo "h2 l weight is set to: $H2L"
 	echo "h2 m weight is set to: $H2M"
 	echo "h2 s weight is set to: $H2S"
@@ -210,6 +223,54 @@ function delete_old_file {
     fi	
 }
 
+
+function run_s_dist_analysis {
+
+    # make dir for data if doesn't exist already
+    if [ ! -d "results/txt_files/s_dist" ]
+    then
+	mkdir "results/txt_files/s_dist"
+    fi
+
+    # get random numbers
+    rnums=$(python pycomp/util/gen_rand.py)
+
+    # parse into list
+    rnums=(`echo $rnums | tr ',' ' '`)
+
+    if [[ $H2P0 == "0.0" || $H2P0 == "0" ]] 
+    then # only need to run once
+	rnums=(${rnums[0]})
+    fi
+
+    local count=0
+    # iterate over all numbers in the list
+    for i in ${rnums[*]}; do
+	# set new H2 e_seed
+	H2ES=$i
+
+	# print out params to keep track of where we are
+	echo "Trial: $count, H2ES: $H2ES"
+
+	# run wm with new H2 e_seed
+	run_wm ${MODEL} ${STIM_FILE}
+	
+	# dump the results to a text file
+	dump_results -f
+
+	# rename dumped data, move into dir (make if doesn't exist)
+	mv "results/txt_files/zz.txt" "results/txt_files/s_dist/$H2ES.txt"
+
+	# increase count
+	count=$(($count+1))
+
+    done
+
+    # save parameters
+    print_info > "results/txt_files/s_dist/params.txt"
+
+}
+
 function run_wm {
     # if stimulus condition is an iso_cond then gen stim file
     if [[ $(exists_in ${OPTS} ${iso_cond}) == true ]] 
@@ -222,8 +283,12 @@ function run_wm {
 	response/${RESP_FILE}.rsp  tn ${TN} \
 	retina0/h_mesh.h1/gp ${H1GP} \
 	retina0/h_mesh.h1/gh ${H1GH} \
+	retina0/h_mesh.h1/percent0 ${H1P0} \
+	retina0/h_mesh.h1/e_seed ${H1ES} \
 	retina0/h_mesh.${HVAR}/gp ${H2GP} \
 	retina0/h_mesh.${HVAR}/gh ${H2GH} \
+	retina0/h_mesh.${HVAR}/percent0 ${H2P0} \
+	retina0/h_mesh.${HVAR}/e_seed ${H2ES} \
 	retina0/h_mesh.${HVAR}/w_s ${H2S} \
 	retina0/h_mesh.${HVAR}/w_m ${H2M} \
 	retina0/h_mesh.${HVAR}/w_l ${H2L} \
