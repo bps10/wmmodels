@@ -4,6 +4,7 @@ import matplotlib.pylab as plt
 
 from base import plot as pf
 from base import files as f
+import nearest_neighbor as nn
 from util.parse_txt import clean_data, parse_txt
 
 
@@ -49,6 +50,7 @@ def s_cone_hist():
     '''
     celldat = np.genfromtxt('results/txt_files/nn_results.txt')
     cellIDs = celldat[:, 0]
+    dist2S =  nn.find_nearest_S(celldat[:, 2:4])[0]
 
     names = f.getAllFiles('./results/txt_files/s_dist', suffix='/*.txt',
                           subdirectories=0)
@@ -56,10 +58,9 @@ def s_cone_hist():
     lm = []
     for fname in names:
         if fname[-10:] != 'params.txt':
-
             d = parse_txt(fname)
             data, celllist = clean_data(d, True)
-            
+
             t = 0 # trial 0
             for i, cell in enumerate(data[t]['h2']):
                 # get cell info
@@ -68,8 +69,11 @@ def s_cone_hist():
 
                 # compute amplitude and find distance to S-cone
                 amp = cell.max() - cell[20]
-                distance = celldat[ind, 4][0]
-                
+                # if stim == 'spot':
+                #distance = celldat[ind, 4][0] # relative to 1 S-cone
+                # else:
+                distance = dist2S[ind] # relative to any S-cone
+
                 if celldat[ind, 1] == 0:
                     s.append([distance, amp])
                 else:
@@ -86,7 +90,8 @@ def s_cone_hist():
     lm = np.asarray(lm)
     ax.plot(lm[:, 0], lm[:, 1], 'ko')
 
-    ax.set_xlim([0.8, 6.2])
+    # if stim != 'spot':
+    ax.set_xlim([0.8, 5.2])
     ax.set_xlabel('distance from S-cone')
     ax.set_ylabel('amplitude')
 

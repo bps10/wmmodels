@@ -2,7 +2,7 @@ from __future__ import division
 import numpy as np
 
 
-def gen_randi(seed=89372450, N=10):
+def gen_randi(seed=27977, N=12):
     '''
     '''
     # Seed the generator

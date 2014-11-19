@@ -9,11 +9,11 @@
 # setup conditions to specify behavior
 analysis=(siso miso liso coneiso h1 h2 \
     h_time mosaic gui stack nd plot \
-    verbose params knn h_sf s_dist)
-runmod=(h1 h2 siso miso liso coneiso h_time knn h_sf)
+    verbose params knn h_sf s_dist cone_inputs)
+runmod=(h1 h2 siso miso liso coneiso h_time knn h_sf cone_inputs)
 plots=(h1 h2 siso miso liso coneiso stack h_time verbose knn h_sf \
-    s_dist)
-dump=(siso miso liso coneiso h_time knn h_sf)
+    s_dist cone_inputs)
+dump=(siso miso liso coneiso h_time knn h_sf cone_inputs)
 iso_cond=(siso miso liso coneiso)
 
 #-- 1. Get analysis option
@@ -34,6 +34,7 @@ while [ $i -lt $# ]; do
     H1GH=$(check_arg -H $H1GH)
     H1P0=$(check_arg -T $H1P0)
     H1ES=$(check_arg -E $H1ES)
+    H1W=$(check_arg -W $H1W)
     H2GP=$(check_arg -p $H2GP) 
     H2GH=$(check_arg -h $H2GH)
     H2P0=$(check_arg -t $H2P0)

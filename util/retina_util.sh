@@ -32,6 +32,9 @@ function stim_gen {
     if [ $2 == spot ]
     then
         fname=step_spot
+    elif [ $2 == sine_tf ]
+    then
+	fname=sine_tf
     fi
 
     # Paste the first part of the stimulus file
@@ -50,14 +53,30 @@ function stim_gen {
 }
 
 function knn_resp {
-    
+    if [ -z "$1" ]; then
+	local coneID=3690
+    else
+	local coneID=$1
+    fi
+    if [ -z "$2" ]; then
+	local Ncones=100
+    else
+	local Ncones=$2
+    fi
+    local cell_type=horiz
+    if [ ! -z "$3" ]; then
+	cell_type=$3
+    fi
+
     # Paste the first part of the stimulus file
     cat response/header.rsp > response/knn_resp.rsp
 
     # Paste the second part of the stimulus file
-    python pycomp/nearest_neighbor.py 3690 50 >> response/knn_resp.rsp
+    python pycomp/nearest_neighbor.py ${coneID} ${Ncones} ${cell_type} >> \
+	response/knn_resp.rsp
 
 }
+
 
 function save_defaults {
     # remove file with old values
@@ -73,10 +92,12 @@ function save_defaults {
     echo "H1GH=$H1GH" >> util/default_vars.sh
     echo "H1P0=$H1P0" >> util/default_vars.sh
     echo "H1ES=$H1ES" >> util/default_vars.sh
+    echo "H1W=$H1W" >> util/default_vars.sh
     echo "H2GP=$H2GP" >> util/default_vars.sh
     echo "H2GH=$H2GH" >> util/default_vars.sh
     echo "H2GH=$H2GH" >> util/default_vars.sh
     echo "H2P0=$H2P0" >> util/default_vars.sh
+    echo "H2ES=$H2ES" >> util/default_vars.sh
     echo "H2S=$H2S" >> util/default_vars.sh
     echo "H2M=$H2M" >> util/default_vars.sh
     echo "H2L=$H2L" >> util/default_vars.sh
@@ -86,6 +107,7 @@ function save_defaults {
 
 
 function dump_results {
+    # dump output if appropriate (dump list) or force flag set (-f)
     if [[ $(exists_in ${OPTS} "${dump[*]}") == true  || $1 == -f ]]
     then
 	~/Projects/wmbuild/bin/ndutil nd2text \
@@ -150,7 +172,14 @@ function change_parameters {
 	STIM_FILE=sine_sf
 	RESP_FILE=retina_line
 
+    elif [ $OPTS == "cone_inputs" ]
+    then
+	knn_resp 3690 100 rgc
+	stim_gen coneiso sine_tf
+	STIM_FILE=cone_iso_step
+	RESP_FILE=knn_resp
     fi
+
 
 }
 
@@ -174,6 +203,7 @@ function print_info {
 	echo -e "-H\t H1GH"
 	echo -e "-T\t H1P0 (percent0)"
 	echo -e "-E\t H1ES (e_seed)"
+	echo -e "-W\t H1W"
 	echo -e "-p\t H2GP"
 	echo -e "-h\t H2GH"
 	echo -e "-t\t H2P0 (percent0)"
@@ -195,6 +225,7 @@ function print_info {
 	echo "h1 gh is set to: $H1GH"
 	echo "h1 percent0 is set to: $H1P0"
 	echo "h1 e_seed is set to: $H1ES"
+	echo "h1 lm bipolar is set to: $H1W"
 	echo "h2 gp is set to: $H2GP"
 	echo "h2 gh is set to: $H2GH"
 	echo "h2 percent0 is set to: $H2P0"
@@ -269,6 +300,8 @@ function run_s_dist_analysis {
     # save parameters
     print_info > "results/txt_files/s_dist/params.txt"
 
+    # save defaults
+    save_defaults
 }
 
 function run_wm {
@@ -292,6 +325,7 @@ function run_wm {
 	retina0/h_mesh.${HVAR}/w_s ${H2S} \
 	retina0/h_mesh.${HVAR}/w_m ${H2M} \
 	retina0/h_mesh.${HVAR}/w_l ${H2L} \
+	retina0/bipolar_lm_wh1 ${H1W} \
 	retina0/bipolar_lm_wh2 ${H2W} \
 	retina0/stim_override ${STIM_OVERRIDE}\
         retina0/mesh_dump_type ${MESH_DUMP_TYPE} \
@@ -304,7 +338,7 @@ function run_mosaic {
     wm mod ${MODEL}/Ret_Mesh_H2.moo stim/test_flash.stm \
 	response/retina.rsp  tN ${TN}  gui_flag 1 \
 	retina0/mesh_dump_type mosaic_coord \
-	retina0/mesh_dump_file zz.mosaic
+	retina0/mesh_dump_file mosaic/model.mosaic
     
     python pycomp mosaic
 

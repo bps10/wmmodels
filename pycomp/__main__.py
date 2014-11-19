@@ -26,6 +26,8 @@ def main():
     knn = ['knn']
     sf_tuning = ['h_sf']
     s_dist = ['s_dist']
+    cone_inputs = ['cone_inputs']
+
     for arg in sys.argv:
         if arg in h1:
             data['h1'] = np.genfromtxt('results/pl_files/h1.dist.pl',             
@@ -53,8 +55,11 @@ def main():
         if arg in s_dist:
             plots.append('s_dist')
 
+        if arg in cone_inputs:
+            plots.append('c_inputs')
+
     if ('stack' in plots or 'h_time' in plots or 'knn' in plots or 
-        'tuning' in plots):
+        'tuning' in plots or 'c_inputs' in plots):
         d = parse_txt()
 
     if 'stack' in plots:
@@ -75,6 +80,9 @@ def main():
 
     if 's_dist' in plots:
         plot.s_cone_hist()
+
+    if 'c_inputs' in plots:
+        plot.cone_inputs(d)
 
 
 if __name__ == '__main__':

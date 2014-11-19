@@ -28,7 +28,8 @@ def clean_data(d, return_celllist=False):
         data[t]['h1'] = np.zeros((ncells, ntime))
         data[t]['h2'] = np.zeros((ncells, ntime))
         data[t]['bp'] = np.zeros((ncells, ntime))
-        data[t]['rgc'] = []
+        data[t]['rgc_on'] = {}
+        data[t]['rgc_off'] = {}
         
         for key in _d.keys():
             cell = key.split('_')[-1]
@@ -42,8 +43,10 @@ def clean_data(d, return_celllist=False):
                 data[t]['h2'][ind, :] = _d[key]['vals']
             elif key[:2] == 'bp':
                 data[t]['bp'][ind, :] = _d[key]['vals']
-            elif key[:3] == 'rgc':
-                data[t]['rgc'].append(_d[key]['vals'])
+            elif key[:6] == 'rgc_on':
+                data[t]['rgc_on'][ind] = _d[key]['vals']
+            elif key[:7] == 'rgc_off':
+                data[t]['rgc_off'][ind] = _d[key]['vals']
 
     if return_celllist:
         return data, celllist
@@ -88,7 +91,7 @@ def parse_txt(fname='results/txt_files/zz.txt'):
                 data[t][name] = {}
                 data[t][name]['vals'] = dat
                 data[t][name]['rtype'] = rtype
-                if rtype == 0:
+                if rtype == 0: # spike data
                     try:
                         while data_list[i + 1].split(' ')[0] != 'RTYPE':
                             i += 1
@@ -97,13 +100,14 @@ def parse_txt(fname='results/txt_files/zz.txt'):
                                 try: # handle empty arrays
                                     dat = np.asarray(dat, dtype='|S8')
                                     dat = dat.astype(np.float)
-                                    dat = np.concatenate(
+                                    data[t][name]['vals'] = np.concatenate(
                                         (data[t][name]['vals'], dat))
                                 except ValueError:
                                     pass
-                    except IndexError:
+
+                    except IndexError: # handle case of no spikes
                         pass
-            else:
+            else: # meta data
                 
                 try:
                     line.remove('')
