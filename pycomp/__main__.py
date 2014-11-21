@@ -16,7 +16,7 @@ def main():
 
     if 'mosaic' in sys.argv:
         plot.mosaic()
-	
+
     plots = []
     data = {}
     h1 = ['h1', 'verbose']
@@ -24,7 +24,7 @@ def main():
     h_time = ['h_time', 'verbose']
     stack = ['siso', 'miso', 'liso', 'cone', 'stack', 'coneiso']
     knn = ['knn']
-    sf_tuning = ['h_sf']
+    sf_tuning = ['h_sf', 'bp_sf', 'rgc_sf']
     s_dist = ['s_dist']
     cone_inputs = ['cone_inputs']
 
@@ -51,6 +51,7 @@ def main():
 
         if arg in sf_tuning:
             plots.append('tuning')
+            cell_type = arg.split('_')[0]
 
         if arg in s_dist:
             plots.append('s_dist')
@@ -76,7 +77,7 @@ def main():
         plot.knn(d)
 
     if 'tuning' in plots:
-        plot.sf_tuning_curve(d)
+        plot.sf_tuning_curve(d, cell_type=cell_type)
 
     if 's_dist' in plots:
         plot.s_cone_hist()

@@ -22,8 +22,9 @@ function exists_in {
 	    out=true
 	fi
     done
-    echo "$out"
+    echo $out
 }
+
 
 function stim_gen {
     
@@ -135,7 +136,7 @@ function change_parameters {
     OUT_FILE=zz.nd
     RESP_FILE=retina
     HVAR=h2
-    
+
     if [ $OPTS == "h1" ]
     then
 	OUT_FILE=h1.dist.pl
@@ -155,7 +156,7 @@ function change_parameters {
 	STIM_OVERRIDE_BINARY=all
 	STIM_OVERRIDE=1
 
-    elif [ $(exists_in $OPTS $iso_cond) == true ]
+    elif [[ $(exists_in ${OPTS} "${iso_cond[*]}") == true ]] 
     then
 	STIM_FILE=cone_iso_step
 	RESP_FILE=retina_line
@@ -167,7 +168,7 @@ function change_parameters {
 	STIM_FILE=cone_iso_step
 	RESP_FILE=knn_resp
 
-    elif [ $OPTS == "h_sf" ]
+    elif [[ $OPTS == "h_sf" || $OPTS == "bp_sf" || $OPTS == "rgc_sf" ]]
     then
 	STIM_FILE=sine_sf
 	RESP_FILE=retina_line
@@ -179,8 +180,6 @@ function change_parameters {
 	STIM_FILE=cone_iso_step
 	RESP_FILE=knn_resp
     fi
-
-
 }
 
 
@@ -306,7 +305,7 @@ function run_s_dist_analysis {
 
 function run_wm {
     # if stimulus condition is an iso_cond then gen stim file
-    if [[ $(exists_in ${OPTS} ${iso_cond}) == true ]] 
+    if [[ $(exists_in ${OPTS} "${iso_cond[*]}") == true ]] 
     then
 	stim_gen ${OPTS} ${SHAPE} 
     fi
@@ -330,7 +329,9 @@ function run_wm {
 	retina0/stim_override ${STIM_OVERRIDE}\
         retina0/mesh_dump_type ${MESH_DUMP_TYPE} \
 	retina0/mesh_dump_cid ${MESH_DUMP_CID} \
-	retina0/stim_override_binary ${STIM_OVERRIDE_BINARY}
+	retina0/stim_override_binary ${STIM_OVERRIDE_BINARY} \
+    	gui_flag ${GUI}
+
 }
 
 

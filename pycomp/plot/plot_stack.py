@@ -4,7 +4,7 @@ import matplotlib.pylab as plt
 
 from base import plot as pf
 from util.parse_txt import clean_data
-
+from plot.plot_cone_inputs import compute_psth
 
 def stack(d):
     '''
@@ -112,12 +112,12 @@ def horiz_time_const(d):
     plt.show()
 
 
-def sf_tuning_curve(d):
+def sf_tuning_curve(d, cell_type='h'):
     '''
     '''
     data = clean_data(d)
     time = data['time'][1:]
-    ncells = len(data[0].keys()) - 1 # remove 1 for time
+    ncells = len(data[0]['cone']) # remove 1 for time
 
     fig = plt.figure(figsize=(7,7))
     fig.set_tight_layout(True)
@@ -133,26 +133,49 @@ def sf_tuning_curve(d):
     sf = data['meta']['VAR_sf'] # spatial freq (cpd)
     deg2um = 0.00534 # macaque conversion (cpd to micron)
 
-    h1cells = np.zeros((ncells, len(sf)))
-    h2cells = np.zeros((ncells, len(sf)))
-    for t in data['meta']['trials']:
-        if t != 'time': 
-            for i, cell in enumerate(data[t]['h1']):
+    if cell_type == 'h': # horizontal cells
+        cells = ['h1', 'h2']
+    elif cell_type == 'rgc':
+        cells = ['rgc_on', 'rgc_off']
+        bins = np.arange(0, time.max(), 20)
+    elif cell_type == 'bp':
+        cells = ['bp']
+    else:
+        raise InputError('cell_type must equal horiz or rgc')
+    
+    r = {}
+    for c in cells:
+        r[c] = np.zeros((ncells, len(sf)))
+
+    for t in data['meta']['trials']: # for each trial
+        for c in cells: # for each cell type
+            for i in range(ncells): # for each cell
+                cell = data[t][c][i]
+                if cell_type == 'rgc':
+                    cell = compute_psth(cell, time.max(), delta_t=20)
+                    
                 fft =  np.fft.fft(cell)
                 # take abs because phase doesn't matter
-                h1cells[i, t] = np.abs(fft[tf]) * 2 / N
+                r[c][i, t] = np.abs(fft[tf]) * 2 / N
 
-            for i, cell in enumerate(data[t]['h2']):
-                fft = np.fft.fft(cell)
-                h2cells[i, t] = np.abs(fft[tf]) * 2 / N
-                
-    ax1.loglog(sf, h1cells.T, 'ko-')
-    ax1.loglog(sf, h2cells.T, 'ro-')
+    # plot the results
+    colors = ['k', 'gray', 'r', 'b', 'g', 'c', 'm' ]
+    for i, c in enumerate(cells):
+        ax1.loglog(sf, r[c].T, 'ko-', color=colors[i])
 
-    h1vec = np.reshape(h1cells, -1)
-    h2vec = np.reshape(h2cells, -1)
-    ymax = np.max([np.max(h1vec), np.max(h2vec)]) + 0.1
-    ymin = np.min([np.min(h1vec), np.min(h2vec)]) - 0.1
+    # set some smart axes for second axis
+    ymax = -100 # start small
+    ymin = 1000 # start large
+    for c in cells:
+        vec = np.reshape(r[c], -1)
+        max = np.max(vec)
+        min = np.min(vec)
+        if max > ymax:
+            ymax = max
+        if min < ymin:
+            ymin = min
+    ymax += 0.1
+    ymin -= 0.1
 
     ax1.axis([sf[0] - 0.05, sf[-1] + 1, ymin, ymax])
     ax1.set_ylabel('amplitude')
@@ -165,6 +188,7 @@ def sf_tuning_curve(d):
     ax2.set_xscale('log')
 
     plt.show()
+
 
 if __name__ == '__main__':
     plot_stack()

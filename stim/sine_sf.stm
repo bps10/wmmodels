@@ -16,8 +16,8 @@ sf         1.0       # Spatial period (cyc/deg)
 phase        0       # Degrees
 tf         5.0       # Temporal frequency (Hz)
 size       2.8       # Degrees of visual angle
-aptype       1       # Aperture type (0-none, 1-circ)
-bgval      0.5       # background value [0..1]
+aptype       0       # Aperture type (0-none, 1-circ)
+bgval      0.0       # background value [0..1]
 contrast   1.0       # Contrast
 maxlum     1.0       # Maximum luminance
 stim_nrpt    1       # Number of repeats

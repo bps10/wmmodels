@@ -26,26 +26,30 @@ def cone_inputs(d):
     ax.spines['bottom'].set_smart_bounds(False)
     ax.axis('equal')
 
-    # Load these from param files? Or send from retina.sh?
+    # Load params from meta data
     tf = data['meta']['tf'] # temporal frequency (Hz)
     N = data['meta']['MOO_tn'] # time steps
     sf = data['meta']['sf'] # spatial freq (cpd)
     deg2um = 0.00534 # macaque conversion (cpd to micron)
-    
-    time = data['time']
-    ncells = len(celllist)
 
     cone_contrast = [49, 22, 19]
+    time = data['time']
+    ncells = len(celllist)
     time_bin = 15
-    on_rgc = np.zeros((ncells, 3))
-    off_rgc = np.zeros((ncells, 100))
 
-    psth = compute_psth(data[1]['rgc_on'][42], time.max(), delta_t=time_bin)
-
+    '''psth = compute_psth(data[1]['rgc_on'][42], time.max(), delta_t=time_bin)
     fft =  np.fft.fft(psth)
     plt.figure(); plt.plot(np.real(fft))
-    plt.figure(); plt.plot(psth)
+    plt.figure(); plt.plot(psth)'''
 
+    # Add in diamond boarders
+    ax.plot([-1, 0], [0, 1], 'k')
+    ax.plot([0, 1], [1, 0], 'k')
+    ax.plot([1, 0], [0, -1], 'k')
+    ax.plot([0, -1], [-1, 0], 'k')
+
+    on_rgc = np.zeros((ncells, 3))
+    off_rgc = np.zeros((ncells, 100))
     for t in data['meta']['trials']:
         for i in data[t]['rgc_on']:
             cell = data[t]['rgc_on'][i]
@@ -77,11 +81,6 @@ def cone_inputs(d):
             c = 'r'
         ax.plot(on_cone_input[cone, 2], on_cone_input[cone, 1], 'o', color=c)
         ax.plot(off_cone_input[cone, 2], off_cone_input[cone, 1], 's', color=c)
-
-    ax.plot([-1, 0], [0, 1], 'k')
-    ax.plot([0, 1], [1, 0], 'k')
-    ax.plot([1, 0], [0, -1], 'k')
-    ax.plot([0, -1], [-1, 0], 'k')
 
     ax.set_xlim([-1.1, 1.1])
     ax.set_ylim([-1.1, 1.1])

@@ -9,11 +9,12 @@
 # setup conditions to specify behavior
 analysis=(siso miso liso coneiso h1 h2 \
     h_time mosaic gui stack nd plot \
-    verbose params knn h_sf s_dist cone_inputs)
-runmod=(h1 h2 siso miso liso coneiso h_time knn h_sf cone_inputs)
+    verbose params knn h_sf bp_sf rgc_sf s_dist cone_inputs)
+runmod=(h1 h2 siso miso liso coneiso h_time knn h_sf bp_sf rgc_sf \
+    cone_inputs gui)
 plots=(h1 h2 siso miso liso coneiso stack h_time verbose knn h_sf \
-    s_dist cone_inputs)
-dump=(siso miso liso coneiso h_time knn h_sf cone_inputs)
+    bp_sf rgc_sf s_dist cone_inputs)
+dump=(siso miso liso coneiso h_time knn h_sf bp_sf rgc_sf cone_inputs)
 iso_cond=(siso miso liso coneiso)
 
 #-- 1. Get analysis option
@@ -26,7 +27,7 @@ while [ $i -lt $# ]; do
     then
 	OPTS+=(${args[$i]})
     fi
-    
+
     MODEL=$(check_arg -model $MODEL)
     FUND=$(check_arg -fund $FUND)
     SHAPE=$(check_arg -shape $SHAPE)
@@ -48,6 +49,12 @@ while [ $i -lt $# ]; do
     i=$((i+1))
 done
 
+GUI=0 # do not run gui unless flag is thrown
+if [ $(exists_in gui "${OPTS[*]}") ]
+then
+    GUI=1
+fi
+
 #-- 2. Print some info about parameters or a help file
 print_info
 
@@ -64,10 +71,6 @@ delete_old_file
 if [ $OPTS == "mosaic" ]
 then
     run_mosaic
-
-elif [ $OPTS == "gui" ]
-then
-    run_gui
 
 elif [ $OPTS == "s_dist" ]
 then
@@ -89,10 +92,10 @@ else
 fi
 
 #-- 7. Plotting routines
-if [ $(exists_in ${OPTS[0]} "${plots[*]}") == true ]
+if [[ $(exists_in ${OPTS[0]} "${plots[*]}") == true && $GUI == 0 ]]
 then
     python pycomp ${OPTS} ${MODEL}
-elif [ $(exists_in ${OPTS[1]} "${plots[*]}") == true ]
+elif [[ $(exists_in ${OPTS[1]} "${plots[*]}") == true  && $GUI == 0 ]]
 then
     python pycomp ${OPTS[1]} ${MODEL}
 fi

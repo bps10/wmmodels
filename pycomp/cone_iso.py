@@ -121,7 +121,8 @@ def cone_iso(spect='stockman', print_sys_M=False,
 		for i in range(3):
 			print 'color1_' + c[i] + ' ' + str(d['minus'][key][i][0])
 			cc = cone_contrast(M, bkgd_photo, d['plus'][key])
-
+			#cc = michelson_contrast(M, d['minus'][key],
+				#		d['plus'][key])
 		print '# cone contrast:'
 		for i in range(3):
 			print '# ' + str(cc[i][0])
@@ -146,6 +147,13 @@ def cone_iso(spect='stockman', print_sys_M=False,
 def cone_contrast(M, bkgd, rgb1):
 	lms = np.dot(M, rgb1)
 	return  (lms - bkgd) / bkgd
+
+
+def michelson_contrast(M, rgb1, rgb2):
+	lms1 = np.dot(M, rgb1)
+	lms2 = np.dot(M, rgb2)
+	return (lms2 - lms1) / (lms2 + lms1)
+	
 
 
 if __name__ == '__main__':
