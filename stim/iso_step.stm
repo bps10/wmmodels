@@ -17,7 +17,7 @@ cx           0       # center (deg)
 cy           0       # center (deg)
 direction    0       # Direction of drift
 sf           0       # Spatial period (cyc/deg)
-phase        90       # Degrees
+phase        -90       # Degrees
 tf           2.0     # Temporal frequency (cyc/sec)
 size         1.0     # Stimulus aperture diameter (deg)
 aptype       0       # Aperture type (0-none, 1-circ)

@@ -12,6 +12,17 @@ function check_arg {
     fi
 }
 
+
+function check_gui_flag {
+
+    GUI=0 # do not run gui unless flag is thrown
+    if [ $(exists_in gui "${OPTS[*]}") == true ]
+    then
+	GUI=1
+    fi
+} 
+
+
 function exists_in {
     local var=$1
     local arr=($2)
@@ -52,6 +63,7 @@ function stim_gen {
 	    stim/cone_iso_step.stm
     fi
 }
+
 
 function knn_resp {
     if [ -z "$1" ]; then
@@ -175,7 +187,7 @@ function change_parameters {
 
     elif [ $OPTS == "cone_inputs" ]
     then
-	knn_resp 3690 100 rgc
+	knn_resp 3690 100 bp
 	stim_gen coneiso sine_tf
 	STIM_FILE=cone_iso_step
 	RESP_FILE=knn_resp
@@ -345,9 +357,3 @@ function run_mosaic {
 
 }
 
-
-function run_gui {
-    wm mod ${MODEL}/run.moo stim/test_gray.stm \
-	response/retina.rsp  tn ${TN}  \
-	gui_flag 1
-}

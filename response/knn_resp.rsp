@@ -54,303 +54,203 @@ write_ndata      *       # write spikes to output file
 
 save_pop_unit_as_cone_3690 f 500 bipolar 3690 0 0 photo
 
-save_pop_unit_as_rgc_on_3690 s 1000 rgc 3690 0 1 spikes
-save_pop_unit_as_rgc_off_3690 s 1000 rgc 3690 0 0 spikes
+save_pop_unit_as_bp_3690 f 500 bipolar 3690 0 0 diff
 
-save_pop_unit_as_rgc_on_3616 s 1000 rgc 3616 0 1 spikes
-save_pop_unit_as_rgc_off_3616 s 1000 rgc 3616 0 0 spikes
+save_pop_unit_as_bp_3616 f 500 bipolar 3616 0 0 diff
 
-save_pop_unit_as_rgc_on_3691 s 1000 rgc 3691 0 1 spikes
-save_pop_unit_as_rgc_off_3691 s 1000 rgc 3691 0 0 spikes
+save_pop_unit_as_bp_3691 f 500 bipolar 3691 0 0 diff
 
-save_pop_unit_as_rgc_on_3765 s 1000 rgc 3765 0 1 spikes
-save_pop_unit_as_rgc_off_3765 s 1000 rgc 3765 0 0 spikes
+save_pop_unit_as_bp_3765 f 500 bipolar 3765 0 0 diff
 
-save_pop_unit_as_rgc_on_3615 s 1000 rgc 3615 0 1 spikes
-save_pop_unit_as_rgc_off_3615 s 1000 rgc 3615 0 0 spikes
+save_pop_unit_as_bp_3615 f 500 bipolar 3615 0 0 diff
 
-save_pop_unit_as_rgc_on_3764 s 1000 rgc 3764 0 1 spikes
-save_pop_unit_as_rgc_off_3764 s 1000 rgc 3764 0 0 spikes
+save_pop_unit_as_bp_3764 f 500 bipolar 3764 0 0 diff
 
-save_pop_unit_as_rgc_on_3689 s 1000 rgc 3689 0 1 spikes
-save_pop_unit_as_rgc_off_3689 s 1000 rgc 3689 0 0 spikes
+save_pop_unit_as_bp_3689 f 500 bipolar 3689 0 0 diff
 
-save_pop_unit_as_rgc_on_3766 s 1000 rgc 3766 0 1 spikes
-save_pop_unit_as_rgc_off_3766 s 1000 rgc 3766 0 0 spikes
+save_pop_unit_as_bp_3766 f 500 bipolar 3766 0 0 diff
 
-save_pop_unit_as_rgc_on_3541 s 1000 rgc 3541 0 1 spikes
-save_pop_unit_as_rgc_off_3541 s 1000 rgc 3541 0 0 spikes
+save_pop_unit_as_bp_3541 f 500 bipolar 3541 0 0 diff
 
-save_pop_unit_as_rgc_on_3614 s 1000 rgc 3614 0 1 spikes
-save_pop_unit_as_rgc_off_3614 s 1000 rgc 3614 0 0 spikes
+save_pop_unit_as_bp_3614 f 500 bipolar 3614 0 0 diff
 
-save_pop_unit_as_rgc_on_3617 s 1000 rgc 3617 0 1 spikes
-save_pop_unit_as_rgc_off_3617 s 1000 rgc 3617 0 0 spikes
+save_pop_unit_as_bp_3617 f 500 bipolar 3617 0 0 diff
 
-save_pop_unit_as_rgc_on_3839 s 1000 rgc 3839 0 1 spikes
-save_pop_unit_as_rgc_off_3839 s 1000 rgc 3839 0 0 spikes
+save_pop_unit_as_bp_3839 f 500 bipolar 3839 0 0 diff
 
-save_pop_unit_as_rgc_on_3542 s 1000 rgc 3542 0 1 spikes
-save_pop_unit_as_rgc_off_3542 s 1000 rgc 3542 0 0 spikes
+save_pop_unit_as_bp_3542 f 500 bipolar 3542 0 0 diff
 
-save_pop_unit_as_rgc_on_3763 s 1000 rgc 3763 0 1 spikes
-save_pop_unit_as_rgc_off_3763 s 1000 rgc 3763 0 0 spikes
+save_pop_unit_as_bp_3763 f 500 bipolar 3763 0 0 diff
 
-save_pop_unit_as_rgc_on_3840 s 1000 rgc 3840 0 1 spikes
-save_pop_unit_as_rgc_off_3840 s 1000 rgc 3840 0 0 spikes
+save_pop_unit_as_bp_3840 f 500 bipolar 3840 0 0 diff
 
-save_pop_unit_as_rgc_on_3692 s 1000 rgc 3692 0 1 spikes
-save_pop_unit_as_rgc_off_3692 s 1000 rgc 3692 0 0 spikes
+save_pop_unit_as_bp_3692 f 500 bipolar 3692 0 0 diff
 
-save_pop_unit_as_rgc_on_3688 s 1000 rgc 3688 0 1 spikes
-save_pop_unit_as_rgc_off_3688 s 1000 rgc 3688 0 0 spikes
+save_pop_unit_as_bp_3688 f 500 bipolar 3688 0 0 diff
 
-save_pop_unit_as_rgc_on_3540 s 1000 rgc 3540 0 1 spikes
-save_pop_unit_as_rgc_off_3540 s 1000 rgc 3540 0 0 spikes
+save_pop_unit_as_bp_3540 f 500 bipolar 3540 0 0 diff
 
-save_pop_unit_as_rgc_on_3838 s 1000 rgc 3838 0 1 spikes
-save_pop_unit_as_rgc_off_3838 s 1000 rgc 3838 0 0 spikes
+save_pop_unit_as_bp_3838 f 500 bipolar 3838 0 0 diff
 
-save_pop_unit_as_rgc_on_3543 s 1000 rgc 3543 0 1 spikes
-save_pop_unit_as_rgc_off_3543 s 1000 rgc 3543 0 0 spikes
+save_pop_unit_as_bp_3543 f 500 bipolar 3543 0 0 diff
 
-save_pop_unit_as_rgc_on_3618 s 1000 rgc 3618 0 1 spikes
-save_pop_unit_as_rgc_off_3618 s 1000 rgc 3618 0 0 spikes
+save_pop_unit_as_bp_3618 f 500 bipolar 3618 0 0 diff
 
-save_pop_unit_as_rgc_on_3467 s 1000 rgc 3467 0 1 spikes
-save_pop_unit_as_rgc_off_3467 s 1000 rgc 3467 0 0 spikes
+save_pop_unit_as_bp_3467 f 500 bipolar 3467 0 0 diff
 
-save_pop_unit_as_rgc_on_3466 s 1000 rgc 3466 0 1 spikes
-save_pop_unit_as_rgc_off_3466 s 1000 rgc 3466 0 0 spikes
+save_pop_unit_as_bp_3466 f 500 bipolar 3466 0 0 diff
 
-save_pop_unit_as_rgc_on_3767 s 1000 rgc 3767 0 1 spikes
-save_pop_unit_as_rgc_off_3767 s 1000 rgc 3767 0 0 spikes
+save_pop_unit_as_bp_3767 f 500 bipolar 3767 0 0 diff
 
-save_pop_unit_as_rgc_on_3914 s 1000 rgc 3914 0 1 spikes
-save_pop_unit_as_rgc_off_3914 s 1000 rgc 3914 0 0 spikes
+save_pop_unit_as_bp_3914 f 500 bipolar 3914 0 0 diff
 
-save_pop_unit_as_rgc_on_3613 s 1000 rgc 3613 0 1 spikes
-save_pop_unit_as_rgc_off_3613 s 1000 rgc 3613 0 0 spikes
+save_pop_unit_as_bp_3613 f 500 bipolar 3613 0 0 diff
 
-save_pop_unit_as_rgc_on_3841 s 1000 rgc 3841 0 1 spikes
-save_pop_unit_as_rgc_off_3841 s 1000 rgc 3841 0 0 spikes
+save_pop_unit_as_bp_3841 f 500 bipolar 3841 0 0 diff
 
-save_pop_unit_as_rgc_on_3913 s 1000 rgc 3913 0 1 spikes
-save_pop_unit_as_rgc_off_3913 s 1000 rgc 3913 0 0 spikes
+save_pop_unit_as_bp_3913 f 500 bipolar 3913 0 0 diff
 
-save_pop_unit_as_rgc_on_3539 s 1000 rgc 3539 0 1 spikes
-save_pop_unit_as_rgc_off_3539 s 1000 rgc 3539 0 0 spikes
+save_pop_unit_as_bp_3539 f 500 bipolar 3539 0 0 diff
 
-save_pop_unit_as_rgc_on_3837 s 1000 rgc 3837 0 1 spikes
-save_pop_unit_as_rgc_off_3837 s 1000 rgc 3837 0 0 spikes
+save_pop_unit_as_bp_3837 f 500 bipolar 3837 0 0 diff
 
-save_pop_unit_as_rgc_on_3762 s 1000 rgc 3762 0 1 spikes
-save_pop_unit_as_rgc_off_3762 s 1000 rgc 3762 0 0 spikes
+save_pop_unit_as_bp_3762 f 500 bipolar 3762 0 0 diff
 
-save_pop_unit_as_rgc_on_3693 s 1000 rgc 3693 0 1 spikes
-save_pop_unit_as_rgc_off_3693 s 1000 rgc 3693 0 0 spikes
+save_pop_unit_as_bp_3693 f 500 bipolar 3693 0 0 diff
 
-save_pop_unit_as_rgc_on_3915 s 1000 rgc 3915 0 1 spikes
-save_pop_unit_as_rgc_off_3915 s 1000 rgc 3915 0 0 spikes
+save_pop_unit_as_bp_3915 f 500 bipolar 3915 0 0 diff
 
-save_pop_unit_as_rgc_on_3468 s 1000 rgc 3468 0 1 spikes
-save_pop_unit_as_rgc_off_3468 s 1000 rgc 3468 0 0 spikes
+save_pop_unit_as_bp_3468 f 500 bipolar 3468 0 0 diff
 
-save_pop_unit_as_rgc_on_3912 s 1000 rgc 3912 0 1 spikes
-save_pop_unit_as_rgc_off_3912 s 1000 rgc 3912 0 0 spikes
+save_pop_unit_as_bp_3912 f 500 bipolar 3912 0 0 diff
 
-save_pop_unit_as_rgc_on_3465 s 1000 rgc 3465 0 1 spikes
-save_pop_unit_as_rgc_off_3465 s 1000 rgc 3465 0 0 spikes
+save_pop_unit_as_bp_3465 f 500 bipolar 3465 0 0 diff
 
-save_pop_unit_as_rgc_on_3687 s 1000 rgc 3687 0 1 spikes
-save_pop_unit_as_rgc_off_3687 s 1000 rgc 3687 0 0 spikes
+save_pop_unit_as_bp_3687 f 500 bipolar 3687 0 0 diff
 
-save_pop_unit_as_rgc_on_3544 s 1000 rgc 3544 0 1 spikes
-save_pop_unit_as_rgc_off_3544 s 1000 rgc 3544 0 0 spikes
+save_pop_unit_as_bp_3544 f 500 bipolar 3544 0 0 diff
 
-save_pop_unit_as_rgc_on_3842 s 1000 rgc 3842 0 1 spikes
-save_pop_unit_as_rgc_off_3842 s 1000 rgc 3842 0 0 spikes
+save_pop_unit_as_bp_3842 f 500 bipolar 3842 0 0 diff
 
-save_pop_unit_as_rgc_on_3988 s 1000 rgc 3988 0 1 spikes
-save_pop_unit_as_rgc_off_3988 s 1000 rgc 3988 0 0 spikes
+save_pop_unit_as_bp_3988 f 500 bipolar 3988 0 0 diff
 
-save_pop_unit_as_rgc_on_3392 s 1000 rgc 3392 0 1 spikes
-save_pop_unit_as_rgc_off_3392 s 1000 rgc 3392 0 0 spikes
+save_pop_unit_as_bp_3392 f 500 bipolar 3392 0 0 diff
 
-save_pop_unit_as_rgc_on_3768 s 1000 rgc 3768 0 1 spikes
-save_pop_unit_as_rgc_off_3768 s 1000 rgc 3768 0 0 spikes
+save_pop_unit_as_bp_3768 f 500 bipolar 3768 0 0 diff
 
-save_pop_unit_as_rgc_on_3393 s 1000 rgc 3393 0 1 spikes
-save_pop_unit_as_rgc_off_3393 s 1000 rgc 3393 0 0 spikes
+save_pop_unit_as_bp_3393 f 500 bipolar 3393 0 0 diff
 
-save_pop_unit_as_rgc_on_3836 s 1000 rgc 3836 0 1 spikes
-save_pop_unit_as_rgc_off_3836 s 1000 rgc 3836 0 0 spikes
+save_pop_unit_as_bp_3836 f 500 bipolar 3836 0 0 diff
 
-save_pop_unit_as_rgc_on_3464 s 1000 rgc 3464 0 1 spikes
-save_pop_unit_as_rgc_off_3464 s 1000 rgc 3464 0 0 spikes
+save_pop_unit_as_bp_3464 f 500 bipolar 3464 0 0 diff
 
-save_pop_unit_as_rgc_on_3469 s 1000 rgc 3469 0 1 spikes
-save_pop_unit_as_rgc_off_3469 s 1000 rgc 3469 0 0 spikes
+save_pop_unit_as_bp_3469 f 500 bipolar 3469 0 0 diff
 
-save_pop_unit_as_rgc_on_3987 s 1000 rgc 3987 0 1 spikes
-save_pop_unit_as_rgc_off_3987 s 1000 rgc 3987 0 0 spikes
+save_pop_unit_as_bp_3987 f 500 bipolar 3987 0 0 diff
 
-save_pop_unit_as_rgc_on_3619 s 1000 rgc 3619 0 1 spikes
-save_pop_unit_as_rgc_off_3619 s 1000 rgc 3619 0 0 spikes
+save_pop_unit_as_bp_3619 f 500 bipolar 3619 0 0 diff
 
-save_pop_unit_as_rgc_on_3916 s 1000 rgc 3916 0 1 spikes
-save_pop_unit_as_rgc_off_3916 s 1000 rgc 3916 0 0 spikes
+save_pop_unit_as_bp_3916 f 500 bipolar 3916 0 0 diff
 
-save_pop_unit_as_rgc_on_3911 s 1000 rgc 3911 0 1 spikes
-save_pop_unit_as_rgc_off_3911 s 1000 rgc 3911 0 0 spikes
+save_pop_unit_as_bp_3911 f 500 bipolar 3911 0 0 diff
 
-save_pop_unit_as_rgc_on_3391 s 1000 rgc 3391 0 1 spikes
-save_pop_unit_as_rgc_off_3391 s 1000 rgc 3391 0 0 spikes
+save_pop_unit_as_bp_3391 f 500 bipolar 3391 0 0 diff
 
-save_pop_unit_as_rgc_on_3538 s 1000 rgc 3538 0 1 spikes
-save_pop_unit_as_rgc_off_3538 s 1000 rgc 3538 0 0 spikes
+save_pop_unit_as_bp_3538 f 500 bipolar 3538 0 0 diff
 
-save_pop_unit_as_rgc_on_3989 s 1000 rgc 3989 0 1 spikes
-save_pop_unit_as_rgc_off_3989 s 1000 rgc 3989 0 0 spikes
+save_pop_unit_as_bp_3989 f 500 bipolar 3989 0 0 diff
 
-save_pop_unit_as_rgc_on_3612 s 1000 rgc 3612 0 1 spikes
-save_pop_unit_as_rgc_off_3612 s 1000 rgc 3612 0 0 spikes
+save_pop_unit_as_bp_3612 f 500 bipolar 3612 0 0 diff
 
-save_pop_unit_as_rgc_on_3761 s 1000 rgc 3761 0 1 spikes
-save_pop_unit_as_rgc_off_3761 s 1000 rgc 3761 0 0 spikes
+save_pop_unit_as_bp_3761 f 500 bipolar 3761 0 0 diff
 
-save_pop_unit_as_rgc_on_3694 s 1000 rgc 3694 0 1 spikes
-save_pop_unit_as_rgc_off_3694 s 1000 rgc 3694 0 0 spikes
+save_pop_unit_as_bp_3694 f 500 bipolar 3694 0 0 diff
 
-save_pop_unit_as_rgc_on_3390 s 1000 rgc 3390 0 1 spikes
-save_pop_unit_as_rgc_off_3390 s 1000 rgc 3390 0 0 spikes
+save_pop_unit_as_bp_3390 f 500 bipolar 3390 0 0 diff
 
-save_pop_unit_as_rgc_on_3394 s 1000 rgc 3394 0 1 spikes
-save_pop_unit_as_rgc_off_3394 s 1000 rgc 3394 0 0 spikes
+save_pop_unit_as_bp_3394 f 500 bipolar 3394 0 0 diff
 
-save_pop_unit_as_rgc_on_3986 s 1000 rgc 3986 0 1 spikes
-save_pop_unit_as_rgc_off_3986 s 1000 rgc 3986 0 0 spikes
+save_pop_unit_as_bp_3986 f 500 bipolar 3986 0 0 diff
 
-save_pop_unit_as_rgc_on_3990 s 1000 rgc 3990 0 1 spikes
-save_pop_unit_as_rgc_off_3990 s 1000 rgc 3990 0 0 spikes
+save_pop_unit_as_bp_3990 f 500 bipolar 3990 0 0 diff
 
-save_pop_unit_as_rgc_on_3686 s 1000 rgc 3686 0 1 spikes
-save_pop_unit_as_rgc_off_3686 s 1000 rgc 3686 0 0 spikes
+save_pop_unit_as_bp_3686 f 500 bipolar 3686 0 0 diff
 
-save_pop_unit_as_rgc_on_3843 s 1000 rgc 3843 0 1 spikes
-save_pop_unit_as_rgc_off_3843 s 1000 rgc 3843 0 0 spikes
+save_pop_unit_as_bp_3843 f 500 bipolar 3843 0 0 diff
 
-save_pop_unit_as_rgc_on_3545 s 1000 rgc 3545 0 1 spikes
-save_pop_unit_as_rgc_off_3545 s 1000 rgc 3545 0 0 spikes
+save_pop_unit_as_bp_3545 f 500 bipolar 3545 0 0 diff
 
-save_pop_unit_as_rgc_on_3318 s 1000 rgc 3318 0 1 spikes
-save_pop_unit_as_rgc_off_3318 s 1000 rgc 3318 0 0 spikes
+save_pop_unit_as_bp_3318 f 500 bipolar 3318 0 0 diff
 
-save_pop_unit_as_rgc_on_3317 s 1000 rgc 3317 0 1 spikes
-save_pop_unit_as_rgc_off_3317 s 1000 rgc 3317 0 0 spikes
+save_pop_unit_as_bp_3317 f 500 bipolar 3317 0 0 diff
 
-save_pop_unit_as_rgc_on_3463 s 1000 rgc 3463 0 1 spikes
-save_pop_unit_as_rgc_off_3463 s 1000 rgc 3463 0 0 spikes
+save_pop_unit_as_bp_3463 f 500 bipolar 3463 0 0 diff
 
-save_pop_unit_as_rgc_on_3910 s 1000 rgc 3910 0 1 spikes
-save_pop_unit_as_rgc_off_3910 s 1000 rgc 3910 0 0 spikes
+save_pop_unit_as_bp_3910 f 500 bipolar 3910 0 0 diff
 
-save_pop_unit_as_rgc_on_3470 s 1000 rgc 3470 0 1 spikes
-save_pop_unit_as_rgc_off_3470 s 1000 rgc 3470 0 0 spikes
+save_pop_unit_as_bp_3470 f 500 bipolar 3470 0 0 diff
 
-save_pop_unit_as_rgc_on_3917 s 1000 rgc 3917 0 1 spikes
-save_pop_unit_as_rgc_off_3917 s 1000 rgc 3917 0 0 spikes
+save_pop_unit_as_bp_3917 f 500 bipolar 3917 0 0 diff
 
-save_pop_unit_as_rgc_on_4063 s 1000 rgc 4063 0 1 spikes
-save_pop_unit_as_rgc_off_4063 s 1000 rgc 4063 0 0 spikes
+save_pop_unit_as_bp_4063 f 500 bipolar 4063 0 0 diff
 
-save_pop_unit_as_rgc_on_3319 s 1000 rgc 3319 0 1 spikes
-save_pop_unit_as_rgc_off_3319 s 1000 rgc 3319 0 0 spikes
+save_pop_unit_as_bp_3319 f 500 bipolar 3319 0 0 diff
 
-save_pop_unit_as_rgc_on_3537 s 1000 rgc 3537 0 1 spikes
-save_pop_unit_as_rgc_off_3537 s 1000 rgc 3537 0 0 spikes
+save_pop_unit_as_bp_3537 f 500 bipolar 3537 0 0 diff
 
-save_pop_unit_as_rgc_on_3835 s 1000 rgc 3835 0 1 spikes
-save_pop_unit_as_rgc_off_3835 s 1000 rgc 3835 0 0 spikes
+save_pop_unit_as_bp_3835 f 500 bipolar 3835 0 0 diff
 
-save_pop_unit_as_rgc_on_3316 s 1000 rgc 3316 0 1 spikes
-save_pop_unit_as_rgc_off_3316 s 1000 rgc 3316 0 0 spikes
+save_pop_unit_as_bp_3316 f 500 bipolar 3316 0 0 diff
 
-save_pop_unit_as_rgc_on_4062 s 1000 rgc 4062 0 1 spikes
-save_pop_unit_as_rgc_off_4062 s 1000 rgc 4062 0 0 spikes
+save_pop_unit_as_bp_4062 f 500 bipolar 4062 0 0 diff
 
-save_pop_unit_as_rgc_on_3985 s 1000 rgc 3985 0 1 spikes
-save_pop_unit_as_rgc_off_3985 s 1000 rgc 3985 0 0 spikes
+save_pop_unit_as_bp_3985 f 500 bipolar 3985 0 0 diff
 
-save_pop_unit_as_rgc_on_4064 s 1000 rgc 4064 0 1 spikes
-save_pop_unit_as_rgc_off_4064 s 1000 rgc 4064 0 0 spikes
+save_pop_unit_as_bp_4064 f 500 bipolar 4064 0 0 diff
 
-save_pop_unit_as_rgc_on_3769 s 1000 rgc 3769 0 1 spikes
-save_pop_unit_as_rgc_off_3769 s 1000 rgc 3769 0 0 spikes
+save_pop_unit_as_bp_3769 f 500 bipolar 3769 0 0 diff
 
-save_pop_unit_as_rgc_on_4061 s 1000 rgc 4061 0 1 spikes
-save_pop_unit_as_rgc_off_4061 s 1000 rgc 4061 0 0 spikes
+save_pop_unit_as_bp_4061 f 500 bipolar 4061 0 0 diff
 
-save_pop_unit_as_rgc_on_3389 s 1000 rgc 3389 0 1 spikes
-save_pop_unit_as_rgc_off_3389 s 1000 rgc 3389 0 0 spikes
+save_pop_unit_as_bp_3389 f 500 bipolar 3389 0 0 diff
 
-save_pop_unit_as_rgc_on_3611 s 1000 rgc 3611 0 1 spikes
-save_pop_unit_as_rgc_off_3611 s 1000 rgc 3611 0 0 spikes
+save_pop_unit_as_bp_3611 f 500 bipolar 3611 0 0 diff
 
-save_pop_unit_as_rgc_on_3620 s 1000 rgc 3620 0 1 spikes
-save_pop_unit_as_rgc_off_3620 s 1000 rgc 3620 0 0 spikes
+save_pop_unit_as_bp_3620 f 500 bipolar 3620 0 0 diff
 
-save_pop_unit_as_rgc_on_3991 s 1000 rgc 3991 0 1 spikes
-save_pop_unit_as_rgc_off_3991 s 1000 rgc 3991 0 0 spikes
+save_pop_unit_as_bp_3991 f 500 bipolar 3991 0 0 diff
 
-save_pop_unit_as_rgc_on_3395 s 1000 rgc 3395 0 1 spikes
-save_pop_unit_as_rgc_off_3395 s 1000 rgc 3395 0 0 spikes
+save_pop_unit_as_bp_3395 f 500 bipolar 3395 0 0 diff
 
-save_pop_unit_as_rgc_on_3760 s 1000 rgc 3760 0 1 spikes
-save_pop_unit_as_rgc_off_3760 s 1000 rgc 3760 0 0 spikes
+save_pop_unit_as_bp_3760 f 500 bipolar 3760 0 0 diff
 
-save_pop_unit_as_rgc_on_3320 s 1000 rgc 3320 0 1 spikes
-save_pop_unit_as_rgc_off_3320 s 1000 rgc 3320 0 0 spikes
+save_pop_unit_as_bp_3320 f 500 bipolar 3320 0 0 diff
 
-save_pop_unit_as_rgc_on_4065 s 1000 rgc 4065 0 1 spikes
-save_pop_unit_as_rgc_off_4065 s 1000 rgc 4065 0 0 spikes
+save_pop_unit_as_bp_4065 f 500 bipolar 4065 0 0 diff
 
-save_pop_unit_as_rgc_on_3315 s 1000 rgc 3315 0 1 spikes
-save_pop_unit_as_rgc_off_3315 s 1000 rgc 3315 0 0 spikes
+save_pop_unit_as_bp_3315 f 500 bipolar 3315 0 0 diff
 
-save_pop_unit_as_rgc_on_3695 s 1000 rgc 3695 0 1 spikes
-save_pop_unit_as_rgc_off_3695 s 1000 rgc 3695 0 0 spikes
+save_pop_unit_as_bp_3695 f 500 bipolar 3695 0 0 diff
 
-save_pop_unit_as_rgc_on_4060 s 1000 rgc 4060 0 1 spikes
-save_pop_unit_as_rgc_off_4060 s 1000 rgc 4060 0 0 spikes
+save_pop_unit_as_bp_4060 f 500 bipolar 4060 0 0 diff
 
-save_pop_unit_as_rgc_on_3685 s 1000 rgc 3685 0 1 spikes
-save_pop_unit_as_rgc_off_3685 s 1000 rgc 3685 0 0 spikes
+save_pop_unit_as_bp_3685 f 500 bipolar 3685 0 0 diff
 
-save_pop_unit_as_rgc_on_3546 s 1000 rgc 3546 0 1 spikes
-save_pop_unit_as_rgc_off_3546 s 1000 rgc 3546 0 0 spikes
+save_pop_unit_as_bp_3546 f 500 bipolar 3546 0 0 diff
 
-save_pop_unit_as_rgc_on_3243 s 1000 rgc 3243 0 1 spikes
-save_pop_unit_as_rgc_off_3243 s 1000 rgc 3243 0 0 spikes
+save_pop_unit_as_bp_3243 f 500 bipolar 3243 0 0 diff
 
-save_pop_unit_as_rgc_on_3918 s 1000 rgc 3918 0 1 spikes
-save_pop_unit_as_rgc_off_3918 s 1000 rgc 3918 0 0 spikes
+save_pop_unit_as_bp_3918 f 500 bipolar 3918 0 0 diff
 
-save_pop_unit_as_rgc_on_3396 s 1000 rgc 3396 0 1 spikes
-save_pop_unit_as_rgc_off_3396 s 1000 rgc 3396 0 0 spikes
+save_pop_unit_as_bp_3396 f 500 bipolar 3396 0 0 diff
 
-save_pop_unit_as_rgc_on_3244 s 1000 rgc 3244 0 1 spikes
-save_pop_unit_as_rgc_off_3244 s 1000 rgc 3244 0 0 spikes
+save_pop_unit_as_bp_3244 f 500 bipolar 3244 0 0 diff
 
-save_pop_unit_as_rgc_on_3909 s 1000 rgc 3909 0 1 spikes
-save_pop_unit_as_rgc_off_3909 s 1000 rgc 3909 0 0 spikes
+save_pop_unit_as_bp_3909 f 500 bipolar 3909 0 0 diff
 
-save_pop_unit_as_rgc_on_3471 s 1000 rgc 3471 0 1 spikes
-save_pop_unit_as_rgc_off_3471 s 1000 rgc 3471 0 0 spikes
+save_pop_unit_as_bp_3471 f 500 bipolar 3471 0 0 diff
 
-save_pop_unit_as_rgc_on_4137 s 1000 rgc 4137 0 1 spikes
-save_pop_unit_as_rgc_off_4137 s 1000 rgc 4137 0 0 spikes
+save_pop_unit_as_bp_4137 f 500 bipolar 4137 0 0 diff
 
-save_pop_unit_as_rgc_on_3388 s 1000 rgc 3388 0 1 spikes
-save_pop_unit_as_rgc_off_3388 s 1000 rgc 3388 0 0 spikes
+save_pop_unit_as_bp_3388 f 500 bipolar 3388 0 0 diff
 

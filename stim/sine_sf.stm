@@ -7,8 +7,8 @@
 stim_type  sine      # Stimulus type
 stim_samp 1000.0     # Stimulus sampling rate
 
-st0          0.000   # start time (s)
-stn        100.000   # duration (s)
+st0          0.1    # start time (s)
+stn          1.000   # duration (s)
 cx           0       # center (deg)
 cy           0       # center (deg)
 direction    0       # Direction of drift
@@ -17,7 +17,7 @@ phase        0       # Degrees
 tf         5.0       # Temporal frequency (Hz)
 size       2.8       # Degrees of visual angle
 aptype       0       # Aperture type (0-none, 1-circ)
-bgval      0.0       # background value [0..1]
+bgval      0.5       # background value [0..1]
 contrast   1.0       # Contrast
 maxlum     1.0       # Maximum luminance
 stim_nrpt    1       # Number of repeats

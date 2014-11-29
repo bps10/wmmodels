@@ -58,6 +58,7 @@ def main():
 
         if arg in cone_inputs:
             plots.append('c_inputs')
+            cell_type = 'bp'
 
     if ('stack' in plots or 'h_time' in plots or 'knn' in plots or 
         'tuning' in plots or 'c_inputs' in plots):
@@ -83,7 +84,7 @@ def main():
         plot.s_cone_hist()
 
     if 'c_inputs' in plots:
-        plot.cone_inputs(d)
+        plot.cone_inputs(d, cell_type)
 
 
 if __name__ == '__main__':

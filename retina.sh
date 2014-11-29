@@ -48,12 +48,7 @@ while [ $i -lt $# ]; do
 
     i=$((i+1))
 done
-
-GUI=0 # do not run gui unless flag is thrown
-if [ $(exists_in gui "${OPTS[*]}") ]
-then
-    GUI=1
-fi
+check_gui_flag
 
 #-- 2. Print some info about parameters or a help file
 print_info
@@ -82,11 +77,14 @@ else
     then
 	run_wm ${MODEL} ${STIM_FILE}
 	
+	if [ $GUI == 0 ] # make sure model was truly run
+	then
 	#-- save current variables as new defaults
-	save_defaults
+	    save_defaults
 
         #-- dump results when necessary
-	dump_results
+	    dump_results
+	fi
     fi
 
 fi

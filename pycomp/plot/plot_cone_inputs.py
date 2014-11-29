@@ -8,7 +8,7 @@ import nearest_neighbor as nn
 from util.parse_txt import clean_data, parse_txt
 
 
-def cone_inputs(d):
+def cone_inputs(d, cell_type='bp'):
     '''
     '''
     data, celllist = clean_data(d, True)
@@ -37,11 +37,6 @@ def cone_inputs(d):
     ncells = len(celllist)
     time_bin = 15
 
-    '''psth = compute_psth(data[1]['rgc_on'][42], time.max(), delta_t=time_bin)
-    fft =  np.fft.fft(psth)
-    plt.figure(); plt.plot(np.real(fft))
-    plt.figure(); plt.plot(psth)'''
-
     # Add in diamond boarders
     ax.plot([-1, 0], [0, 1], 'k')
     ax.plot([0, 1], [1, 0], 'k')
@@ -49,43 +44,61 @@ def cone_inputs(d):
     ax.plot([0, -1], [-1, 0], 'k')
 
     on_rgc = np.zeros((ncells, 3))
-    off_rgc = np.zeros((ncells, 100))
-    for t in data['meta']['trials']:
-        for i in data[t]['rgc_on']:
-            cell = data[t]['rgc_on'][i]
-            psth = compute_psth(cell, time.max(), delta_t=time_bin)
-            fft =  np.fft.fft(psth)
+    off_rgc = np.zeros((ncells, 3))
 
-            amp = np.real(fft[tf]) * 2 / N
-            on_rgc[i, t] = amp / cone_contrast[t] * -1
-
-        for i in data[t]['rgc_off']:
-            cell = data[t]['rgc_off'][i]
-            psth = compute_psth(cell, time.max(), delta_t=time_bin)
-            fft =  np.fft.fft(psth)
-
-            amp = np.real(fft[tf]) * 2 / N
-            off_rgc[i, t] = amp / cone_contrast[t] * -1
-
-    on_cone_input = (on_rgc.T / np.abs(on_rgc).sum(1)).T
-    off_cone_input = (off_rgc.T / np.abs(off_rgc).sum(1)).T
+    if cell_type == 'h': # horizontal cells
+        cells = ['h1', 'h2']
+    elif cell_type == 'rgc':
+        cells = ['rgc_on', 'rgc_off']
+        bins = np.arange(0, time.max(), 20)
+    elif cell_type == 'bp':
+        cells = ['bp']
+    else:
+        raise InputError('cell_type must equal horiz or rgc')
     
-    for cone in range(0, len(on_cone_input[:, 0])):
-        ind = np.where(celldat[:, 0] == float(celllist[cone]))[0]
-        type = round(celldat[ind, 1])
-        if type == 0.0:
-            c = 'b'
-        elif type == 1.0:
-            c = 'g'
-        else:
-            c = 'r'
-        ax.plot(on_cone_input[cone, 2], on_cone_input[cone, 1], 'o', color=c)
-        ax.plot(off_cone_input[cone, 2], off_cone_input[cone, 1], 's', color=c)
+    r = {}
+    for c in cells:
+        r[c] = np.zeros((ncells, 3))
+
+    for t in data['meta']['trials']: # for each trial
+        for c in cells: # for each cell type
+            for i in range(ncells): # for each cell
+                cell = data[t][c][i]
+                if cell_type == 'rgc':
+                    cell = compute_psth(cell, time.max(), delta_t=20)
+                
+                fft =  np.fft.fft(cell)
+                amp  = np.real(fft[tf]) * 2 / N
+                # take abs because phase doesn't matter
+                r[c][i, t] = amp / cone_contrast[t]
+    for c in cells:
+        r[c] = (r[c].T / np.abs(r[c]).sum(1)).T
+
+        for cone in range(0, len(r[c][:, 0])):
+            ind = np.where(celldat[:, 0] == float(celllist[cone]))[0]
+            type = round(celldat[ind, 1])
+            sym = find_shape_color(type, c)
+            ax.plot(r[c][cone, 2], r[c][cone, 1], sym)
 
     ax.set_xlim([-1.1, 1.1])
     ax.set_ylim([-1.1, 1.1])
 
     plt.show()
+
+
+def find_shape_color(type, c):
+    if type == 0.0:
+        color = 'b'
+    elif type == 1.0:
+        color = 'g'
+    else:
+        color = 'r'
+    onoff = c.split('_')
+    if 'off' in onoff:
+        sym = 's'
+    else:
+        sym = 'o'
+    return sym + color
 
 
 def compute_psth(spike_times, time_ms, delta_t=16):

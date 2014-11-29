@@ -153,7 +153,7 @@ def sf_tuning_curve(d, cell_type='h'):
                 cell = data[t][c][i]
                 if cell_type == 'rgc':
                     cell = compute_psth(cell, time.max(), delta_t=20)
-                    
+                
                 fft =  np.fft.fft(cell)
                 # take abs because phase doesn't matter
                 r[c][i, t] = np.abs(fft[tf]) * 2 / N

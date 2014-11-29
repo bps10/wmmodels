@@ -8,8 +8,8 @@ stim_type  sine      # Stimulus type
 stim_samp 1000.0     # Stimulus sampling rate
 stim_form 3c
 
-st0          0.000   # start time (s)
-stn        100.000   # duration (s)
+st0          0.100   # start time (s)
+stn          1.000   # duration (s)
 cx           0       # center (deg)
 cy           0       # center (deg)
 direction    0       # Direction of drift

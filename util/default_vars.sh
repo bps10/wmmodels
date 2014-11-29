@@ -1,13 +1,13 @@
 #! /bin/bash
  
-MODEL=macaque
+MODEL=human
 FUND=true
 SHAPE=full_field
-H1GP=0.1
-H1GH=3.0
+H1GP=0.075
+H1GH=0.05
 H1P0=0.05
 H1ES=3413
-H1W=0.8
+H1W=0.9
 H2GP=1.0
 H2GH=0.2
 H2GH=0.2
@@ -16,5 +16,5 @@ H2ES=3490857
 H2S=1.0
 H2M=0.05
 H2L=0.05
-H2W=0.2
+H2W=0.3
 TN=512
