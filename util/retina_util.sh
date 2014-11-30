@@ -348,10 +348,13 @@ function run_wm {
 
 
 function run_mosaic {
-    wm mod ${MODEL}/Ret_Mesh_H2.moo stim/test_flash.stm \
-	response/retina.rsp  tN ${TN}  gui_flag 1 \
+    # remove old mosaic model
+    rm mosaics/model.mosaic
+
+    wm mod ${MODEL}/run.moo stim/test_flash.stm \
+	response/retina.rsp  tn ${TN}  gui_flag ${GUI} \
 	retina0/mesh_dump_type mosaic_coord \
-	retina0/mesh_dump_file mosaic/model.mosaic
+	retina0/mesh_dump_file mosaics/model.mosaic
     
     python pycomp mosaic
 

@@ -1,6 +1,6 @@
 #! /bin/bash
  
-MODEL=human
+MODEL=macaque
 FUND=true
 SHAPE=full_field
 H1GP=0.075

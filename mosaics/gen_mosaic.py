@@ -180,11 +180,17 @@ plt.plot(xn[Sn], yn[Sn], 'bo')
 
 plt.show()
 
-# add id numbers
-ids = np.arange(len(data[:, 3]))
-data[:, 1:] = data[:, :3]
-data[:, 0] = ids
+# save space separated file
+fid = open('subj_mosaic.txt', 'w+')
+for row in data:
+    line = ' ' + str(round(row[1], 4)) + '  ' + str(round(row[2], 4))
+    if row[0] == 0:
+        line += '  S\n'
+    elif row[0] == 1:
+        line += '  M\n'
+    elif row[0] == 2:
+        line += '  L\n'
+    fid.write(line)
+fid.close()
 
-# save tab separated file
-np.savetxt('subj.mosaic', data, delimiter='\t',
-           fmt="%d %d %f %f")
+#np.savetxt('subj.mosaic', data, delimiter='  ', fmt="%f %f %s")

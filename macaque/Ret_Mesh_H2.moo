@@ -175,7 +175,7 @@ mod_trial_reset  1  # reset state between stimuli, default 1
   cone_mosaic_flag    1      # [0] Color mosaic (0-cartesian, 1-mosaic)
 
   <cone_mosaic>
-   #file    mosaic01.txt  # Read from file
+    file    mosaics/subj_mosaic.txt  # Read from file
     arrangement RegJit    # "Spiral", "RegJit"
     custom_cid_file null  # Reset ConeID's from named file ("null" to ignore)
     gui          0        # Show GUI for cone mosaic [1]
