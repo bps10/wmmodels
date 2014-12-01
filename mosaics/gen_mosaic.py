@@ -23,174 +23,190 @@ def point_in_poly(x,y,poly):
 
     return inside
 
-model = np.genfromtxt('model.mosaic')
+def gen_mosaic(mosaic_file='model.mosaic', subj_file='10001_WT.csv'):
+    model = np.genfromtxt(mosaic_file)
+    
+    subj = np.genfromtxt(subj_file, delimiter=',')
+    subj[:, :2] = subj[:, :2] / 4.6 # scale it to be same size
+    subj[:, :2] = subj[:, :2] + 40 # offset to be in center
 
-subj = np.genfromtxt('10001_WT.csv', delimiter=',')
-subj[:, :2] = subj[:, :2] / 4.6 # scale it to be same size
-subj[:, :2] = subj[:, :2] + 40 # offset to be in center
+    hull = ConvexHull(subj[:, :2])
+    outline = zip(subj[hull.vertices, 0], subj[hull.vertices, 1])
 
-hull = ConvexHull(subj[:, :2])
-outline = zip(subj[hull.vertices, 0], subj[hull.vertices, 1])
+    inside = np.zeros((len(model[:, 2]), 1))
+    for i in range(len(model[:, 2])):
+        x = model[i, 2]
+        y = model[i, 3]
+        
+        inside[i] = point_in_poly(x, y, outline)
+        
+    print 'added {0} nodes'.format(str(len(subj[:, 0])))
+    print 'deleted {0} nodes'.format(str(sum(inside)))
 
-inside = np.zeros((len(model[:, 2]), 1))
-for i in range(len(model[:, 2])):
-    x = model[i, 2]
-    y = model[i, 3]
+    outside = np.array([not i for i in inside])
 
-    inside[i] = point_in_poly(x, y, outline)
+    # plot
+    plt.figure()
 
-print 'added {0} nodes'.format(str(len(subj[:, 0])))
-print 'deleted {0} nodes'.format(str(sum(inside)))
+    S = subj[:, 2] == 1
+    M = subj[:, 2] == 2
+    L = subj[:, 2] == 3
+    plt.plot(subj[L, 0], subj[L, 1], 'ro')
+    plt.plot(subj[M, 0], subj[M, 1], 'go')
+    plt.plot(subj[S, 0], subj[S, 1], 'bo')
 
-outside = np.array([not i for i in inside])
+    S = model[outside, 1] == 0
+    M = model[outside, 1] == 1
+    L = model[outside, 1] == 2
+    x = model[outside, 2]
+    y = model[outside, 3]
+    plt.plot(x[L], y[L], 'ro', alpha=0.4)
+    plt.plot(x[M], y[M], 'go', alpha=0.4)
+    plt.plot(x[S], y[S], 'bo', alpha=0.4)
 
-# plot
-plt.figure()
+    # kill nodes that are too close
+    # ------------------------------
+    d = np.vstack([subj[:, :2], model[outside, 2:]])
+    data = np.zeros((d.shape[0], d.shape[1] + 2))
 
-#plt.plot(subj[:, 0], subj[:, 1], 'ko')
-#plt.plot(subj[hull.vertices, 0], subj[hull.vertices, 1], 'ro')
+    # append cone type
+    d_type = subj[:, 2] - 1
+    m_type = model[outside, 1]
+    types = np.concatenate([d_type, m_type])
 
-S = subj[:, 2] == 1
-M = subj[:, 2] == 2
-L = subj[:, 2] == 3
-plt.plot(subj[L, 0], subj[L, 1], 'ro')
-plt.plot(subj[M, 0], subj[M, 1], 'go')
-plt.plot(subj[S, 0], subj[S, 1], 'bo')
+    data[:, 0] = types
 
-S = model[outside, 1] == 0
-M = model[outside, 1] == 1
-L = model[outside, 1] == 2
-x = model[outside, 2]
-y = model[outside, 3]
-plt.plot(x[L], y[L], 'ro', alpha=0.4)
-plt.plot(x[M], y[M], 'go', alpha=0.4)
-plt.plot(x[S], y[S], 'bo', alpha=0.4)
+    # keep track of model vs data nodes
+    d_nodes = np.zeros((len(subj[:, 2])))
+    m_nodes = np.ones((len(model[outside, 2])))
+    nodes = np.concatenate([d_nodes, m_nodes])
+    data[:, 3] = nodes
 
-#plt.show()
+    # construct kd tree
+    tree = KDTree(d, 2)
+    data[:, 1:3] = tree.data
+    nn = tree.query(subj[:, :2], 2)
 
+    too_close = nn[0][:, 1] < 0.8
+    indexes = nn[1][too_close, 1]
+    kill_ind = indexes[indexes > len(subj[:, 2])]
 
-# kill nodes that are too close
-# ------------------------------
-d = np.vstack([subj[:, :2], model[outside, 2:]])
+    keep = []
+    for i in range(len(data[:, 3])):
+        if i not in kill_ind:
+            keep.append(i)
+    data = data[keep, :]
 
-data = np.zeros((d.shape[0], d.shape[1] + 2))
+    print 'deleted {0} additional nodes'.format(str(len(kill_ind)))
 
-# append cone type
-d_type = subj[:, 2] - 1
-m_type = model[outside, 1]
-types = np.concatenate([d_type, m_type])
+    # add new nodes in holes
+    delta = 1.95
+    nodes = tree.data
+    windows = []
+    for x in np.arange(30.5, 90, delta):
+        for y in np.arange(30.4, 90, delta):
+            go_on = True
+            i = 0
+            maxi = len(nodes) - 1
+            while go_on:
+                node = nodes[i]
+                if (node[0] > x and node[0] < x + delta and
+                    node[1] > y and node[1] < y + delta):
 
-data[:, 0] = types
-
-# keep track of model vs data nodes
-d_nodes = np.zeros((len(subj[:, 2])))
-m_nodes = np.ones((len(model[outside, 2])))
-nodes = np.concatenate([d_nodes, m_nodes])
-data[:, 3] = nodes
-
-# construct kd tree
-tree = KDTree(d, 2)
-data[:, 1:3] = tree.data
-nn = tree.query(subj[:, :2], 2)
-
-too_close = nn[0][:, 1] < 0.8
-indexes = nn[1][too_close, 1]
-kill_ind = indexes[indexes > len(subj[:, 2])]
-
-keep = []
-for i in range(len(data[:, 3])):
-    if i not in kill_ind:
-        keep.append(i)
-data = data[keep, :]
-
-print 'deleted {0} additional nodes'.format(str(len(kill_ind)))
-
-# add new nodes in holes
-delta = 1.95
-#edge = np.sqrt(delta / 2)
-nodes = tree.data
-windows = []
-for x in np.arange(30.5, 90, delta):
-    for y in np.arange(30.4, 90, delta):
-        go_on = True
-        i = 0
-        maxi = len(nodes) - 1
-        while go_on:
-            node = nodes[i]
-            '''poly = [(x - delta, y), (x + delta, y), 
-                    (x + edge, y + edge), 
-                    (x - edge, y + edge),
-                    (x + edge, y - edge), 
-                    (x - edge, y - edge)]
-            inside = point_in_poly(node[0], node[1], poly)
-            if inside:'''
-            if (node[0] > x and node[0] < x + delta and
-                node[1] > y and node[1] < y + delta):
-
-                # remove node
-                nodes = np.delete(nodes, i, 0)
-                go_on = False
+                    # remove node
+                    nodes = np.delete(nodes, i, 0)
+                    go_on = False
                 
-            # move onto next window
-            elif i >= maxi:
-                windows.append((x, y))
-                go_on = False
+                # move onto next window
+                elif i >= maxi:
+                    windows.append((x, y))
+                    go_on = False
 
-            else: # keep going and increment counter
-                i += 1
+                else: # keep going and increment counter
+                    i += 1
 
-np.random.seed(2568) # make sure rand generator in known state
-for window in windows:
-    newcone = np.zeros((4))
-    newcone[0] = np.random.randint(1, 3, 1) # cone type (M or L)
-    newcone[1] = window[0] + (delta / 2)
-    newcone[2] = window[1] + (delta / 2)
-    newcone[3] = 2 # is a new cone
+    np.random.seed(2568) # make sure rand generator in known state
+    for window in windows:
+        newcone = np.zeros((4))
+        newcone[0] = np.random.randint(1, 3, 1) # cone type (M or L)
+        newcone[1] = window[0] + (delta / 2)
+        newcone[2] = window[1] + (delta / 2)
+        newcone[3] = 2 # is a new cone
+        
+        # add the new cone to data
+        data = np.vstack([data, newcone])
 
-    # add the new cone to data
-    data = np.vstack([data, newcone])
+    print 'added {0} additional nodes'.format(str(len(windows)))
 
-print 'added {0} additional nodes'.format(str(len(windows)))
+    # plot final mosaic
+    plt.figure()
 
-# plot final mosaic
-plt.figure()
+    S = data[:, 0] == 0
+    M = data[:, 0] == 1
+    L = data[:, 0] == 2
+    x = data[:, 1]
+    y = data[:, 2]
 
-S = data[:, 0] == 0
-M = data[:, 0] == 1
-L = data[:, 0] == 2
-x = data[:, 1]
-y = data[:, 2]
+    plt.plot(x[L], y[L], 'ro', alpha=0.4)
+    plt.plot(x[M], y[M], 'go', alpha=0.4)
+    plt.plot(x[S], y[S], 'bo', alpha=0.4)
 
-plt.plot(x[L], y[L], 'ro', alpha=0.4)
-plt.plot(x[M], y[M], 'go', alpha=0.4)
-plt.plot(x[S], y[S], 'bo', alpha=0.4)
+    # find new nodes
+    new = data[:, 3] == 2
+    # index on new nodes
+    Sn = data[new, 0] == 0
+    Mn = data[new, 0] == 1
+    Ln = data[new, 0] == 2
+    xn = data[new, 1]
+    yn = data[new, 2]
 
-# find new nodes
-new = data[:, 3] == 2
-# index on new nodes
-Sn = data[new, 0] == 0
-Mn = data[new, 0] == 1
-Ln = data[new, 0] == 2
-xn = data[new, 1]
-yn = data[new, 2]
+    plt.plot(xn[Ln], yn[Ln], 'ro')
+    plt.plot(xn[Mn], yn[Mn], 'go')
+    plt.plot(xn[Sn], yn[Sn], 'bo')
 
-plt.plot(xn[Ln], yn[Ln], 'ro')
-plt.plot(xn[Mn], yn[Mn], 'go')
-plt.plot(xn[Sn], yn[Sn], 'bo')
+    plt.show()
 
-plt.show()
+    # save space separated file
+    '''fid = open('subj_mosaic.txt', 'w+')
+    for row in data:
+        line = str(round(row[1], 4)) + '  ' + str(round(row[2], 4))
+        if row[0] == 0:
+            line += '  S\n'
+        elif row[0] == 1:
+            line += '  M\n'
+        elif row[0] == 2:
+            line += '  L\n'
+        fid.write(line)
+    fid.close()'''
 
-# save space separated file
-fid = open('subj_mosaic.txt', 'w+')
-for row in data:
-    line = ' ' + str(round(row[1], 4)) + '  ' + str(round(row[2], 4))
-    if row[0] == 0:
-        line += '  S\n'
-    elif row[0] == 1:
-        line += '  M\n'
-    elif row[0] == 2:
-        line += '  L\n'
-    fid.write(line)
-fid.close()
+    # rearrange data for saving in proper format
+    data[:, 3] = data[:, 0]
+    data[:, :2] = data[:, 1:3]
+    data[:, 2] = data[:, 3]
+    data = data[:, :3]
+    np.savetxt('subj_mosaic.txt', data, delimiter='  ', fmt="%f %f %d")
 
-#np.savetxt('subj.mosaic', data, delimiter='  ', fmt="%f %f %s")
+
+def find_hc():
+    '''
+    '''
+    # get the data from the stitched together mosaic
+    data = np.genfromtxt('subj_mosaic.txt', delimiter=' ')
+
+    # create a KD tree structure
+    tree = KDTree(data[:, :2], 7)
+    
+    # get the nearest neighbors (0 = cone itself)
+    nn = tree.query(data[:, :2], 7)
+    
+    # paste together distances (n[0]) and ids (n[1])
+    out = np.hstack([nn[0][:, 1:], nn[1][:, 1:]])
+
+    # save nearest neighbor data
+    np.savetxt('neighbors.txt', out, delimiter=' ',
+               fmt="%f %f %f %f %f %f %d %d %d %d %d %d")
+
+
+if __name__ == '__main__':
+    #gen_mosaic()
+    find_hc()

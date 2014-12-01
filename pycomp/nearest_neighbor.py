@@ -30,7 +30,7 @@ def find_neighbors(FILE='mosaics/model.mosaic', cone=4065, K=10,
 
     # setup based on cell type desired
     if cell_type == 'horiz':
-        cells = {'h1': 'h1_', 'h2': 'h2_', }
+        cells = {'horiz': 'h1_', 'h2': 'h2_', }
         lFunc = lambda name, n, c: (base + name + n + ' f 500 bipolar ' + 
                                         n + ' 0 0 ' + c + '\n')
 

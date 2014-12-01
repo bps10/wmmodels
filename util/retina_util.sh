@@ -1,5 +1,7 @@
 #!/bin/bash
 
+CONE=184 #3690
+
 function check_arg {
     local val=$1
     local default=$2
@@ -67,7 +69,7 @@ function stim_gen {
 
 function knn_resp {
     if [ -z "$1" ]; then
-	local coneID=3690
+	local coneID=${CONE}
     else
 	local coneID=$1
     fi
@@ -131,7 +133,7 @@ function dump_results {
 
 
 function change_parameters {
-    DUMP_CID=3689 # macaque
+    DUMP_CID=${CONE} # macaque
     if [ $MODEL == "human" ]
     then
 	DUMP_CID=2079
@@ -171,7 +173,7 @@ function change_parameters {
     elif [[ $(exists_in ${OPTS} "${iso_cond[*]}") == true ]] 
     then
 	STIM_FILE=cone_iso_step
-	RESP_FILE=retina_line
+	RESP_FILE=retina_line_10001WT
 	
     elif [[ $OPTS == "knn" || $OPTS == "s_dist" ]]
     then
@@ -187,7 +189,7 @@ function change_parameters {
 
     elif [ $OPTS == "cone_inputs" ]
     then
-	knn_resp 3690 100 bp
+	knn_resp ${CONE} 100 bp
 	stim_gen coneiso sine_tf
 	STIM_FILE=cone_iso_step
 	RESP_FILE=knn_resp

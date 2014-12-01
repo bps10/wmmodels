@@ -176,6 +176,7 @@ mod_trial_reset  1  # reset state between stimuli, default 1
 
   <cone_mosaic>
     file    mosaics/subj_mosaic.txt  # Read from file
+    horiz_file mosaics/neighbors.txt # nearest neighbor for HC weight
     arrangement RegJit    # "Spiral", "RegJit"
     custom_cid_file null  # Reset ConeID's from named file ("null" to ignore)
     gui          0        # Show GUI for cone mosaic [1]
