@@ -87,7 +87,7 @@ function knn_resp {
     cat response/header.rsp > response/knn_resp.rsp
 
     # Paste the second part of the stimulus file
-    python pycomp/nearest_neighbor.py ${coneID} ${Ncones} ${cell_type} >> \
+    python pycomp/util/nearest_neighbor.py ${coneID} ${Ncones} ${cell_type} >>\
 	response/knn_resp.rsp
 
 }
@@ -298,12 +298,9 @@ function run_s_dist_analysis {
 
 	# run wm with new H2 e_seed
 	run_wm ${MODEL} ${STIM_FILE}
-	
-	# dump the results to a text file
-	dump_results -f
 
 	# rename dumped data, move into dir (make if doesn't exist)
-	mv "results/txt_files/zz.txt" "results/txt_files/s_dist/$H2ES.txt"
+	mv "results/nd_files/zz.nd" "results/nd_files/s_dist/$H2ES.nd"
 
 	# increase count
 	count=$(($count+1))

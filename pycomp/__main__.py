@@ -3,7 +3,7 @@ import sys, os
 import numpy as np
 
 import plot as plot
-from util import parse_txt
+from util.nd_read import nd_read
 
 
 def main():
@@ -62,7 +62,7 @@ def main():
 
     if ('stack' in plots or 'h_time' in plots or 'knn' in plots or 
         'tuning' in plots or 'c_inputs' in plots):
-        d = parse_txt()
+        d = nd_read('results/nd_files/zz.nd')
 
     if 'stack' in plots:
         plot.stack(d)

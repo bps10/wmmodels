@@ -4,8 +4,7 @@ import matplotlib.pylab as plt
 
 from base import plot as pf
 from base import files as f
-import nearest_neighbor as nn
-from util.parse_txt import clean_data, parse_txt
+from util import nearest_neighbor as nn
 
 
 def knn(d):

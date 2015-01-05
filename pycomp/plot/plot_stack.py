@@ -3,8 +3,7 @@ import numpy as np
 import matplotlib.pylab as plt
 
 from base import plot as pf
-from util.parse_txt import clean_data
-from plot.plot_cone_inputs import compute_psth
+from analysis import compute_psth
 
 def stack(d):
     '''

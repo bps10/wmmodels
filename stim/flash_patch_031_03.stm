@@ -1,0 +1,72 @@
+#
+#  flash_patch_031_03.stm
+#
+stim_type  sine        # Direction tuning
+stim_samp 31.25        # Stimulus sampling rate
+stim_phtau  0.0        # Instantaneous flash
+
+st0            0.000   # start time (s)
+stn            5.000   # duration (s)
+cx             0       # center (deg)
+cy             0       # center (deg)
+direction      0       # Direction of drift
+sf             0       # Spatial period (cyc/deg)
+phase         90.1     # Degrees
+tf             3.125   # Temporal frequency (cyc/sec)
+size           3.0     # Degrees of visual angle
+aptype         1       # Aperture type (0-none, 1-circular, 2-square, 3-Gauss)
+bgval          0.0     # background value [0..1]
+contrast       0.5     # Contrast
+square_thresh  0       #
+maxlum         1.0     # Maximum luminance
+stim_nrpt      1       # Number of repeats
+
+stim_frame_xn        64      #  x size
+stim_frame_yn        64      #  y size
+stim_frame_tn      1024      #  t size
+stim_frame_sscale     0.1    # degr/pix
+stim_frame_tscale     0.002  # sec/frame
+
+###############################################################################
+#
+#  Explanation of how the intermittent flash is generated based on the 
+#  parameters above.
+#
+#  (1) The 'tf' is 3.125 Hz, thus the period is 320 ms.
+#
+#  (2) The 'phase' is set to 90.1 deg, which causes the first cycle to start
+#      at the beginning of a negative lobe (that explains the 90 deg part of
+#      the phase value, but see below for the 0.1 part). 
+#
+#  (3) The sine wave is converted to a square wave by binarizing the values
+#      around 'square_thresh', which is set to zero.  To avoid the sinewave
+#      taking a value of 0 on a sampling point, we add 0.1 deg to the phase.
+#      This prevents the uncertainty surrounding whether a 0 value should be
+#      binarized to +1 or -1.
+#
+#
+#  The above three steps creates the following time sequence, which is 80
+#  frames (2 ms / frame) of black, followed by 80 frames of white, etc.,
+#
+#   __________**********__________**********__________**********
+#   80 frames
+#
+#
+#  (4) Now, we impose on that a 'stim_samp' frequency of 31.25 Hz, which means
+#      that the above stimulus will only be actually shown every 32 ms, which
+#      means we keep every 16th frame from above, and replace the others with
+#      the background value (shown below as -, to distinguish it from _):
+#
+#             one flash       one flash       ...  
+#             |               |
+#   80 frames |   15 blank    |
+#   ... ______*---------------*---------------*---------------*-- ...
+#
+#   Thus, during each cycle of the underlying 3.125 Hz TF, you get 5 flashes
+#   that occur at the 31.25 Hz stimulus sampling rate.
+#
+#  (5) Finally, if contrast is less than 1.0, for example 0.5, then instead of
+#      having flashes of "1" among "0", you will get flashes of 0.75 and of
+#      0.25 among zero.  See comments in 'flash_patch_100_10.stm' for diagram.
+#
+###############################################################################

@@ -81,9 +81,6 @@ else
 	then
 	#-- save current variables as new defaults
 	    save_defaults
-
-        #-- dump results when necessary
-	    dump_results
 	fi
     fi
 
