@@ -1,3 +1,4 @@
+import numpy as np
 
 
 def num(s):
@@ -9,6 +10,12 @@ def num(s):
         try:
             return float(s)
         except ValueError: # case when actually is a string
-            return s
+            try: 
+                s = s.split(' ')
+                s = np.array(s, dtype='|S4')
+                s = s.astype(np.float)
+                return s
+            except ValueError:
+                return s
 
 

@@ -1,60 +1,66 @@
 from __future__ import division
 import numpy as np
 
-from util import get_time, get_cell_data, num
+from util import get_time, get_cell_data, get_cell_list, get_cell_type, num
 
 
-def compute_cone_input(d, cell_type, celllist, cone_contrast=[49, 22, 19]):
+def response(d, cell_type, analysis_type,
+             cone_contrast=[49, 22, 19]):
     '''
     '''
+    # Get cell list from data keys
+    celllist = get_cell_list(d)
 
     # Load params from meta data
-    tf = num(d['const']['tf']['val']) # temporal frequency (Hz)
     N = num(d['const']['MOO_tn']['val']) # time steps
-    sf = num(d['const']['sf']['val']) # spatial freq (cpd)
-    deg2um = 0.00534 # macaque conversion (cpd to micron)
 
     time = get_time(d)
     ncells = len(celllist)
     time_bin = 15
 
-    on_rgc = np.zeros((ncells, 3))
-    off_rgc = np.zeros((ncells, 3))
-
-    if cell_type == 'h': # horizontal cells
-        cells = ['h1', 'h2']
-    elif cell_type == 'rgc':
-        cells = ['rgc_on', 'rgc_off']
-    elif cell_type == 'bp':
-        cells = ['bp']
+    normalize = False
+    # analysis specific parameters
+    if analysis_type == 'cone_inputs':
+        normalize = True
+        sf = num(d['const']['sf']['val']) # spatial freq (cpd)
+        tf = num(d['const']['tf']['val']) # temporal frequency (Hz)
+    elif analysis_type == 'tf':
+        sf = num(d['const']['sf']['val']) # spatial freq (cpd)
+        tf = num(d['const']['VAR_tf']['val']) # temporal frequency (Hz)
+    elif analysis_type == 'sf':
+        sf = num(d['const']['VAR_sf']['val']) # spatial freq (cpd)
+        tf = num(d['const']['tf']['val']) # temporal frequency (Hz)
     else:
-        raise InputError('cell_type must equal horiz or rgc')
-    
-    r = {}
-    for c in cells:
-        r[c] = np.zeros((ncells, 3))
+        raise InputError('analysis type not supported (cone_input, sf, tf)')
 
+    cells = get_cell_type(cell_type)
+
+    resp = {}
     for c in cells: # for each cell type
-        data = get_cell_data(d, c)
+        resp[c] = np.zeros((ncells, d['ntrial']))
+        data = get_cell_data(d, c) ####### JUST RETURN LIST OF KEYS
+
         for t in range(d['ntrial']): # for each trial
-            j = 0
-            for i in d['tr'][t]['r']: # for each cell
-                cell = d['tr'][t]['r'][i]['x']
+            keys = sorted(data['tr'][t]['r'].keys())
+            for i, r in enumerate(keys): # for each cell
+                cell = d['tr'][t]['r'][r]['x']
 
                 if cell_type == 'rgc':
-                    cell = d['tr'][t]['r'][i]['p']
                     cell = compute_psth(cell, time.max(), delta_t=20)
-                
+
                 fft =  np.fft.fft(cell)
-                amp  = np.real(fft[tf]) * 2 / N
-                # take abs because phase doesn't matter
-                r[c][j, t] = amp / cone_contrast[t]
-                j += 1
+                                
+                if analysis_type == 'cone_inputs':
+                    amp  = np.real(fft[tf]) * 2 / N
+                    resp[c][i, t] = amp / cone_contrast[t]
+                else: 
+                    amp  = np.abs(fft[tf]) * 2 / N
+                    resp[c][i, t] = amp
 
-        # normalize
-        r[c] = (r[c].T / np.abs(r[c]).sum(1)).T
+        if normalize:
+            resp[c] = (resp[c].T / np.abs(resp[c]).sum(1)).T
 
-    return r
+    return resp
 
 
 def compute_psth(spike_times, time_ms, delta_t=16):

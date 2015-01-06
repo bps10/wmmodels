@@ -4,7 +4,22 @@ import numpy as np
 from format import num
 
 
-def get_cell_list(d, return_celllist=False):
+def get_cell_type(cell_type):
+    '''
+    '''
+    # cell type parameters
+    if cell_type == 'h': # horizontal cells
+        cells = ['h1', 'h2']
+    elif cell_type == 'rgc':
+        cells = ['rgc_on', 'rgc_off']
+    elif cell_type == 'bp':
+        cells = ['bp']
+    else:
+        raise InputError('cell_type must equal horiz or rgc')
+
+    return cells
+
+def get_cell_list(d):
     '''Return a list of cell names in data dictionary
     '''    
     celllist = []
@@ -21,13 +36,32 @@ def get_cell_data(d, cell_type):
     '''Return a new dictionary with metadata and response data from
     only the cell type specified by cell_type.
     '''
-    cells = d.copy()
-    for t in d['tr']: # for each trial
-        for r in d['tr'][t]['r'].keys(): # for each response
-            name = d['tr'][t]['r'][r]['name']  # cell name
-            name = name.split('_')
-            if name[0] != cell_type: # if cell type not desired, delete
-                del cells['tr'][t]['r'][r] # delete response
+    cells = {}
+    if 'tr' in d:
+        cells['tr'] = {}
+        for t in d['tr']: # for each trial
+            cells['tr'][t] = {'r': {}}
+            for r in d['tr'][t]['r'].keys(): # for each response
+                n = d['tr'][t]['r'][r]['name']  # cell name
+                name = n.split('_')[0]
+                if name == cell_type: # if cell type not desired, delete
+                    if name == 'rgc':
+                        cells['tr'][t]['r'][r] = d['tr'][t]['r'][r]['p']
+                    else:
+                        cells['tr'][t]['r'][r] = d['tr'][t]['r'][r]['x']
+    
+    elif 'r' in d:
+        for r in d['r'].keys(): # for each response
+            n = d['r'][r]['name']  # cell name
+            name = n.split('_')[0]
+            if name == cell_type: # if cell type not desired, delete
+                if name == 'rgc':
+                    cells[n] = d['r'][r]['p']
+                else:
+                    cells[n] = d['r'][r]['x']
+
+    else:
+        raise InputError('Dict must contain tr or r')
 
     return cells
 
@@ -38,5 +72,5 @@ def get_time(d):
     '''
     samp = num(d['const']['stim_samp']['val'])
     tn = num(d['const']['MOO_tn']['val'])
-    time = np.linspace(0, samp, tn)
+    time = np.linspace(0, samp, tn - 1)
     return time

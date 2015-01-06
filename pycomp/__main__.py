@@ -24,7 +24,7 @@ def main():
     h_time = ['h_time', 'verbose']
     stack = ['siso', 'miso', 'liso', 'cone', 'stack', 'coneiso']
     knn = ['knn']
-    sf_tuning = ['h_sf', 'bp_sf', 'rgc_sf']
+    tuning = ['h_sf', 'bp_sf', 'rgc_sf']
     s_dist = ['s_dist']
     cone_inputs = ['cone_inputs']
 
@@ -49,8 +49,9 @@ def main():
         if arg in knn:
             plots.append('knn')
 
-        if arg in sf_tuning:
+        if arg in tuning:
             plots.append('tuning')
+            tuning_type = arg.split('_')[-1]
             cell_type = arg.split('_')[0]
 
         if arg in s_dist:
@@ -78,7 +79,7 @@ def main():
         plot.knn(d)
 
     if 'tuning' in plots:
-        plot.sf_tuning_curve(d, cell_type=cell_type)
+        plot.tuning_curve(d, cell_type=cell_type, tuning_type=tuning_type)
 
     if 's_dist' in plots:
         plot.s_cone_hist()
