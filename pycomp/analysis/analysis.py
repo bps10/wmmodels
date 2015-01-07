@@ -22,7 +22,6 @@ def response(d, cell_type, analysis_type,
     # analysis specific parameters
     if analysis_type == 'cone_inputs':
         normalize = True
-        sf = num(d['const']['sf']['val']) # spatial freq (cpd)
         tf = num(d['const']['tf']['val']) # temporal frequency (Hz)
     elif analysis_type == 'tf':
         sf = num(d['const']['sf']['val']) # spatial freq (cpd)
@@ -38,11 +37,12 @@ def response(d, cell_type, analysis_type,
     resp = {}
     for c in cells: # for each cell type
         resp[c] = np.zeros((ncells, d['ntrial']))
-        data = get_cell_data(d, c) ####### JUST RETURN LIST OF KEYS
 
+        keys = get_cell_data(d, c) 
+        
         for t in range(d['ntrial']): # for each trial
-            keys = sorted(data['tr'][t]['r'].keys())
-            for i, r in enumerate(keys): # for each cell
+            for i, r in enumerate(keys['tr'][t]['r']): # for each cell
+
                 cell = d['tr'][t]['r'][r]['x']
 
                 if cell_type == 'rgc':

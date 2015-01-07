@@ -271,11 +271,14 @@ function delete_old_file {
 function run_s_dist_analysis {
 
     # make dir for data if doesn't exist already
-    if [ ! -d "results/txt_files/s_dist" ]
+    if [ ! -d "results/nd_files/s_dist" ]
     then
-	mkdir "results/txt_files/s_dist"
+	mkdir "results/nd_files/s_dist"
     fi
-
+    
+    # cp nn_results.txt into s_dist folder
+    cp results/txt_files/nn_results.txt results/nd_files/s_dist/nn_results.txt
+    
     # get random numbers
     rnums=$(python pycomp/util/gen_rand.py)
 
@@ -308,7 +311,7 @@ function run_s_dist_analysis {
     done
 
     # save parameters
-    print_info > "results/txt_files/s_dist/params.txt"
+    print_info > "results/nd_files/s_dist/params.txt"
 
     # save defaults
     save_defaults

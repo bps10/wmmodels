@@ -33,32 +33,39 @@ def get_cell_list(d):
 
 
 def get_cell_data(d, cell_type):
-    '''Return a new dictionary with metadata and response data from
-    only the cell type specified by cell_type.
+    '''Return a new dictionary with response indices from
+    only the cell type specified by cell_type. 
     '''
-    cells = {}
+    ind = 0
+    if cell_type == 'cone':
+        ind = 1
+    
     if 'tr' in d:
+        cells = {}
         cells['tr'] = {}
         for t in d['tr']: # for each trial
-            cells['tr'][t] = {'r': {}}
+            cells['tr'][t] = {'r': []}
             for r in d['tr'][t]['r'].keys(): # for each response
                 n = d['tr'][t]['r'][r]['name']  # cell name
-                name = n.split('_')[0]
+                name = n.split('_')[ind]
                 if name == cell_type: # if cell type not desired, delete
                     if name == 'rgc':
-                        cells['tr'][t]['r'][r] = d['tr'][t]['r'][r]['p']
+                        cells['tr'][t]['r'].append(r)
                     else:
-                        cells['tr'][t]['r'][r] = d['tr'][t]['r'][r]['x']
-    
+                        cells['tr'][t]['r'].append(r)
+                cells['tr'][t]['r'] = sorted(cells['tr'][t]['r'])
+
     elif 'r' in d:
+        cells = []
         for r in d['r'].keys(): # for each response
             n = d['r'][r]['name']  # cell name
-            name = n.split('_')[0]
+            name = n.split('_')[ind]
             if name == cell_type: # if cell type not desired, delete
                 if name == 'rgc':
-                    cells[n] = d['r'][r]['p']
+                    cells.append(r)
                 else:
-                    cells[n] = d['r'][r]['x']
+                    cells.append(r)
+        cells = sorted(cells)
 
     else:
         raise InputError('Dict must contain tr or r')
@@ -72,5 +79,5 @@ def get_time(d):
     '''
     samp = num(d['const']['stim_samp']['val'])
     tn = num(d['const']['MOO_tn']['val'])
-    time = np.linspace(0, samp, tn - 1)
+    time = np.linspace(0, samp, tn)
     return time

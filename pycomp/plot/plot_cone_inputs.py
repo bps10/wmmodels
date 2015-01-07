@@ -31,7 +31,8 @@ def cone_inputs(d, cell_type='bp'):
     ax.plot([0, -1], [-1, 0], 'k')
 
     # get results
-    r = an.response(d, cell_type, celllist, 'cone_inputs')
+    celllist = get_cell_list(d)
+    r = an.response(d, cell_type, 'cone_inputs')
     for c in r: # for each cell type in results
         for cone in range(0, len(r[c][:, 0])):
             ind = np.where(celldat[:, 0] == float(celllist[cone]))[0]

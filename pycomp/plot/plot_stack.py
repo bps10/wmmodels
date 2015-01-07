@@ -35,32 +35,31 @@ def stack(d):
         for i in ax:
             ax[i].set_color_cycle(['r', 'g', 'b', 'c', 'm', 'y', 'k'])
 
-        _d = u.get_cell_data(d['tr'][t], 'cone')
-        for i in _d:
-            dat = _d[i]
-            y = dat[1:] - dat[10]
+        keys = u.get_cell_data(d['tr'][t], 'cone')
+        for r in keys:
+            dat = d['tr'][t]['r'][r]['x']
+            y = dat - dat[10]
             ax[0].plot(time, y)
             ylim = check_lims(y, ylim, 0)
 
-        _d = u.get_cell_data(d['tr'][t], 'h1')
-        if _d != {}:
-            for i in _d:
-                dat = _d[i]
-                y = dat[1:] - dat[10] + 0.2
-                ax[1].plot(time, y)
-                ylim = check_lims(y, ylim, 1)
-
-        _d = u.get_cell_data(d['tr'][t], 'h2')
-        for i in _d:
-            dat = _d[i]
-            y = dat[1:] - dat[10] + 0.1
+        keys = u.get_cell_data(d['tr'][t], 'h1')
+        for r in keys:
+            dat = d['tr'][t]['r'][r]['x']
+            y = dat - dat[10] + 0.2
             ax[1].plot(time, y)
             ylim = check_lims(y, ylim, 1)
 
-        _d = u.get_cell_data(d['tr'][t], 'bp')
-        for i in _d:
-            dat = _d[i]
-            y = dat[1:] - dat[10]
+        keys = u.get_cell_data(d['tr'][t], 'h2')
+        for r in keys:
+            dat = d['tr'][t]['r'][r]['x']
+            y = dat - dat[10] + 0.1
+            ax[1].plot(time, y)
+            ylim = check_lims(y, ylim, 1)
+
+        keys = u.get_cell_data(d['tr'][t], 'bp')
+        for r in keys:
+            dat = d['tr'][t]['r'][r]['x']
+            y = dat - dat[10]
             ax[2].plot(time, y)
             ylim = check_lims(y, ylim, 2)
 
@@ -91,13 +90,15 @@ def horiz_time_const(d):
     pf.TufteAxis(ax, ['bottom', 'left'], [3, 3])
 
     time = u.get_time(d)
-    for t in range(data['ntrial']):
+    for t in range(d['ntrial']):
         h1 = u.get_cell_data(d['tr'][t], 'h1')
         h2 = u.get_cell_data(d['tr'][t], 'h2')
 
-        # Subtract 10 points in so that zero offset
-        ax.plot(time, h1[0][1:] - h1[0][10]) # only use 1st response
-        ax.plot(time, h2[0][1:] - h2[0][10]) # only use 1st response
+        h1dat = d['tr'][t]['r'][h1[0]]['x']
+        h2dat = d['tr'][t]['r'][h2[0]]['x']
+
+        ax.plot(time, h1dat) # only use 1st response
+        ax.plot(time, h2dat) # only use 1st response
     
     #ax[1].set_ylabel('response')
     ax.set_xlabel('time (ms)')

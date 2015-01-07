@@ -54,203 +54,403 @@ write_ndata      *       # write spikes to output file
 
 save_pop_unit_as_cone_184 f 500 bipolar 184 0 0 photo
 
-save_pop_unit_as_bp_184 f 500 bipolar 184 0 0 diff
+save_pop_unit_as_h2_184 f 500 bipolar 184 0 0 h2
 
-save_pop_unit_as_bp_755 f 500 bipolar 755 0 0 diff
+save_pop_unit_as_h1_184 f 500 bipolar 184 0 0 horiz
 
-save_pop_unit_as_bp_483 f 500 bipolar 483 0 0 diff
+save_pop_unit_as_h2_755 f 500 bipolar 755 0 0 h2
 
-save_pop_unit_as_bp_754 f 500 bipolar 754 0 0 diff
+save_pop_unit_as_h1_755 f 500 bipolar 755 0 0 horiz
 
-save_pop_unit_as_bp_346 f 500 bipolar 346 0 0 diff
+save_pop_unit_as_h2_483 f 500 bipolar 483 0 0 h2
 
-save_pop_unit_as_bp_510 f 500 bipolar 510 0 0 diff
+save_pop_unit_as_h1_483 f 500 bipolar 483 0 0 horiz
 
-save_pop_unit_as_bp_75 f 500 bipolar 75 0 0 diff
+save_pop_unit_as_h2_754 f 500 bipolar 754 0 0 h2
 
-save_pop_unit_as_bp_457 f 500 bipolar 457 0 0 diff
+save_pop_unit_as_h1_754 f 500 bipolar 754 0 0 horiz
 
-save_pop_unit_as_bp_615 f 500 bipolar 615 0 0 diff
+save_pop_unit_as_h2_346 f 500 bipolar 346 0 0 h2
 
-save_pop_unit_as_bp_188 f 500 bipolar 188 0 0 diff
+save_pop_unit_as_h1_346 f 500 bipolar 346 0 0 horiz
 
-save_pop_unit_as_bp_463 f 500 bipolar 463 0 0 diff
+save_pop_unit_as_h2_510 f 500 bipolar 510 0 0 h2
 
-save_pop_unit_as_bp_756 f 500 bipolar 756 0 0 diff
+save_pop_unit_as_h1_510 f 500 bipolar 510 0 0 horiz
 
-save_pop_unit_as_bp_174 f 500 bipolar 174 0 0 diff
+save_pop_unit_as_h2_75 f 500 bipolar 75 0 0 h2
 
-save_pop_unit_as_bp_460 f 500 bipolar 460 0 0 diff
+save_pop_unit_as_h1_75 f 500 bipolar 75 0 0 horiz
 
-save_pop_unit_as_bp_350 f 500 bipolar 350 0 0 diff
+save_pop_unit_as_h2_457 f 500 bipolar 457 0 0 h2
 
-save_pop_unit_as_bp_474 f 500 bipolar 474 0 0 diff
+save_pop_unit_as_h1_457 f 500 bipolar 457 0 0 horiz
 
-save_pop_unit_as_bp_378 f 500 bipolar 378 0 0 diff
+save_pop_unit_as_h2_615 f 500 bipolar 615 0 0 h2
 
-save_pop_unit_as_bp_223 f 500 bipolar 223 0 0 diff
+save_pop_unit_as_h1_615 f 500 bipolar 615 0 0 horiz
 
-save_pop_unit_as_bp_467 f 500 bipolar 467 0 0 diff
+save_pop_unit_as_h2_188 f 500 bipolar 188 0 0 h2
 
-save_pop_unit_as_bp_446 f 500 bipolar 446 0 0 diff
+save_pop_unit_as_h1_188 f 500 bipolar 188 0 0 horiz
 
-save_pop_unit_as_bp_52 f 500 bipolar 52 0 0 diff
+save_pop_unit_as_h2_463 f 500 bipolar 463 0 0 h2
 
-save_pop_unit_as_bp_753 f 500 bipolar 753 0 0 diff
+save_pop_unit_as_h1_463 f 500 bipolar 463 0 0 horiz
 
-save_pop_unit_as_bp_361 f 500 bipolar 361 0 0 diff
+save_pop_unit_as_h2_756 f 500 bipolar 756 0 0 h2
 
-save_pop_unit_as_bp_201 f 500 bipolar 201 0 0 diff
+save_pop_unit_as_h1_756 f 500 bipolar 756 0 0 horiz
 
-save_pop_unit_as_bp_325 f 500 bipolar 325 0 0 diff
+save_pop_unit_as_h2_174 f 500 bipolar 174 0 0 h2
 
-save_pop_unit_as_bp_600 f 500 bipolar 600 0 0 diff
+save_pop_unit_as_h1_174 f 500 bipolar 174 0 0 horiz
 
-save_pop_unit_as_bp_189 f 500 bipolar 189 0 0 diff
+save_pop_unit_as_h2_460 f 500 bipolar 460 0 0 h2
 
-save_pop_unit_as_bp_55 f 500 bipolar 55 0 0 diff
+save_pop_unit_as_h1_460 f 500 bipolar 460 0 0 horiz
 
-save_pop_unit_as_bp_92 f 500 bipolar 92 0 0 diff
+save_pop_unit_as_h2_350 f 500 bipolar 350 0 0 h2
 
-save_pop_unit_as_bp_601 f 500 bipolar 601 0 0 diff
+save_pop_unit_as_h1_350 f 500 bipolar 350 0 0 horiz
 
-save_pop_unit_as_bp_106 f 500 bipolar 106 0 0 diff
+save_pop_unit_as_h2_474 f 500 bipolar 474 0 0 h2
 
-save_pop_unit_as_bp_638 f 500 bipolar 638 0 0 diff
+save_pop_unit_as_h1_474 f 500 bipolar 474 0 0 horiz
 
-save_pop_unit_as_bp_760 f 500 bipolar 760 0 0 diff
+save_pop_unit_as_h2_378 f 500 bipolar 378 0 0 h2
 
-save_pop_unit_as_bp_263 f 500 bipolar 263 0 0 diff
+save_pop_unit_as_h1_378 f 500 bipolar 378 0 0 horiz
 
-save_pop_unit_as_bp_222 f 500 bipolar 222 0 0 diff
+save_pop_unit_as_h2_223 f 500 bipolar 223 0 0 h2
 
-save_pop_unit_as_bp_66 f 500 bipolar 66 0 0 diff
+save_pop_unit_as_h1_223 f 500 bipolar 223 0 0 horiz
 
-save_pop_unit_as_bp_98 f 500 bipolar 98 0 0 diff
+save_pop_unit_as_h2_467 f 500 bipolar 467 0 0 h2
 
-save_pop_unit_as_bp_486 f 500 bipolar 486 0 0 diff
+save_pop_unit_as_h1_467 f 500 bipolar 467 0 0 horiz
 
-save_pop_unit_as_bp_643 f 500 bipolar 643 0 0 diff
+save_pop_unit_as_h2_446 f 500 bipolar 446 0 0 h2
 
-save_pop_unit_as_bp_237 f 500 bipolar 237 0 0 diff
+save_pop_unit_as_h1_446 f 500 bipolar 446 0 0 horiz
 
-save_pop_unit_as_bp_77 f 500 bipolar 77 0 0 diff
+save_pop_unit_as_h2_52 f 500 bipolar 52 0 0 h2
 
-save_pop_unit_as_bp_44 f 500 bipolar 44 0 0 diff
+save_pop_unit_as_h1_52 f 500 bipolar 52 0 0 horiz
 
-save_pop_unit_as_bp_577 f 500 bipolar 577 0 0 diff
+save_pop_unit_as_h2_753 f 500 bipolar 753 0 0 h2
 
-save_pop_unit_as_bp_381 f 500 bipolar 381 0 0 diff
+save_pop_unit_as_h1_753 f 500 bipolar 753 0 0 horiz
 
-save_pop_unit_as_bp_416 f 500 bipolar 416 0 0 diff
+save_pop_unit_as_h2_361 f 500 bipolar 361 0 0 h2
 
-save_pop_unit_as_bp_669 f 500 bipolar 669 0 0 diff
+save_pop_unit_as_h1_361 f 500 bipolar 361 0 0 horiz
 
-save_pop_unit_as_bp_336 f 500 bipolar 336 0 0 diff
+save_pop_unit_as_h2_201 f 500 bipolar 201 0 0 h2
 
-save_pop_unit_as_bp_653 f 500 bipolar 653 0 0 diff
+save_pop_unit_as_h1_201 f 500 bipolar 201 0 0 horiz
 
-save_pop_unit_as_bp_438 f 500 bipolar 438 0 0 diff
+save_pop_unit_as_h2_325 f 500 bipolar 325 0 0 h2
 
-save_pop_unit_as_bp_294 f 500 bipolar 294 0 0 diff
+save_pop_unit_as_h1_325 f 500 bipolar 325 0 0 horiz
 
-save_pop_unit_as_bp_603 f 500 bipolar 603 0 0 diff
+save_pop_unit_as_h2_600 f 500 bipolar 600 0 0 h2
 
-save_pop_unit_as_bp_281 f 500 bipolar 281 0 0 diff
+save_pop_unit_as_h1_600 f 500 bipolar 600 0 0 horiz
 
-save_pop_unit_as_bp_327 f 500 bipolar 327 0 0 diff
+save_pop_unit_as_h2_189 f 500 bipolar 189 0 0 h2
 
-save_pop_unit_as_bp_678 f 500 bipolar 678 0 0 diff
+save_pop_unit_as_h1_189 f 500 bipolar 189 0 0 horiz
 
-save_pop_unit_as_bp_622 f 500 bipolar 622 0 0 diff
+save_pop_unit_as_h2_55 f 500 bipolar 55 0 0 h2
 
-save_pop_unit_as_bp_470 f 500 bipolar 470 0 0 diff
+save_pop_unit_as_h1_55 f 500 bipolar 55 0 0 horiz
 
-save_pop_unit_as_bp_58 f 500 bipolar 58 0 0 diff
+save_pop_unit_as_h2_92 f 500 bipolar 92 0 0 h2
 
-save_pop_unit_as_bp_654 f 500 bipolar 654 0 0 diff
+save_pop_unit_as_h1_92 f 500 bipolar 92 0 0 horiz
 
-save_pop_unit_as_bp_429 f 500 bipolar 429 0 0 diff
+save_pop_unit_as_h2_601 f 500 bipolar 601 0 0 h2
 
-save_pop_unit_as_bp_450 f 500 bipolar 450 0 0 diff
+save_pop_unit_as_h1_601 f 500 bipolar 601 0 0 horiz
 
-save_pop_unit_as_bp_236 f 500 bipolar 236 0 0 diff
+save_pop_unit_as_h2_106 f 500 bipolar 106 0 0 h2
 
-save_pop_unit_as_bp_456 f 500 bipolar 456 0 0 diff
+save_pop_unit_as_h1_106 f 500 bipolar 106 0 0 horiz
 
-save_pop_unit_as_bp_428 f 500 bipolar 428 0 0 diff
+save_pop_unit_as_h2_638 f 500 bipolar 638 0 0 h2
 
-save_pop_unit_as_bp_757 f 500 bipolar 757 0 0 diff
+save_pop_unit_as_h1_638 f 500 bipolar 638 0 0 horiz
 
-save_pop_unit_as_bp_433 f 500 bipolar 433 0 0 diff
+save_pop_unit_as_h2_760 f 500 bipolar 760 0 0 h2
 
-save_pop_unit_as_bp_409 f 500 bipolar 409 0 0 diff
+save_pop_unit_as_h1_760 f 500 bipolar 760 0 0 horiz
 
-save_pop_unit_as_bp_497 f 500 bipolar 497 0 0 diff
+save_pop_unit_as_h2_263 f 500 bipolar 263 0 0 h2
 
-save_pop_unit_as_bp_546 f 500 bipolar 546 0 0 diff
+save_pop_unit_as_h1_263 f 500 bipolar 263 0 0 horiz
 
-save_pop_unit_as_bp_118 f 500 bipolar 118 0 0 diff
+save_pop_unit_as_h2_222 f 500 bipolar 222 0 0 h2
 
-save_pop_unit_as_bp_249 f 500 bipolar 249 0 0 diff
+save_pop_unit_as_h1_222 f 500 bipolar 222 0 0 horiz
 
-save_pop_unit_as_bp_134 f 500 bipolar 134 0 0 diff
+save_pop_unit_as_h2_66 f 500 bipolar 66 0 0 h2
 
-save_pop_unit_as_bp_617 f 500 bipolar 617 0 0 diff
+save_pop_unit_as_h1_66 f 500 bipolar 66 0 0 horiz
 
-save_pop_unit_as_bp_388 f 500 bipolar 388 0 0 diff
+save_pop_unit_as_h2_98 f 500 bipolar 98 0 0 h2
 
-save_pop_unit_as_bp_61 f 500 bipolar 61 0 0 diff
+save_pop_unit_as_h1_98 f 500 bipolar 98 0 0 horiz
 
-save_pop_unit_as_bp_270 f 500 bipolar 270 0 0 diff
+save_pop_unit_as_h2_486 f 500 bipolar 486 0 0 h2
 
-save_pop_unit_as_bp_400 f 500 bipolar 400 0 0 diff
+save_pop_unit_as_h1_486 f 500 bipolar 486 0 0 horiz
 
-save_pop_unit_as_bp_751 f 500 bipolar 751 0 0 diff
+save_pop_unit_as_h2_643 f 500 bipolar 643 0 0 h2
 
-save_pop_unit_as_bp_232 f 500 bipolar 232 0 0 diff
+save_pop_unit_as_h1_643 f 500 bipolar 643 0 0 horiz
 
-save_pop_unit_as_bp_275 f 500 bipolar 275 0 0 diff
+save_pop_unit_as_h2_237 f 500 bipolar 237 0 0 h2
 
-save_pop_unit_as_bp_158 f 500 bipolar 158 0 0 diff
+save_pop_unit_as_h1_237 f 500 bipolar 237 0 0 horiz
 
-save_pop_unit_as_bp_347 f 500 bipolar 347 0 0 diff
+save_pop_unit_as_h2_77 f 500 bipolar 77 0 0 h2
 
-save_pop_unit_as_bp_264 f 500 bipolar 264 0 0 diff
+save_pop_unit_as_h1_77 f 500 bipolar 77 0 0 horiz
 
-save_pop_unit_as_bp_110 f 500 bipolar 110 0 0 diff
+save_pop_unit_as_h2_44 f 500 bipolar 44 0 0 h2
 
-save_pop_unit_as_bp_241 f 500 bipolar 241 0 0 diff
+save_pop_unit_as_h1_44 f 500 bipolar 44 0 0 horiz
 
-save_pop_unit_as_bp_18 f 500 bipolar 18 0 0 diff
+save_pop_unit_as_h2_577 f 500 bipolar 577 0 0 h2
 
-save_pop_unit_as_bp_402 f 500 bipolar 402 0 0 diff
+save_pop_unit_as_h1_577 f 500 bipolar 577 0 0 horiz
 
-save_pop_unit_as_bp_630 f 500 bipolar 630 0 0 diff
+save_pop_unit_as_h2_381 f 500 bipolar 381 0 0 h2
 
-save_pop_unit_as_bp_50 f 500 bipolar 50 0 0 diff
+save_pop_unit_as_h1_381 f 500 bipolar 381 0 0 horiz
 
-save_pop_unit_as_bp_105 f 500 bipolar 105 0 0 diff
+save_pop_unit_as_h2_416 f 500 bipolar 416 0 0 h2
 
-save_pop_unit_as_bp_74 f 500 bipolar 74 0 0 diff
+save_pop_unit_as_h1_416 f 500 bipolar 416 0 0 horiz
 
-save_pop_unit_as_bp_141 f 500 bipolar 141 0 0 diff
+save_pop_unit_as_h2_669 f 500 bipolar 669 0 0 h2
 
-save_pop_unit_as_bp_218 f 500 bipolar 218 0 0 diff
+save_pop_unit_as_h1_669 f 500 bipolar 669 0 0 horiz
 
-save_pop_unit_as_bp_123 f 500 bipolar 123 0 0 diff
+save_pop_unit_as_h2_336 f 500 bipolar 336 0 0 h2
 
-save_pop_unit_as_bp_406 f 500 bipolar 406 0 0 diff
+save_pop_unit_as_h1_336 f 500 bipolar 336 0 0 horiz
 
-save_pop_unit_as_bp_282 f 500 bipolar 282 0 0 diff
+save_pop_unit_as_h2_653 f 500 bipolar 653 0 0 h2
 
-save_pop_unit_as_bp_422 f 500 bipolar 422 0 0 diff
+save_pop_unit_as_h1_653 f 500 bipolar 653 0 0 horiz
 
-save_pop_unit_as_bp_8 f 500 bipolar 8 0 0 diff
+save_pop_unit_as_h2_438 f 500 bipolar 438 0 0 h2
 
-save_pop_unit_as_bp_566 f 500 bipolar 566 0 0 diff
+save_pop_unit_as_h1_438 f 500 bipolar 438 0 0 horiz
 
-save_pop_unit_as_bp_549 f 500 bipolar 549 0 0 diff
+save_pop_unit_as_h2_294 f 500 bipolar 294 0 0 h2
 
-save_pop_unit_as_bp_736 f 500 bipolar 736 0 0 diff
+save_pop_unit_as_h1_294 f 500 bipolar 294 0 0 horiz
+
+save_pop_unit_as_h2_603 f 500 bipolar 603 0 0 h2
+
+save_pop_unit_as_h1_603 f 500 bipolar 603 0 0 horiz
+
+save_pop_unit_as_h2_281 f 500 bipolar 281 0 0 h2
+
+save_pop_unit_as_h1_281 f 500 bipolar 281 0 0 horiz
+
+save_pop_unit_as_h2_327 f 500 bipolar 327 0 0 h2
+
+save_pop_unit_as_h1_327 f 500 bipolar 327 0 0 horiz
+
+save_pop_unit_as_h2_678 f 500 bipolar 678 0 0 h2
+
+save_pop_unit_as_h1_678 f 500 bipolar 678 0 0 horiz
+
+save_pop_unit_as_h2_622 f 500 bipolar 622 0 0 h2
+
+save_pop_unit_as_h1_622 f 500 bipolar 622 0 0 horiz
+
+save_pop_unit_as_h2_470 f 500 bipolar 470 0 0 h2
+
+save_pop_unit_as_h1_470 f 500 bipolar 470 0 0 horiz
+
+save_pop_unit_as_h2_58 f 500 bipolar 58 0 0 h2
+
+save_pop_unit_as_h1_58 f 500 bipolar 58 0 0 horiz
+
+save_pop_unit_as_h2_654 f 500 bipolar 654 0 0 h2
+
+save_pop_unit_as_h1_654 f 500 bipolar 654 0 0 horiz
+
+save_pop_unit_as_h2_429 f 500 bipolar 429 0 0 h2
+
+save_pop_unit_as_h1_429 f 500 bipolar 429 0 0 horiz
+
+save_pop_unit_as_h2_450 f 500 bipolar 450 0 0 h2
+
+save_pop_unit_as_h1_450 f 500 bipolar 450 0 0 horiz
+
+save_pop_unit_as_h2_236 f 500 bipolar 236 0 0 h2
+
+save_pop_unit_as_h1_236 f 500 bipolar 236 0 0 horiz
+
+save_pop_unit_as_h2_456 f 500 bipolar 456 0 0 h2
+
+save_pop_unit_as_h1_456 f 500 bipolar 456 0 0 horiz
+
+save_pop_unit_as_h2_428 f 500 bipolar 428 0 0 h2
+
+save_pop_unit_as_h1_428 f 500 bipolar 428 0 0 horiz
+
+save_pop_unit_as_h2_757 f 500 bipolar 757 0 0 h2
+
+save_pop_unit_as_h1_757 f 500 bipolar 757 0 0 horiz
+
+save_pop_unit_as_h2_433 f 500 bipolar 433 0 0 h2
+
+save_pop_unit_as_h1_433 f 500 bipolar 433 0 0 horiz
+
+save_pop_unit_as_h2_409 f 500 bipolar 409 0 0 h2
+
+save_pop_unit_as_h1_409 f 500 bipolar 409 0 0 horiz
+
+save_pop_unit_as_h2_497 f 500 bipolar 497 0 0 h2
+
+save_pop_unit_as_h1_497 f 500 bipolar 497 0 0 horiz
+
+save_pop_unit_as_h2_546 f 500 bipolar 546 0 0 h2
+
+save_pop_unit_as_h1_546 f 500 bipolar 546 0 0 horiz
+
+save_pop_unit_as_h2_118 f 500 bipolar 118 0 0 h2
+
+save_pop_unit_as_h1_118 f 500 bipolar 118 0 0 horiz
+
+save_pop_unit_as_h2_249 f 500 bipolar 249 0 0 h2
+
+save_pop_unit_as_h1_249 f 500 bipolar 249 0 0 horiz
+
+save_pop_unit_as_h2_134 f 500 bipolar 134 0 0 h2
+
+save_pop_unit_as_h1_134 f 500 bipolar 134 0 0 horiz
+
+save_pop_unit_as_h2_617 f 500 bipolar 617 0 0 h2
+
+save_pop_unit_as_h1_617 f 500 bipolar 617 0 0 horiz
+
+save_pop_unit_as_h2_388 f 500 bipolar 388 0 0 h2
+
+save_pop_unit_as_h1_388 f 500 bipolar 388 0 0 horiz
+
+save_pop_unit_as_h2_61 f 500 bipolar 61 0 0 h2
+
+save_pop_unit_as_h1_61 f 500 bipolar 61 0 0 horiz
+
+save_pop_unit_as_h2_270 f 500 bipolar 270 0 0 h2
+
+save_pop_unit_as_h1_270 f 500 bipolar 270 0 0 horiz
+
+save_pop_unit_as_h2_400 f 500 bipolar 400 0 0 h2
+
+save_pop_unit_as_h1_400 f 500 bipolar 400 0 0 horiz
+
+save_pop_unit_as_h2_751 f 500 bipolar 751 0 0 h2
+
+save_pop_unit_as_h1_751 f 500 bipolar 751 0 0 horiz
+
+save_pop_unit_as_h2_232 f 500 bipolar 232 0 0 h2
+
+save_pop_unit_as_h1_232 f 500 bipolar 232 0 0 horiz
+
+save_pop_unit_as_h2_275 f 500 bipolar 275 0 0 h2
+
+save_pop_unit_as_h1_275 f 500 bipolar 275 0 0 horiz
+
+save_pop_unit_as_h2_158 f 500 bipolar 158 0 0 h2
+
+save_pop_unit_as_h1_158 f 500 bipolar 158 0 0 horiz
+
+save_pop_unit_as_h2_347 f 500 bipolar 347 0 0 h2
+
+save_pop_unit_as_h1_347 f 500 bipolar 347 0 0 horiz
+
+save_pop_unit_as_h2_264 f 500 bipolar 264 0 0 h2
+
+save_pop_unit_as_h1_264 f 500 bipolar 264 0 0 horiz
+
+save_pop_unit_as_h2_110 f 500 bipolar 110 0 0 h2
+
+save_pop_unit_as_h1_110 f 500 bipolar 110 0 0 horiz
+
+save_pop_unit_as_h2_241 f 500 bipolar 241 0 0 h2
+
+save_pop_unit_as_h1_241 f 500 bipolar 241 0 0 horiz
+
+save_pop_unit_as_h2_18 f 500 bipolar 18 0 0 h2
+
+save_pop_unit_as_h1_18 f 500 bipolar 18 0 0 horiz
+
+save_pop_unit_as_h2_402 f 500 bipolar 402 0 0 h2
+
+save_pop_unit_as_h1_402 f 500 bipolar 402 0 0 horiz
+
+save_pop_unit_as_h2_630 f 500 bipolar 630 0 0 h2
+
+save_pop_unit_as_h1_630 f 500 bipolar 630 0 0 horiz
+
+save_pop_unit_as_h2_50 f 500 bipolar 50 0 0 h2
+
+save_pop_unit_as_h1_50 f 500 bipolar 50 0 0 horiz
+
+save_pop_unit_as_h2_105 f 500 bipolar 105 0 0 h2
+
+save_pop_unit_as_h1_105 f 500 bipolar 105 0 0 horiz
+
+save_pop_unit_as_h2_74 f 500 bipolar 74 0 0 h2
+
+save_pop_unit_as_h1_74 f 500 bipolar 74 0 0 horiz
+
+save_pop_unit_as_h2_141 f 500 bipolar 141 0 0 h2
+
+save_pop_unit_as_h1_141 f 500 bipolar 141 0 0 horiz
+
+save_pop_unit_as_h2_218 f 500 bipolar 218 0 0 h2
+
+save_pop_unit_as_h1_218 f 500 bipolar 218 0 0 horiz
+
+save_pop_unit_as_h2_123 f 500 bipolar 123 0 0 h2
+
+save_pop_unit_as_h1_123 f 500 bipolar 123 0 0 horiz
+
+save_pop_unit_as_h2_406 f 500 bipolar 406 0 0 h2
+
+save_pop_unit_as_h1_406 f 500 bipolar 406 0 0 horiz
+
+save_pop_unit_as_h2_282 f 500 bipolar 282 0 0 h2
+
+save_pop_unit_as_h1_282 f 500 bipolar 282 0 0 horiz
+
+save_pop_unit_as_h2_422 f 500 bipolar 422 0 0 h2
+
+save_pop_unit_as_h1_422 f 500 bipolar 422 0 0 horiz
+
+save_pop_unit_as_h2_8 f 500 bipolar 8 0 0 h2
+
+save_pop_unit_as_h1_8 f 500 bipolar 8 0 0 horiz
+
+save_pop_unit_as_h2_566 f 500 bipolar 566 0 0 h2
+
+save_pop_unit_as_h1_566 f 500 bipolar 566 0 0 horiz
+
+save_pop_unit_as_h2_549 f 500 bipolar 549 0 0 h2
+
+save_pop_unit_as_h1_549 f 500 bipolar 549 0 0 horiz
+
+save_pop_unit_as_h2_736 f 500 bipolar 736 0 0 h2
+
+save_pop_unit_as_h1_736 f 500 bipolar 736 0 0 horiz
 
