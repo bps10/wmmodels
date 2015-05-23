@@ -125,7 +125,7 @@ def tuning_curve(d, cell_type='h1', tuning_type='sf'):
     pf.TufteAxis(ax1, ['bottom', 'left', ], [4, 4])
     pf.TufteAxis(ax2, ['top', ], [4, 4])
 
-    # plot the results
+    # get the data
     r = an.response(d, cell_type, tuning_type)
 
     colors = ['k', 'gray', 'r', 'b', 'g', 'c', 'm' ]

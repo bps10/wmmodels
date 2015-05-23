@@ -14,12 +14,12 @@ cy           0       # center (deg)
 direction    0       # Direction of drift
 sf         1.0       # Spatial period (cyc/deg)
 phase        0       # Degrees
-tf         5.0       # Temporal frequency (Hz)
-size       2.8       # Degrees of visual angle
+tf         8.0       # Temporal frequency (Hz)
+size       5.0       # Degrees of visual angle
 aptype       0       # Aperture type (0-none, 1-circ)
 bgval      0.5       # background value [0..1]
-contrast   1.0       # Contrast
+contrast   0.5       # Contrast
 maxlum     1.0       # Maximum luminance
 stim_nrpt    1       # Number of repeats
 
-VAR_sf   0.1 0.25 0.5 1.0 2.0 4.0
+VAR_sf   0.25 0.5 1.0 2.0 4.0 8.0

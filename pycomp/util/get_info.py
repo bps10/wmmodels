@@ -39,7 +39,8 @@ def get_cell_data(d, cell_type):
     ind = 0
     if cell_type == 'cone':
         ind = 1
-    
+    ctype = cell_type.split('_')[0]
+
     if 'tr' in d:
         cells = {}
         cells['tr'] = {}
@@ -48,8 +49,9 @@ def get_cell_data(d, cell_type):
             for r in d['tr'][t]['r'].keys(): # for each response
                 n = d['tr'][t]['r'][r]['name']  # cell name
                 name = n.split('_')[ind]
-                if name == cell_type: # if cell type not desired, delete
+                if name == ctype: # if cell type not desired, delete
                     if name == 'rgc':
+                        # handle on and off here
                         cells['tr'][t]['r'].append(r)
                     else:
                         cells['tr'][t]['r'].append(r)

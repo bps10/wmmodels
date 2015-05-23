@@ -49,45 +49,47 @@ def knn(d):
     plt.show()
 
 
-def s_cone_hist():
+def s_cone_hist(single_cone=True):
     '''
     TO DO:
     * Add rgc option
     '''
     celldat = np.genfromtxt('results/nd_files/s_dist/nn_results.txt')
     cellIDs = celldat[:, 0]
-    dist2S =  nn.find_nearest_S(celldat[:, 2:4])[0]
+    if not single_cone:
+        dist2S =  nn.find_nearest_S(celldat[:, 2:4])[0]
+    else:
+        dist2S = celldat[:, 4]
 
-    names = f.getAllFiles('./results/nd_files/s_dist', suffix='/*.nd',
+    fnames = f.getAllFiles('./results/nd_files/s_dist', suffix='.nd',
                           subdirectories=0)
     s = []
     lm = []
-    for fname in names:
-        if fname[-10:] != 'params.txt':
-            d = nd_read(fname)
-            celllist = get_cell_list(d)
-
-            t = 0 # trial 0
-            ####### PUT THIS INTO A FUNCTION
-            N = num(d['const']['MOO_tn']['val']) # time steps
-            tf = num(d['const']['tf']['val']) # temporal frequency (Hz)
-
-            keys = get_cell_data(d['tr'][0], 'h2')
-            for i, r in enumerate(keys):
-                # find distance to S
-                cellID = int(celllist[i])
-                ind = np.where(cellIDs == cellID)[0]
-                distance = dist2S[ind]
+    for fname in fnames:
+        d = nd_read(fname)
+        celllist = get_cell_list(d)
         
-                # find amplitude of signal
-                cell = d['tr'][0]['r'][r]['x']
-                fft = np.fft.fft(cell)
-                amp  = np.abs(fft[tf]) * 2 / N
+        t = 0 # trial 0
+            ####### PUT THIS INTO A FUNCTION
+        N = num(d['const']['MOO_tn']['val']) # time steps
+        tf = num(d['const']['tf']['val']) # temporal frequency (Hz)
+        
+        keys = get_cell_data(d['tr'][t], 'h2')
+        for i, r in enumerate(keys):
+            # find distance to S
+            cellID = int(celllist[i])
+            ind = np.where(cellIDs == cellID)[0]
+            distance = dist2S[ind]
+            
+            # find amplitude of signal
+            cell = d['tr'][t]['r'][r]['x']
+            fft = np.fft.fft(cell)
+            amp  = np.abs(fft[tf]) * 2 / N
 
-                if celldat[ind, 1] == 0:
-                    s.append([distance, amp])
-                else:
-                    lm.append([distance, amp])
+            if celldat[ind, 1] == 0:
+                s.append([distance, amp])
+            else:
+                lm.append([distance, amp])
         ############### ------ END FUNCTION
 
     # plotting routines
@@ -123,4 +125,3 @@ def s_cone_hist():
     fig2.savefig('results/img/s_dist_hist.svg', edgecolor='none')
     
     plt.show()
-

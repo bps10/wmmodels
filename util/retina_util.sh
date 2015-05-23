@@ -1,6 +1,7 @@
 #!/bin/bash
 
-CONE=184 #3690
+CONE=3240 #184 #3690
+SCONE=3690
 
 function check_arg {
     local val=$1
@@ -45,10 +46,13 @@ function stim_gen {
     local fname=iso_step
     if [ $2 == spot ]
     then
-        fname=step_spot
+        fname=sine_spot
     elif [ $2 == sine_tf ]
     then
 	fname=sine_tf
+    elif [ $2 == step_spot ]
+    then
+	fname=step_spot
     fi
 
     # Paste the first part of the stimulus file
@@ -69,7 +73,7 @@ function stim_gen {
 
 function knn_resp {
     if [ -z "$1" ]; then
-	local coneID=${CONE}
+	local coneID=${DUMP_CID}
     else
 	local coneID=$1
     fi
@@ -136,7 +140,8 @@ function change_parameters {
     DUMP_CID=${CONE} # macaque
     if [ $MODEL == "human" ]
     then
-	DUMP_CID=2079
+	DUMP_CID=2203
+	SCONE=2204
     fi
 
     # Default settings
@@ -173,11 +178,11 @@ function change_parameters {
     elif [[ $(exists_in ${OPTS} "${iso_cond[*]}") == true ]] 
     then
 	STIM_FILE=cone_iso_step
-	RESP_FILE=retina_line_10001WT
+	RESP_FILE=retina_line
 	
     elif [[ $OPTS == "knn" || $OPTS == "s_dist" ]]
     then
-	knn_resp
+	knn_resp ${SCONE}
 	stim_gen siso ${SHAPE}
 	STIM_FILE=cone_iso_step
 	RESP_FILE=knn_resp
@@ -189,10 +194,16 @@ function change_parameters {
 
     elif [ $OPTS == "cone_inputs" ]
     then
-	knn_resp ${CONE} 100 bp
+	knn_resp ${SCONE} 100 bp
 	stim_gen coneiso sine_tf
 	STIM_FILE=cone_iso_step
 	RESP_FILE=knn_resp
+
+    elif [ $OPTS == "gui" ]
+    then
+
+	stim_gen siso ${SHAPE}
+	STIM_FILE=cone_iso_step
     fi
 }
 

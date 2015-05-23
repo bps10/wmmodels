@@ -27,6 +27,7 @@ def main():
     tuning = ['h_sf', 'bp_sf', 'rgc_sf']
     s_dist = ['s_dist']
     cone_inputs = ['cone_inputs']
+    single_cone = True
 
     for arg in sys.argv:
         if arg in h1:
@@ -61,6 +62,10 @@ def main():
             plots.append('c_inputs')
             cell_type = 'bp'
 
+        if arg == 'full_field': # stimulus shape
+            # used in s_dist nearest neighbor assumption
+            single_cone = False 
+
     if ('stack' in plots or 'h_time' in plots or 'knn' in plots or 
         'tuning' in plots or 'c_inputs' in plots):
         d = nd_read('results/nd_files/zz.nd')
@@ -82,7 +87,7 @@ def main():
         plot.tuning_curve(d, cell_type=cell_type, tuning_type=tuning_type)
 
     if 's_dist' in plots:
-        plot.s_cone_hist()
+        plot.s_cone_hist(single_cone) #arg=single_cone (False=nearest S cone)
 
     if 'c_inputs' in plots:
         plot.cone_inputs(d, cell_type)

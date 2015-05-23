@@ -33,17 +33,21 @@ def response(d, cell_type, analysis_type,
         raise InputError('analysis type not supported (cone_input, sf, tf)')
 
     cells = get_cell_type(cell_type)
+    if cell_type == 'rgc':
+        resp_ind = 'p'
+    else:
+        resp_ind = 'x'
 
     resp = {}
     for c in cells: # for each cell type
-        resp[c] = np.zeros((ncells, d['ntrial']))
+        resp[c] = np.zeros((ncells * len(cells), d['ntrial']))
 
         keys = get_cell_data(d, c) 
         
         for t in range(d['ntrial']): # for each trial
             for i, r in enumerate(keys['tr'][t]['r']): # for each cell
 
-                cell = d['tr'][t]['r'][r]['x']
+                cell = d['tr'][t]['r'][r][resp_ind]
 
                 if cell_type == 'rgc':
                     cell = compute_psth(cell, time.max(), delta_t=20)

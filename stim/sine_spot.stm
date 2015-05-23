@@ -18,11 +18,10 @@ cy           0.14    # center (deg)
 direction    0       # Direction of drift
 sf           0       # Spatial period (cyc/deg)
 phase        90       # Degrees
-tf           3.0     # Temporal frequency (cyc/sec)
+tf           4.0     # Temporal frequency (cyc/sec)
 size         0.1     # Stimulus aperture diameter (deg)
 aptype       1       # Aperture type (0-none, 1-circ)
 bgval        0.5     # background value [0..1]
 contrast     1.0     # Contrast
-square_thresh 0.0    # make into a step function
 maxlum       1.0     # Maximum luminance
 stim_nrpt    1       # Number of repeats

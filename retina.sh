@@ -89,10 +89,10 @@ fi
 #-- 7. Plotting routines
 if [[ $(exists_in ${OPTS[0]} "${plots[*]}") == true && $GUI == 0 ]]
 then
-    python pycomp ${OPTS} ${MODEL}
+    python pycomp ${OPTS} ${MODEL} ${SHAPE}
 elif [[ $(exists_in ${OPTS[1]} "${plots[*]}") == true  && $GUI == 0 ]]
 then
-    python pycomp ${OPTS[1]} ${MODEL}
+    python pycomp ${OPTS[1]} ${MODEL} ${SHAPE}
 fi
 
 #-- 8. Start nd viewer when appropriate

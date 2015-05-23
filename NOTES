@@ -1,1 +1,50 @@
 # Retinal mesh model
+
+---
+Friday 5/22/2015 at 2:00 pm
+
+model is set to: macaque
+fundamentals set to: true
+stim shape is set to: spot
+h1 gp is set to: 0.1
+h1 gh is set to: 3.0
+h1 percent0 is set to: 0.0
+h1 e_seed is set to: 3413
+h1 lm bipolar is set to: 0.95
+h2 gp is set to: 1.0
+h2 gh is set to: 1.0
+h2 percent0 is set to: 0.0
+h2 e_seed is set to: 2658
+h2 l weight is set to: 0.1
+h2 m weight is set to: 0.1
+h2 s weight is set to: 1.0
+h2 lm bioplar is set to: 0.3
+analysis option: params
+
+---
+
+Attempting to narrow RF of H1 and H2
+
+model is set to: macaque
+fundamentals set to: true
+stim shape is set to: spot
+h1 gp is set to: 0.1
+h1 gh is set to: 0.8
+h1 percent0 is set to: 0.0
+h1 e_seed is set to: 3413
+h1 lm bipolar is set to: 0.7
+h2 gp is set to: 1.0
+h2 gh is set to: 0.8
+h2 percent0 is set to: 0.0
+h2 e_seed is set to: 91671
+h2 l weight is set to: 0.1
+h2 m weight is set to: 0.1
+h2 s weight is set to: 1.0
+h2 lm bioplar is set to: 0.4
+analysis option: params
+
+----------
+
+5/23/2015
+
+S_dist back to working with macaque model. Had to change the .mosaic file back to the macaque. Was still using WTs mosaic file. 
