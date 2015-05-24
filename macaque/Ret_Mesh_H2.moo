@@ -188,7 +188,7 @@ mod_trial_reset  1  # reset state between stimuli, default 1
     seed_col   1977       # randomization of cone color (L,M,S) - Red Center
 
     lm_ratio     1.0   # L:M cone ratio
-    prob_s       0.0   # S cone probability [Ignored if 'regular_s' > 0]
+    prob_s       0.06   # S cone probability [Ignored if 'regular_s' > 0]
     regular_s    4     # Leave this many cones between S cones (1,2,3,...)
     
     rgb_here

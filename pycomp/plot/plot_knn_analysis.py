@@ -49,7 +49,7 @@ def knn(d):
     plt.show()
 
 
-def s_cone_hist(single_cone=True):
+def s_cone_hist(mosaic_file, single_cone=True):
     '''
     TO DO:
     * Add rgc option
@@ -57,7 +57,7 @@ def s_cone_hist(single_cone=True):
     celldat = np.genfromtxt('results/nd_files/s_dist/nn_results.txt')
     cellIDs = celldat[:, 0]
     if not single_cone:
-        dist2S =  nn.find_nearest_S(celldat[:, 2:4])[0]
+        dist2S =  nn.find_nearest_S(celldat[:, 2:4], mosaic_file)[0]
     else:
         dist2S = celldat[:, 4]
 
@@ -103,7 +103,6 @@ def s_cone_hist(single_cone=True):
     lm = np.asarray(lm)
     ax.plot(lm[:, 0], lm[:, 1], 'ko')
 
-    #ax.set_xlim([0.8, 5.2])
     ax.set_xlabel('distance from S-cone')
     ax.set_ylabel('amplitude')
 
@@ -119,6 +118,9 @@ def s_cone_hist(single_cone=True):
     bins, count = pf.histOutline(count, bins)
     
     ax2.plot(bins, count, 'k-')
+
+    ax2.set_ylabel('density')
+    ax2.set_xlabel('amplitude')
 
     # Save plots
     fig1.savefig('results/img/s_dist_scatter.svg', edgecolor='none')

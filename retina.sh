@@ -31,6 +31,7 @@ while [ $i -lt $# ]; do
     MODEL=$(check_arg -model $MODEL)
     FUND=$(check_arg -fund $FUND)
     SHAPE=$(check_arg -shape $SHAPE)
+    RANDOM_S=$(check_arg -ran_s $RANDOM_S)
     H1GP=$(check_arg -P $H1GP)
     H1GH=$(check_arg -H $H1GH)
     H1P0=$(check_arg -T $H1P0)
@@ -89,10 +90,10 @@ fi
 #-- 7. Plotting routines
 if [[ $(exists_in ${OPTS[0]} "${plots[*]}") == true && $GUI == 0 ]]
 then
-    python pycomp ${OPTS} ${MODEL} ${SHAPE}
+    python pycomp ${MOSAIC_FILE} ${OPTS} ${MODEL} ${SHAPE}
 elif [[ $(exists_in ${OPTS[1]} "${plots[*]}") == true  && $GUI == 0 ]]
 then
-    python pycomp ${OPTS[1]} ${MODEL} ${SHAPE}
+    python pycomp ${MOSAIC_FILE} ${OPTS[1]} ${MODEL} ${SHAPE}
 fi
 
 #-- 8. Start nd viewer when appropriate

@@ -1,8 +1,5 @@
 #!/bin/bash
 
-CONE=3240 #184 #3690
-SCONE=3690
-
 function check_arg {
     local val=$1
     local default=$2
@@ -40,19 +37,110 @@ function exists_in {
 }
 
 
+function change_parameters {
+
+    # Default settings
+    MESH_DUMP_TYPE=null
+    MESH_DUMP_CID=${DUMP_CID}
+    STIM_OVERRIDE=0
+    STIM_FILE=test_gray
+    STIM_OVERRIDE_BINARY=${DUMP_CID}
+    STIM_OVERRIDE=0
+    MOO_FILE=Ret_Mesh_H2
+    OUT_FILE=zz.nd
+    RESP_FILE=retina
+    HVAR=h2
+    MOSAIC_FILE=nonrandom_model.mosaic
+    REGULAR_S=4
+
+    # Deal with model specific parameters
+    if [ $MODEL == "macaque" ]
+    then
+	DUMP_CID=3240 #184
+	SCONE=3690 # (non-random mosaic)
+	if [ $RANDOM_S == "true" ] 
+	then
+	    SCONE=3839 # (random mosaic)
+	    MOSAIC_FILE=random_model.mosaic
+	    REGULAR_S=0
+	fi
+    elif [ $MODEL == "human" ]
+    then
+	DUMP_CID=2203
+	SCONE=2204
+	MOSAIC_FILE=nonrandom_human_model.mosaic
+    fi
+
+    # handle analysis options
+    if [ $OPTS == "h1" ]
+    then
+	OUT_FILE=h1.dist.pl
+	STIM_OVERRIDE=1
+	MESH_DUMP_TYPE=h_v_dist
+
+    elif  [ $OPTS == "h2" ]
+    then
+	HVAR=h1 # flip around so changing h2 in moo file
+	MOO_FILE=Ret_Mesh_H2_H1_reverse
+	OUT_FILE=h2.dist.pl
+	STIM_OVERRIDE=1
+	MESH_DUMP_TYPE=h_v_dist
+
+    elif [ $OPTS == "h_time" ]
+    then
+	STIM_OVERRIDE_BINARY=all
+	STIM_OVERRIDE=1
+
+    elif [[ $(exists_in ${OPTS} "${iso_cond[*]}") == true ]] 
+    then
+	stim_gen ${OPTS} ${SHAPE}
+	STIM_FILE=cone_iso_step
+	RESP_FILE=retina_line
+	
+    elif [[ $OPTS == "knn" || $OPTS == "s_dist" ]]
+    then
+	knn_resp ${SCONE}
+	stim_gen siso ${SHAPE}
+	STIM_FILE=cone_iso_step
+	RESP_FILE=knn_resp
+
+    elif [[ $OPTS == "h_sf" || $OPTS == "bp_sf" || $OPTS == "rgc_sf" ]]
+    then
+	STIM_FILE=sine_sf
+	RESP_FILE=retina_line
+
+    elif [ $OPTS == "cone_inputs" ]
+    then
+	knn_resp ${SCONE} 100 bp
+	stim_gen coneiso full_field
+	STIM_FILE=cone_iso_step
+	RESP_FILE=knn_resp
+
+    elif [ $OPTS == "gui" ]
+    then
+
+	stim_gen siso ${SHAPE}
+	STIM_FILE=cone_iso_step
+    fi
+}
+
+
 function stim_gen {
     
     # Decide which file to start with
-    local fname=iso_step
+    local fname=iso_step # uniform full field case
     if [ $2 == spot ]
     then
-        fname=sine_spot
+        fname=step_spot
+    elif [ $2 == grating ]
+    then
+	fname=iso_sine
     elif [ $2 == sine_tf ]
     then
 	fname=sine_tf
-    elif [ $2 == step_spot ]
+    elif [ $2 == sine_spot ]
     then
-	fname=step_spot
+	fname=sine_spot
     fi
 
     # Paste the first part of the stimulus file
@@ -61,10 +149,12 @@ function stim_gen {
     # Paste the second part of the stimulus file
     if [[ $1 == siso || $1 == miso || $1 == liso ]]
     then
-	python pycomp/cone_iso.py $1 stockman  ${FUND} >> stim/cone_iso_step.stm
+	python pycomp/cone_iso.py $1 stockman  ${FUND} >> \
+	    stim/cone_iso_step.stm
     elif [ $1 == coneiso ] 
     then
-	python pycomp/cone_iso.py siso stockman ${FUND} >> stim/cone_iso_step.stm
+	python pycomp/cone_iso.py siso stockman ${FUND} >> \
+	    stim/cone_iso_step.stm
 	python pycomp/cone_iso.py coneiso stockman ${FUND} >> \
 	    stim/cone_iso_step.stm
     fi
@@ -91,8 +181,8 @@ function knn_resp {
     cat response/header.rsp > response/knn_resp.rsp
 
     # Paste the second part of the stimulus file
-    python pycomp/util/nearest_neighbor.py ${coneID} ${Ncones} ${cell_type} >>\
-	response/knn_resp.rsp
+    python pycomp/util/nearest_neighbor.py ${coneID} ${Ncones} ${cell_type} \
+	${MOSAIC_FILE} >> response/knn_resp.rsp 
 
 }
 
@@ -107,6 +197,7 @@ function save_defaults {
     echo "MODEL=$MODEL" >> util/default_vars.sh
     echo "FUND=$FUND" >> util/default_vars.sh
     echo "SHAPE=$SHAPE" >> util/default_vars.sh
+    echo "RANDOM_S=$RANDOM_S" >> util/default_vars.sh
     echo "H1GP=$H1GP" >> util/default_vars.sh
     echo "H1GH=$H1GH" >> util/default_vars.sh
     echo "H1P0=$H1P0" >> util/default_vars.sh
@@ -136,78 +227,6 @@ function dump_results {
 }
 
 
-function change_parameters {
-    DUMP_CID=${CONE} # macaque
-    if [ $MODEL == "human" ]
-    then
-	DUMP_CID=2203
-	SCONE=2204
-    fi
-
-    # Default settings
-    MESH_DUMP_TYPE=null
-    MESH_DUMP_CID=${DUMP_CID}
-    STIM_OVERRIDE=0
-    STIM_FILE=test_gray
-    STIM_OVERRIDE_BINARY=${DUMP_CID}
-    STIM_OVERRIDE=0
-    MOO_FILE=Ret_Mesh_H2
-    OUT_FILE=zz.nd
-    RESP_FILE=retina
-    HVAR=h2
-
-    if [ $OPTS == "h1" ]
-    then
-	OUT_FILE=h1.dist.pl
-	STIM_OVERRIDE=1
-	MESH_DUMP_TYPE=h_v_dist
-
-    elif  [ $OPTS == "h2" ]
-    then
-	HVAR=h1 # flip around so changing h2 in moo file
-	MOO_FILE=Ret_Mesh_H2_H1_reverse
-	OUT_FILE=h2.dist.pl
-	STIM_OVERRIDE=1
-	MESH_DUMP_TYPE=h_v_dist
-
-    elif [ $OPTS == "h_time" ]
-    then
-	STIM_OVERRIDE_BINARY=all
-	STIM_OVERRIDE=1
-
-    elif [[ $(exists_in ${OPTS} "${iso_cond[*]}") == true ]] 
-    then
-	STIM_FILE=cone_iso_step
-	RESP_FILE=retina_line
-	
-    elif [[ $OPTS == "knn" || $OPTS == "s_dist" ]]
-    then
-	knn_resp ${SCONE}
-	stim_gen siso ${SHAPE}
-	STIM_FILE=cone_iso_step
-	RESP_FILE=knn_resp
-
-    elif [[ $OPTS == "h_sf" || $OPTS == "bp_sf" || $OPTS == "rgc_sf" ]]
-    then
-	STIM_FILE=sine_sf
-	RESP_FILE=retina_line
-
-    elif [ $OPTS == "cone_inputs" ]
-    then
-	knn_resp ${SCONE} 100 bp
-	stim_gen coneiso sine_tf
-	STIM_FILE=cone_iso_step
-	RESP_FILE=knn_resp
-
-    elif [ $OPTS == "gui" ]
-    then
-
-	stim_gen siso ${SHAPE}
-	STIM_FILE=cone_iso_step
-    fi
-}
-
-
 function change_sys_matrix() {
     sys=$(python pycomp/cone_iso.py sys stockman ${FUND})
     perl -p -e "s/rgb_here/$sys/g" ${MODEL}/${MOO_FILE}.moo > ${MODEL}/run.moo
@@ -223,6 +242,7 @@ function print_info {
 	echo -e "-model\t MODEL"
 	echo -e "-fund\t FUND"
 	echo -e "-shape\t SHAPE"
+	echo -e "-ran_s\t RANDOM_S"
 	echo -e "-P\t H1GP"
 	echo -e "-H\t H1GH"
 	echo -e "-T\t H1P0 (percent0)"
@@ -245,6 +265,7 @@ function print_info {
 	echo "model is set to: $MODEL"
 	echo "fundamentals set to: $FUND"
 	echo "stim shape is set to: $SHAPE"
+	echo "random S is set to: $RANDOM_S"
 	echo "h1 gp is set to: $H1GP"
 	echo "h1 gh is set to: $H1GH"
 	echo "h1 percent0 is set to: $H1P0"
@@ -329,11 +350,6 @@ function run_s_dist_analysis {
 }
 
 function run_wm {
-    # if stimulus condition is an iso_cond then gen stim file
-    if [[ $(exists_in ${OPTS} "${iso_cond[*]}") == true ]] 
-    then
-	stim_gen ${OPTS} ${SHAPE} 
-    fi
 
     wm mod $1/run.moo \
 	stim/$2.stm \
@@ -351,6 +367,7 @@ function run_wm {
 	retina0/h_mesh.${HVAR}/w_l ${H2L} \
 	retina0/bipolar_lm_wh1 ${H1W} \
 	retina0/bipolar_lm_wh2 ${H2W} \
+	retina0/cone_mosaic/regular_s ${REGULAR_S} \
 	retina0/stim_override ${STIM_OVERRIDE}\
         retina0/mesh_dump_type ${MESH_DUMP_TYPE} \
 	retina0/mesh_dump_cid ${MESH_DUMP_CID} \
@@ -366,6 +383,7 @@ function run_mosaic {
 
     wm mod ${MODEL}/run.moo stim/test_flash.stm \
 	response/retina.rsp  tn ${TN}  gui_flag ${GUI} \
+	retina0/cone_mosaic/regular_s ${REGULAR_S} \
 	retina0/mesh_dump_type mosaic_coord \
 	retina0/mesh_dump_file mosaics/model.mosaic
     

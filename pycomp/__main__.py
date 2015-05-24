@@ -17,6 +17,8 @@ def main():
     if 'mosaic' in sys.argv:
         plot.mosaic()
 
+    mosaic_file = 'mosaics/' + sys.argv[1]
+
     plots = []
     data = {}
     h1 = ['h1', 'verbose']
@@ -62,9 +64,9 @@ def main():
             plots.append('c_inputs')
             cell_type = 'bp'
 
-        if arg == 'full_field': # stimulus shape
-            # used in s_dist nearest neighbor assumption
-            single_cone = False 
+    if 'spot' not in sys.argv: # stimulus shape
+        # used in s_dist nearest neighbor assumption
+        single_cone = False
 
     if ('stack' in plots or 'h_time' in plots or 'knn' in plots or 
         'tuning' in plots or 'c_inputs' in plots):
@@ -87,7 +89,8 @@ def main():
         plot.tuning_curve(d, cell_type=cell_type, tuning_type=tuning_type)
 
     if 's_dist' in plots:
-        plot.s_cone_hist(single_cone) #arg=single_cone (False=nearest S cone)
+        #arg=single_cone (False=nearest S cone)
+        plot.s_cone_hist(mosaic_file, single_cone) 
 
     if 'c_inputs' in plots:
         plot.cone_inputs(d, cell_type)

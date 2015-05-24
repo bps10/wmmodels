@@ -2,7 +2,8 @@
  
 MODEL=macaque
 FUND=true
-SHAPE=spot
+SHAPE=full_field
+RANDOM_S=false
 H1GP=0.1
 H1GH=0.8
 H1P0=0.0

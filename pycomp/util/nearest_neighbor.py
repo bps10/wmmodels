@@ -84,4 +84,5 @@ if __name__ == '__main__':
         cell_type = sys.argv[3]
     except IndexError:
         pass
-    find_neighbors(cone=cone, K=K, cell_type=cell_type)
+    file = 'mosaics/' + sys.argv[4]
+    find_neighbors(FILE=file, cone=cone, K=K, cell_type=cell_type)

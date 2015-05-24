@@ -47,4 +47,7 @@ analysis option: params
 
 5/23/2015
 
-S_dist back to working with macaque model. Had to change the .mosaic file back to the macaque. Was still using WTs mosaic file. 
+S_dist back to working with macaque model. Had to change the .mosaic file back to the macaque. Was still using WTs mosaic file.
+
+-shape full_field produces exponential like distribution of s cone responses in h2 nodes, but the ratio between the smallest and largest s responses is very small. The ratio is dependent upon spatial frequency. Higher SF values will exaggerate the effect.
+
