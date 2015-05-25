@@ -30,6 +30,7 @@ def main():
     s_dist = ['s_dist']
     cone_inputs = ['cone_inputs']
     single_cone = True
+    block_plots = True
 
     for arg in sys.argv:
         if arg in h1:
@@ -68,32 +69,36 @@ def main():
         # used in s_dist nearest neighbor assumption
         single_cone = False
 
+    if 'noblock' in sys.argv:
+        block_plots = False
+
     if ('stack' in plots or 'h_time' in plots or 'knn' in plots or 
         'tuning' in plots or 'c_inputs' in plots):
         d = nd_read('results/nd_files/zz.nd')
 
     if 'stack' in plots:
-        plot.stack(d)
+        plot.stack(d, block_plots)
 
     if 'h_time' in plots:
-        plot.horiz_time_const(d)
+        plot.horiz_time_const(d, block_plots)
 
     if 'horiz' in plots:
         if data is not {}:
-            plot.dist(data, SPECIES)
+            plot.dist(data, SPECIES, block_plots)
 
     if 'knn' in plots:
-        plot.knn(d)
+        plot.knn(d, block_plots)
 
     if 'tuning' in plots:
-        plot.tuning_curve(d, cell_type=cell_type, tuning_type=tuning_type)
+        plot.tuning_curve(d, cell_type=cell_type, tuning_type=tuning_type,
+                          block_plots=block_plots)
 
     if 's_dist' in plots:
-        #arg=single_cone (False=nearest S cone)
-        plot.s_cone_hist(mosaic_file, SPECIES, single_cone) 
+        # single_cone (False=nearest S cone)
+        plot.s_cone_hist(mosaic_file, SPECIES, single_cone, block_plots) 
 
     if 'c_inputs' in plots:
-        plot.cone_inputs(d, cell_type)
+        plot.cone_inputs(d, cell_type, block_plots)
 
 
 if __name__ == '__main__':

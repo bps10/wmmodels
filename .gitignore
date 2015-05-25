@@ -19,3 +19,4 @@ results/txt_files/*.txt
 txt_files/s_dist/*
 results/txt_files/s_dist/*
 results/nd_files/*
+results/*

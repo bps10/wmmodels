@@ -3,7 +3,7 @@
 # Import utility fuctions
 . ./util/retina_util.sh
 
-# Import default parameters
+# Import default parameters (make model specific)
 . ./util/default_vars.sh
 
 # setup conditions to specify behavior
@@ -51,6 +51,8 @@ while [ $i -lt $# ]; do
 done
 check_gui_flag
 
+check_block_plots_flag
+
 #-- 2. Print some info about parameters or a help file
 print_info
 
@@ -90,10 +92,10 @@ fi
 #-- 7. Plotting routines
 if [[ $(exists_in ${OPTS[0]} "${plots[*]}") == true && $GUI == 0 ]]
 then
-    python pycomp ${MOSAIC_FILE} ${OPTS} ${MODEL} ${SHAPE}
+    python pycomp ${MOSAIC_FILE} ${OPTS} ${MODEL} ${SHAPE} ${BLOCK_PLOTS}
 elif [[ $(exists_in ${OPTS[1]} "${plots[*]}") == true  && $GUI == 0 ]]
 then
-    python pycomp ${MOSAIC_FILE} ${OPTS[1]} ${MODEL} ${SHAPE}
+    python pycomp ${MOSAIC_FILE} ${OPTS[1]} ${MODEL} ${SHAPE} ${BLOCK_PLOTS}
 fi
 
 #-- 8. Start nd viewer when appropriate

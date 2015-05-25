@@ -23,6 +23,15 @@ function check_gui_flag {
 } 
 
 
+function check_block_plots_flag {
+    BLOCK_PLOTS=block
+    if [ $(exists_in noblock "${args[*]}") == true ]
+    then
+	BLOCK_PLOTS=noblock
+    fi
+}
+
+
 function exists_in {
     local var=$1
     local arr=($2)

@@ -7,7 +7,7 @@ import analysis as an
 import util as u
 
 
-def stack(d):
+def stack(d, block_plots=True):
     '''
     TO DO:
     * Add rgc option
@@ -75,10 +75,10 @@ def stack(d):
             figs[t]['f'].savefig('results/img/stack_t' + str(t) + '.svg',
                                  edgecolor='none')
 
-    plt.show()
+    plt.show(block=block_plots)
 
 
-def horiz_time_const(d):
+def horiz_time_const(d, block_plots=True):
     '''
     TO DO:
     '''
@@ -111,10 +111,10 @@ def horiz_time_const(d):
     fig.savefig('results/img/h_time_const' + str(t) + '.svg', 
                 edgecolor='none')
 
-    plt.show()
+    plt.show(block=block_plots)
 
 
-def tuning_curve(d, cell_type='h1', tuning_type='sf'):
+def tuning_curve(d, cell_type='h1', tuning_type='sf', block_plots=True):
     '''
     '''
     deg2um = 0.00534 # macaque conversion (cpd to micron)
@@ -163,7 +163,9 @@ def tuning_curve(d, cell_type='h1', tuning_type='sf'):
     ax2.set_xlabel('cycles / $\mu$m')
     ax2.set_xscale('log')
 
-    plt.show()
+    fig.savefig('results/img/' + cell_type + '_' + tuning_type + '_tuning.svg',
+                edgecolor='none')
+    plt.show(block=block_plots)
 
 
 def check_lims(dat, lim, ind):

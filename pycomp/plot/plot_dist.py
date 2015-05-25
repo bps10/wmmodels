@@ -7,7 +7,8 @@ from base import plot as pf
 from util.conversion import conversion_factors
 
 
-def dist(data, species, invert=False, normalize=True):
+def dist(data, species, block_plots=True, invert=False, 
+	 normalize=True):
 	'''
 	'''
 	deg_per_pix, mm_per_deg = conversion_factors(species)
@@ -44,7 +45,7 @@ def dist(data, species, invert=False, normalize=True):
 		    #facecolor=fig.get_facecolor(), 
 		    edgecolor='none')
 
-	plt.show()
+	plt.show(block=block_plots)
 
 if __name__ == '__main__':
 

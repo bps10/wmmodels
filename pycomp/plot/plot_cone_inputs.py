@@ -8,7 +8,7 @@ from util import get_cell_list
 import analysis as an
 
 
-def cone_inputs(d, cell_type='bp'):
+def cone_inputs(d, cell_type='bp', block_plots=True):
     '''
     '''
     celldat = np.genfromtxt('results/txt_files/nn_results.txt')
@@ -43,6 +43,7 @@ def cone_inputs(d, cell_type='bp'):
     ax.set_xlim([-1.1, 1.1])
     ax.set_ylim([-1.1, 1.1])
 
+    fig.savefig('results/img/cone_inputs.svg', edgecolor='none')
     plt.show()
 
 

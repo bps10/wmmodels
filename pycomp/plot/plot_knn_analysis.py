@@ -8,7 +8,7 @@ from util import nearest_neighbor as nn
 from util import get_cell_list, get_cell_data, num, conversion_factors
 from util.nd_read import nd_read
 
-def knn(d):
+def knn(d, block_plots=True):
     '''
     TO DO:
 
@@ -46,10 +46,12 @@ def knn(d):
         if celldat[ind, 1] == 2:
             ax.plot(distance, amp, 'ro')
 
-    plt.show()
+    fig.savefig('results/img/knn.svg', edgecolor='none')
+    plt.show(block=block_plots)
 
 
-def s_cone_hist(mosaic_file, species, single_cone=True):
+def s_cone_hist(mosaic_file, species, single_cone=True, 
+                block_plots=True):
     '''
     TO DO:
     * Add rgc option
@@ -132,4 +134,4 @@ def s_cone_hist(mosaic_file, species, single_cone=True):
     fig1.savefig('results/img/s_dist_scatter.svg', edgecolor='none')
     fig2.savefig('results/img/s_dist_hist.svg', edgecolor='none')
     
-    plt.show()
+    plt.show(block=block_plots)
