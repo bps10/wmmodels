@@ -90,7 +90,7 @@ def main():
 
     if 's_dist' in plots:
         #arg=single_cone (False=nearest S cone)
-        plot.s_cone_hist(mosaic_file, single_cone) 
+        plot.s_cone_hist(mosaic_file, SPECIES, single_cone) 
 
     if 'c_inputs' in plots:
         plot.cone_inputs(d, cell_type)

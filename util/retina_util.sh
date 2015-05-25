@@ -39,20 +39,6 @@ function exists_in {
 
 function change_parameters {
 
-    # Default settings
-    MESH_DUMP_TYPE=null
-    MESH_DUMP_CID=${DUMP_CID}
-    STIM_OVERRIDE=0
-    STIM_FILE=test_gray
-    STIM_OVERRIDE_BINARY=${DUMP_CID}
-    STIM_OVERRIDE=0
-    MOO_FILE=Ret_Mesh_H2
-    OUT_FILE=zz.nd
-    RESP_FILE=retina
-    HVAR=h2
-    MOSAIC_FILE=nonrandom_model.mosaic
-    REGULAR_S=4
-
     # Deal with model specific parameters
     if [ $MODEL == "macaque" ]
     then
@@ -70,6 +56,21 @@ function change_parameters {
 	SCONE=2204
 	MOSAIC_FILE=nonrandom_human_model.mosaic
     fi
+
+    # Default settings
+    MESH_DUMP_TYPE=null
+    MESH_DUMP_CID=${DUMP_CID}
+    STIM_OVERRIDE=0
+    STIM_FILE=test_gray
+    STIM_OVERRIDE_BINARY=${DUMP_CID}
+    STIM_OVERRIDE=0
+    MOO_FILE=Ret_Mesh_H2
+    OUT_FILE=zz.nd
+    RESP_FILE=retina
+    HVAR=h2
+    MOSAIC_FILE=nonrandom_model.mosaic
+    REGULAR_S=4
+    DUMP_CID=3240
 
     # handle analysis options
     if [ $OPTS == "h1" ]

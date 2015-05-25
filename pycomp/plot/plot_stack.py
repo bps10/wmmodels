@@ -90,23 +90,25 @@ def horiz_time_const(d):
     pf.TufteAxis(ax, ['bottom', 'left'], [3, 3])
 
     time = u.get_time(d)
+    inds = np.where(np.logical_and(time >= 450, time <= 600))[0]
+
+    time_ = time[inds] - 500
+
     for t in range(d['ntrial']):
         h1 = u.get_cell_data(d['tr'][t], 'h1')
         h2 = u.get_cell_data(d['tr'][t], 'h2')
 
-        h1dat = d['tr'][t]['r'][h1[0]]['x']
-        h2dat = d['tr'][t]['r'][h2[0]]['x']
+        h1dat = d['tr'][t]['r'][h1[0]]['x'][inds]
+        h2dat = d['tr'][t]['r'][h2[0]]['x'][inds]
 
-        ax.plot(time, h1dat) # only use 1st response
-        ax.plot(time, h2dat) # only use 1st response
+        ax.plot(time_, h1dat, label='H1') # only use 1st response
+        ax.plot(time_, h2dat, label='H2') # only use 1st response
     
     #ax[1].set_ylabel('response')
     ax.set_xlabel('time (ms)')
-    
-    #pf.invert(ax[i], fig, bk_color='k')
+    ax.legend(fontsize=22, loc='lower right')
 
     fig.savefig('results/img/h_time_const' + str(t) + '.svg', 
-                #facecolor=fig.get_facecolor(), 
                 edgecolor='none')
 
     plt.show()

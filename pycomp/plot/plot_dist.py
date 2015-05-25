@@ -10,24 +10,32 @@ from util.conversion import conversion_factors
 def dist(data, species, invert=False, normalize=True):
 	'''
 	'''
-	pix_per_deg, mm_per_deg = conversion_factors(species)
+	deg_per_pix, mm_per_deg = conversion_factors(species)
 
 	fig = plt.figure()
 	fig.set_tight_layout(True)
 	ax = fig.add_subplot(111)
 
-	pf.AxisFormat(markersize=8)
-	pf.TufteAxis(ax, ['bottom', 'left'], [5, 5])
+	pf.AxisFormat(markersize=8, linewidth=3)
+	pf.TufteAxis(ax, ['bottom', 'left'], [4, 5])
 
 	for d in data:
 		dat = data[d]
-		x_val_h = dat[:, 0] * pix_per_deg * mm_per_deg * 1000
-		if normalize:
-			dat[:, 1] /= dat[:, 1].max()
+		dat = dat[dat[:, 0].argsort()]
 
-		ax.plot(x_val_h, dat[:, 1], 'o')
+		x_val_h = dat[:, 0] * deg_per_pix * mm_per_deg * 1000
+		yval = dat[:, 1]
+
+		xval = np.hstack([x_val_h[::-1][:-1] * -1, x_val_h])
+		yval = np.hstack([yval[::-1][:-1], yval])
+		if normalize:
+			yval /= yval.max()
+
+		ax.plot(xval, yval, '-', label=d.upper())
 
 	ax.set_xlabel('distance ($\mu$m)')
+	ax.set_xlim([-200, 200])
+	ax.legend(fontsize=22)
 
 	if invert:
 		pf.invert(ax, fig, bk_color='k')

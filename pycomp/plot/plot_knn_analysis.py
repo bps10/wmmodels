@@ -5,7 +5,7 @@ import matplotlib.pylab as plt
 from base import plot as pf
 from base import files as f
 from util import nearest_neighbor as nn
-from util import get_cell_list, get_cell_data, num
+from util import get_cell_list, get_cell_data, num, conversion_factors
 from util.nd_read import nd_read
 
 def knn(d):
@@ -49,11 +49,13 @@ def knn(d):
     plt.show()
 
 
-def s_cone_hist(mosaic_file, single_cone=True):
+def s_cone_hist(mosaic_file, species, single_cone=True):
     '''
     TO DO:
     * Add rgc option
     '''
+    deg_per_pix, mm_per_deg = conversion_factors(species)
+
     celldat = np.genfromtxt('results/nd_files/s_dist/nn_results.txt')
     cellIDs = celldat[:, 0]
     if not single_cone:
@@ -61,6 +63,10 @@ def s_cone_hist(mosaic_file, single_cone=True):
     else:
         dist2S = celldat[:, 4]
 
+    # convert pixels into arcmin
+    dist2S *= deg_per_pix * 60
+
+    # get all nd files in s_dist analysis dir
     fnames = f.getAllFiles('./results/nd_files/s_dist', suffix='.nd',
                           subdirectories=0)
     s = []
@@ -103,7 +109,7 @@ def s_cone_hist(mosaic_file, single_cone=True):
     lm = np.asarray(lm)
     ax.plot(lm[:, 0], lm[:, 1], 'ko')
 
-    ax.set_xlabel('distance from S-cone')
+    ax.set_xlabel('distance from S-cone (arcmin)')
     ax.set_ylabel('amplitude')
 
     fig2 = plt.figure()
