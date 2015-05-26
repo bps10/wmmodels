@@ -52,6 +52,7 @@ function change_parameters {
     # Deal with model specific parameters
     if [ $MODEL == "macaque" ]
     then
+	MOSAIC_FILE=nonrandom_model.mosaic
 	DUMP_CID=3240 #184
 	SCONE=3690 # (non-random mosaic)
 	if [ $RANDOM_S == "true" ] 

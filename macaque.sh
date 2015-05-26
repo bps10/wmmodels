@@ -8,21 +8,31 @@ H2GP=1.0
 H2GH=0.8
 H2W=0.4
 RAN_S=false
-SHAPE=uniform
 
 #---- sub routines ----#
 function run_model {
     local analysis=$1
-    local secondopt=$2 # often doesn't exist
+    if [ "$2" == "foo" ]
+    then
+	local secondopt=
+    else
+	local secondopt=$2 # often doesn't exist
+    fi
+    if [ -z $3 ]
+    then 
+	local shape=uniform
+    else 
+	local shape=$3
+    fi
 
     # print out what we are doing
     echo ./retina.sh -model macaque -P $H1GP -H $H1GH -W $H1W \
-	-p $H2GP -h $H2GH -w $H2W -ran_s $RAN_S -shape $SHAPE \
+	-p $H2GP -h $H2GH -w $H2W -ran_s $RAN_S -shape $shape \
 	noblock $analysis $secondopt
 
     # now run the model
     ./retina.sh -model macaque -P $H1GP -H $H1GH -W $H1W \
-	-p $H2GP -h $H2GH -w $H2W -ran_s $RAN_S \
+	-p $H2GP -h $H2GH -w $H2W -ran_s $RAN_S -shape $shape \
 	noblock $analysis $secondopt
 }
 # -------------------- #
@@ -40,7 +50,7 @@ run_model h1
 cp results/pl_files/h1.dist.pl results/macaque/horiz/h1.dist.pl
 
 run_model h2
-cp results/pl_files/h1.dist.pl results/macaque/horiz/h1.dist.pl
+cp results/pl_files/h2.dist.pl results/macaque/horiz/h2.dist.pl
 
 run_model h_time
 cp results/nd_files/zz.nd results/macaque/horiz/h_time.nd
@@ -113,11 +123,9 @@ for i in `seq 1 2`; do
     cp results/img/mosaic.svg results/macaque/s_dist/$DIR/mosaic.svg
 
 # Uniform
-    SHAPE=uniform
-    run_model s_dist
-    cp results/nd_files/s_dist/2658.nd \ 
-    results/macaque/s_dist/$DIR/uniform.nd
-
+    run_model s_dist foo uniform
+    cp results/nd_files/s_dist/2658.nd results/macaque/s_dist/$DIR/uniform.nd
+    
     cp results/img/s_dist_scatter.svg \
     results/macaque/s_dist/$DIR/uniform_scatter.svg
 
@@ -125,23 +133,19 @@ for i in `seq 1 2`; do
     results/macaque/s_dist/$DIR/uniform_hist.svg
 
 # 5 cpd grating
-    SHAPE=grating
-    run_model s_dist
-    cp results/nd_files/s_dist/2658.nd \
-	results/macaque/s_dist/$DIR/grating.nd
+    run_model s_dist foo grating
+    cp results/nd_files/s_dist/2658.nd results/macaque/s_dist/$DIR/grating.nd
 
-    cp results/img/s_dist_scatterr.svg \
+    cp results/img/s_dist_scatter.svg \
 	results/macaque/s_dist/$DIR/grating_scatter.svg
 
     cp results/img/s_dist_hist.svg \
 	results/macaque/s_dist/$DIR/grating_hist.svg
 
 # Small spot
-    SHAPE=spot
 ## also need to change cone here for the random case, otherwise not centered
-    run_model s_dist
-    cp results/nd_files/s_dist/2658.nd \
-	results/macaque/s_dist/$DIR/spot.nd
+    run_model s_dist foo spot
+    cp results/nd_files/s_dist/2658.nd results/macaque/s_dist/$DIR/spot.nd
 
     cp results/img/s_dist_scatter.svg \
 	results/macaque/s_dist/$DIR/spot_scatter.svg
