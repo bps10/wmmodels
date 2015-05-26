@@ -13,7 +13,7 @@ def dist(data, species, block_plots=True, invert=False,
 	'''
 	deg_per_pix, mm_per_deg = conversion_factors(species)
 
-	fig = plt.figure()
+	fig = plt.figure(figsize=(5.5, 6))
 	fig.set_tight_layout(True)
 	ax = fig.add_subplot(111)
 

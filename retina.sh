@@ -9,12 +9,16 @@
 # setup conditions to specify behavior
 analysis=(siso miso liso coneiso h1 h2 \
     h_time mosaic gui stack nd plot \
-    verbose params knn h_sf bp_sf rgc_sf s_dist cone_inputs)
+    verbose params knn h_sf bp_sf rgc_sf \
+    h_tf bp_tf rgc_tf \
+    s_dist cone_inputs step)
 runmod=(h1 h2 siso miso liso coneiso h_time knn h_sf bp_sf rgc_sf \
-    cone_inputs gui)
+    h_tf bp_tf rgc_tf \
+    cone_inputs gui step)
 plots=(h1 h2 siso miso liso coneiso stack h_time verbose knn h_sf \
-    bp_sf rgc_sf s_dist cone_inputs)
-dump=(siso miso liso coneiso h_time knn h_sf bp_sf rgc_sf cone_inputs)
+    bp_sf rgc_sf h_tf bp_tf rgc_tf s_dist cone_inputs step)
+dump=(siso miso liso coneiso h_time knn h_sf bp_sf rgc_sf \
+    h_tf bp_tf rgc_tf cone_inputs step)
 iso_cond=(siso miso liso coneiso)
 
 #-- 1. Get analysis option

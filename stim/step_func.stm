@@ -1,35 +1,27 @@
 #------------------------------------------------------------------------------
 #
-#  test1.stm
+#  step_func.stm
 #	
-#  Vary the G gun around the isoluminant point (for L:M = 1:1 and high ss)
-#
+#  A simple full field step function
 #------------------------------------------------------------------------------
 
 stim_type   sine     # Sinusoidal grating
 stim_samp  1000.0    # Stimulus sampling rate
-stim_form   3c       # Stimulus format, 3d, 3c, 3d_b
+#stim_form   3c       # Stimulus format, 3d, 3c, 3d_b
 #stim_smooth 0.025    # SD of Gaussian for blurring (deg)
 
-st0          0.50   # start time (s)
-stn        100.000   # duration (s)
+st0          0.250   # start time (s)
+stn          1.000   # duration (s)
 cx           0       # center (deg)
 cy           0       # center (deg)
 direction    0       # Direction of drift
-sf           0     # Spatial period (cyc/deg)
-phase        0       # Degrees
-tf           0.0     # Temporal frequency (cyc/sec)
-size         1.0     # Stimulus aperture diameter (deg)
+sf           0.0       # Spatial period (cyc/deg)
+phase        -90       # Degrees
+tf           1.0     # Temporal frequency (cyc/sec)
+size         5.0     # Stimulus aperture diameter (deg)
 aptype       0       # Aperture type (0-none, 1-circ)
 bgval        0.5     # background value [0..1]
 contrast     1.0     # Contrast
+square_thresh 0.0    # make into a step function
 maxlum       1.0     # Maximum luminance
 stim_nrpt    1       # Number of repeats
-
-color0_r   1.0    # Equiluminant values in absence of S-input
-color0_g   1.0    # Total cone-contrast is .1088
-color0_b   1.0
-
-color1_r   1.0
-color1_g   1.0
-color1_b   1.0

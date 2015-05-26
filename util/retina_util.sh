@@ -48,6 +48,7 @@ function exists_in {
 
 function change_parameters {
 
+    REGULAR_S=4
     # Deal with model specific parameters
     if [ $MODEL == "macaque" ]
     then
@@ -77,9 +78,6 @@ function change_parameters {
     OUT_FILE=zz.nd
     RESP_FILE=retina
     HVAR=h2
-    MOSAIC_FILE=nonrandom_model.mosaic
-    REGULAR_S=4
-    DUMP_CID=3240
 
     # handle analysis options
     if [ $OPTS == "h1" ]
@@ -114,9 +112,19 @@ function change_parameters {
 	STIM_FILE=cone_iso_step
 	RESP_FILE=knn_resp
 
+    elif [[ $OPTS == "step" ]]
+    then
+	STIM_FILE=test_flash
+	RESP_FILE=retina_line
+
     elif [[ $OPTS == "h_sf" || $OPTS == "bp_sf" || $OPTS == "rgc_sf" ]]
     then
 	STIM_FILE=sine_sf
+	RESP_FILE=retina_line
+
+    elif [[ $OPTS == "h_tf" || $OPTS == "bp_tf" || $OPTS == "rgc_tf" ]]
+    then
+	STIM_FILE=sine_tf
 	RESP_FILE=retina_line
 
     elif [ $OPTS == "cone_inputs" ]
@@ -130,7 +138,7 @@ function change_parameters {
     then
 
 	stim_gen siso ${SHAPE}
-	STIM_FILE=cone_iso_step
+	STIM_FILE=test_flash #cone_iso_step
     fi
 }
 
@@ -397,7 +405,7 @@ function run_mosaic {
 	retina0/mesh_dump_type mosaic_coord \
 	retina0/mesh_dump_file mosaics/model.mosaic
     
-    python pycomp mosaic
+    python pycomp $BLOCK_PLOTS mosaic
 
 }
 

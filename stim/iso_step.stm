@@ -9,7 +9,6 @@
 stim_type   sine     # Sinusoidal grating
 stim_samp  1000.0    # Stimulus sampling rate
 stim_form   3c       # Stimulus format, 3d, 3c, 3d_b
-#stim_smooth 0.025    # SD of Gaussian for blurring (deg)
 
 st0          0.100   # start time (s)
 stn          0.500   # duration (s)

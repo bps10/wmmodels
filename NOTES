@@ -51,3 +51,13 @@ S_dist back to working with macaque model. Had to change the .mosaic file back t
 
 -shape full_field produces exponential like distribution of s cone responses in h2 nodes, but the ratio between the smallest and largest s responses is very small. The ratio is dependent upon spatial frequency. Higher SF values will exaggerate the effect.
 
+
+----------
+
+5/25/2015
+
+Added macaque.sh to run all analyses.
+
+Speed up photoreceptors to bring temporal frequency of horizontal cells more in line with what is known.
+
+May need to play with speed of horizontal cells themselves (Gp).

@@ -22,4 +22,4 @@ contrast   0.5       # Contrast
 maxlum     1.0       # Maximum luminance
 stim_nrpt    1       # Number of repeats
 
-VAR_sf   0.25 0.5 1.0 2.0 4.0 8.0
+VAR_sf   0.125 0.25 0.5 1.0 2.0 4.0 8.0

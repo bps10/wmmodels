@@ -117,15 +117,24 @@ def horiz_time_const(d, block_plots=True):
 def tuning_curve(d, cell_type='h1', tuning_type='sf', block_plots=True):
     '''
     '''
+    # Get this with conversion call
     deg2um = 0.00534 # macaque conversion (cpd to micron)
 
-    fig = plt.figure(figsize=(7,7))
+    if tuning_type == 'sf':
+        figsize = (7, 7)
+    else:
+        figsize = (6, 5)
+
+    fig = plt.figure(figsize=figsize)
     fig.set_tight_layout(True)
     ax1 = fig.add_subplot(111)
-    ax2 = ax1.twiny()
+    if tuning_type == 'sf':
+        ax2 = ax1.twiny()
+
     pf.AxisFormat()
     pf.TufteAxis(ax1, ['bottom', 'left', ], [4, 4])
-    pf.TufteAxis(ax2, ['top', ], [4, 4])
+    if tuning_type == 'sf':
+        pf.TufteAxis(ax2, ['top', ], [4, 4])
 
     # get the data
     r = an.response(d, cell_type, tuning_type)
@@ -141,7 +150,7 @@ def tuning_curve(d, cell_type='h1', tuning_type='sf', block_plots=True):
         x = u.num(d['const']['VAR_tf']['val']) # temp freq
 
     for i, c in enumerate(cells):
-        ax1.loglog(x, r[c][i, :], 'ko-', color=colors[i])
+        ax1.loglog(x, r[c][i, :], 'o-', color=colors[i], label=c)
         vec = np.reshape(r[c], -1)
         max = np.max(vec)
         min = np.min(vec)
@@ -155,13 +164,18 @@ def tuning_curve(d, cell_type='h1', tuning_type='sf', block_plots=True):
 
     ax1.axis([x[0] - 0.05, x[-1] + 1, ymin, ymax])
     ax1.set_ylabel('amplitude')
-    ax1.set_xlabel('cycles / degree')
-    
-    ax2.xaxis.tick_top()
-    ax2.yaxis.tick_left()
-    ax2.axis([(x[0] - 0.05) * deg2um, (x[-1] + 1) * deg2um, ymin, ymax])
-    ax2.set_xlabel('cycles / $\mu$m')
-    ax2.set_xscale('log')
+    ax1.legend(fontsize=22, loc='lower center')
+
+    if tuning_type == 'tf':
+        ax1.set_xlabel('temporal frequency (Hz)')
+
+    elif tuning_type == 'sf':
+        ax1.set_xlabel('cycles / degree')
+        ax2.xaxis.tick_top()
+        ax2.yaxis.tick_left()
+        ax2.axis([(x[0] - 0.05) * deg2um, (x[-1] + 1) * deg2um, ymin, ymax])
+        ax2.set_xlabel('cycles / $\mu$m')
+        ax2.set_xscale('log')
 
     fig.savefig('results/img/' + cell_type + '_' + tuning_type + '_tuning.svg',
                 edgecolor='none')

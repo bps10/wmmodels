@@ -31,7 +31,7 @@ def response(d, cell_type, analysis_type,
         tf = num(d['const']['tf']['val']) # temporal frequency (Hz)
     else:
         raise InputError('analysis type not supported (cone_input, sf, tf)')
-
+    
     cells = get_cell_type(cell_type)
     if cell_type == 'rgc':
         resp_ind = 'p'
@@ -47,18 +47,24 @@ def response(d, cell_type, analysis_type,
         for t in range(d['ntrial']): # for each trial
             for i, r in enumerate(keys['tr'][t]['r']): # for each cell
 
+                # handle case where TF is changing
+                if analysis_type == 'tf':
+                    _tf = tf[t]
+                else:
+                    _tf = tf
+
                 cell = d['tr'][t]['r'][r][resp_ind]
 
                 if cell_type == 'rgc':
-                    cell = compute_psth(cell, time.max(), delta_t=20)
+                    cell = compute_psth(cell, time.max(), delta_t=10)
 
                 fft =  np.fft.fft(cell)
                                 
                 if analysis_type == 'cone_inputs':
-                    amp  = np.real(fft[tf]) * 2 / N
+                    amp  = np.real(fft[_tf]) * 2 / N
                     resp[c][i, t] = amp / cone_contrast[t]
                 else: 
-                    amp  = np.abs(fft[tf]) * 2 / N
+                    amp  = np.abs(fft[_tf]) * 2 / N
                     resp[c][i, t] = amp
 
         if normalize:

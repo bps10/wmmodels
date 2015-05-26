@@ -2,8 +2,7 @@
 #
 #  test_flash.stm
 #	
-#  Vary the G gun around the isoluminant point (for L:M = 1:1 and high ss)
-#
+# 
 #------------------------------------------------------------------------------
 
 stim_type   sine     # Sinusoidal grating
@@ -23,16 +22,16 @@ size         1.0     # Stimulus aperture diameter (deg)
 aptype       1       # Aperture type (0-none, 1-circ)
 bgval        0.5     # background value [0..1]
 contrast     1.0     # Contrast
+#square_thresh 0.0    # make into a step function
 maxlum       1.0     # Maximum luminance
 stim_nrpt    1       # Number of repeats
 
-color0_r   0.0000    # Equiluminant values in absence of S-input
-color0_g   0.6087    # Total cone-contrast is .1088
-color0_b   0.5
+# equal quantal catch (0.2 of max) values for RGB guns
+color0_r   0.0992602816335
+color0_g   0.190461757252
+color0_b   0.200022309328
 
-color1_r   1.0000
-color1_g   1.0000
-color1_b   1.0000
-
-#VARLINK_color0_g  0.50  0.70
-#VARLINK_color1_g  0.50  0.30
+# 4.9x background
+color1_r   0.486375380004
+color1_g   0.933262610533
+color1_b   0.980109315706

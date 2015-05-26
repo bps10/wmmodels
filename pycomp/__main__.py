@@ -14,9 +14,6 @@ def main():
     elif 'macaque' in sys.argv:
         SPECIES = 'macaque'
 
-    if 'mosaic' in sys.argv:
-        plot.mosaic()
-
     mosaic_file = 'mosaics/' + sys.argv[1]
 
     plots = []
@@ -24,9 +21,9 @@ def main():
     h1 = ['h1', 'verbose']
     h2 = ['h2', 'verbose']
     h_time = ['h_time', 'verbose']
-    stack = ['siso', 'miso', 'liso', 'cone', 'stack', 'coneiso']
+    stack = ['siso', 'miso', 'liso', 'cone', 'stack', 'coneiso', 'step']
     knn = ['knn']
-    tuning = ['h_sf', 'bp_sf', 'rgc_sf']
+    tuning = ['h_sf', 'bp_sf', 'rgc_sf', 'h_tf', 'bp_tf', 'rgc_tf']
     s_dist = ['s_dist']
     cone_inputs = ['cone_inputs']
     single_cone = True
@@ -47,9 +44,11 @@ def main():
         if arg in stack:
             if 'stack' not in plots:
                 plots.append('stack')
+
         if arg in h_time:
             if 'h_time' not in plots:
                 plots.append('h_time')
+
         if arg in knn:
             plots.append('knn')
 
@@ -75,6 +74,10 @@ def main():
     if ('stack' in plots or 'h_time' in plots or 'knn' in plots or 
         'tuning' in plots or 'c_inputs' in plots):
         d = nd_read('results/nd_files/zz.nd')
+
+    # decide what to plot
+    if 'mosaic' in sys.argv:
+        plot.mosaic(block_plot=block_plots)
 
     if 'stack' in plots:
         plot.stack(d, block_plots)

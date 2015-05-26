@@ -60,7 +60,7 @@ def cone_iso(spect='stockman', print_sys_M=False,
 	
 	# set background - assume 1/2 for each cone
 	bkgd_photo = np.array([[0.5], [0.5], [0.5]])
-
+	
 	# compute relative intensities to create equal adaptation
 	bkgd = np.dot(inv_M, bkgd_photo)
 
@@ -94,8 +94,14 @@ def cone_iso(spect='stockman', print_sys_M=False,
 
 	# print outputs		
 	if print_bkgd:
-		for i in range(len(bkgd_photo)):
-			print bkgd_photo[i][0]
+	
+		# set background - assume 1/2 for each cone
+		_bkgd_photo = np.array([[0.2], [0.2], [0.2]])
+		
+		# compute relative intensities to create equal adaptation
+		_bkgd = np.dot(inv_M, _bkgd_photo)
+		for i in range(len(_bkgd)):
+			print _bkgd[i][0], _bkgd[i][0] * 4.9
 
 	if print_sys_M: 
 		m = ['L', 'M', 'S']
@@ -183,4 +189,4 @@ if __name__ == '__main__':
 		cone_iso(fund, print_var_link=True, filters=f)
 
 	if sys.argv[1] == 'bkgd':
-		cone_iso(fund, print_bkdg=True, filters=f)
+		cone_iso(fund, print_bkgd=True, filters=f)
