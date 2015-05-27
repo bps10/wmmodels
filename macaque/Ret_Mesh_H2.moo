@@ -169,8 +169,8 @@ mod_trial_reset  1  # reset state between stimuli, default 1
 
   # PHOTORECEPTORS
   photo_delta         0      # 1-Override photo filter with delta-function
-  mod_mesh_photo_m1   0.020  # Maxwell kernel, 1/2wid = 1.5*m1 (s)
-  mod_mesh_photo_m2   0.040  # Maxwell kernel, 1/2wid = 1.5*m2 (s)
+  mod_mesh_photo_m1   0.010  # Maxwell kernel, 1/2wid = 1.5*m1 (s)
+  mod_mesh_photo_m2   0.020  # Maxwell kernel, 1/2wid = 1.5*m2 (s)
   mod_mesh_photo_a2   0.70   # Maxwell kernel, amplitude of m2 relative to m1
   cone_mosaic_flag    1      # [0] Color mosaic (0-cartesian, 1-mosaic)
 
