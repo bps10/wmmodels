@@ -50,10 +50,11 @@ function change_parameters {
 
     REGULAR_S=4
     # Deal with model specific parameters
+    # put these into default param files for each model
     if [ $MODEL == "macaque" ]
     then
 	MOSAIC_FILE=nonrandom_model.mosaic
-	DUMP_CID=3240 #184
+	DUMP_CID=3240 
 	SCONE=3690 # (non-random mosaic)
 	if [ $RANDOM_S == "true" ] 
 	then
@@ -66,6 +67,12 @@ function change_parameters {
 	DUMP_CID=2203
 	SCONE=2204
 	MOSAIC_FILE=nonrandom_human_model.mosaic
+
+    elif [ $MODEL == "WT" ]
+    then
+	DUMP_CID=184
+	SCONE=184
+	MOSAIC_FILE=WT.mosaic
     fi
 
     # Default settings
@@ -207,31 +214,35 @@ function knn_resp {
 
 
 function save_defaults {
-    # remove file with old values
+    # remove files with old values
     rm util/default_vars.sh
+    rm models/${MODEL}/default_vars.sh
 
-    # create new file with current values
-    echo "#! /bin/bash" >> util/default_vars.sh
+    # create new default util file with current values
+    echo "#! /bin/bash" >> models/${MODEL}/default_vars.sh
     echo " " >> util/default_vars.sh
     echo "MODEL=$MODEL" >> util/default_vars.sh
     echo "FUND=$FUND" >> util/default_vars.sh
     echo "SHAPE=$SHAPE" >> util/default_vars.sh
     echo "RANDOM_S=$RANDOM_S" >> util/default_vars.sh
-    echo "H1GP=$H1GP" >> util/default_vars.sh
-    echo "H1GH=$H1GH" >> util/default_vars.sh
-    echo "H1P0=$H1P0" >> util/default_vars.sh
-    echo "H1ES=$H1ES" >> util/default_vars.sh
-    echo "H1W=$H1W" >> util/default_vars.sh
-    echo "H2GP=$H2GP" >> util/default_vars.sh
-    echo "H2GH=$H2GH" >> util/default_vars.sh
-    echo "H2GH=$H2GH" >> util/default_vars.sh
-    echo "H2P0=$H2P0" >> util/default_vars.sh
-    echo "H2ES=$H2ES" >> util/default_vars.sh
-    echo "H2S=$H2S" >> util/default_vars.sh
-    echo "H2M=$H2M" >> util/default_vars.sh
-    echo "H2L=$H2L" >> util/default_vars.sh
-    echo "H2W=$H2W" >> util/default_vars.sh
     echo "TN=$TN" >> util/default_vars.sh
+
+    # create new default model specific file with current values
+    echo "#! /bin/bash" >> models/${MODEL}/default_vars.sh
+    echo " " >> models/${MODEL}/default_vars.sh
+    echo "H1GP=$H1GP" >> models/${MODEL}/default_vars.sh
+    echo "H1GH=$H1GH" >> models/${MODEL}/default_vars.sh
+    echo "H1P0=$H1P0" >> models/${MODEL}/default_vars.sh
+    echo "H1ES=$H1ES" >> models/${MODEL}/default_vars.sh
+    echo "H1W=$H1W" >> models/${MODEL}/default_vars.sh
+    echo "H2GP=$H2GP" >> models/${MODEL}/default_vars.sh
+    echo "H2GH=$H2GH" >> models/${MODEL}/default_vars.sh
+    echo "H2P0=$H2P0" >> models/${MODEL}/default_vars.sh
+    echo "H2ES=$H2ES" >> models/${MODEL}/default_vars.sh
+    echo "H2S=$H2S" >> models/${MODEL}/default_vars.sh
+    echo "H2M=$H2M" >> models/${MODEL}/default_vars.sh
+    echo "H2L=$H2L" >> models/${MODEL}/default_vars.sh
+    echo "H2W=$H2W" >> models/${MODEL}/default_vars.sh
 }
 
 
@@ -248,7 +259,8 @@ function dump_results {
 
 function change_sys_matrix() {
     sys=$(python pycomp/cone_iso.py sys stockman ${FUND})
-    perl -p -e "s/rgb_here/$sys/g" ${MODEL}/${MOO_FILE}.moo > ${MODEL}/run.moo
+    perl -p -e "s/rgb_here/$sys/g" models/${MODEL}/${MOO_FILE}.moo > \
+	models/${MODEL}/run.moo
 }
 
 
@@ -351,7 +363,7 @@ function run_s_dist_analysis {
 	echo "Trial: $count, H2ES: $H2ES"
 
 	# run wm with new H2 e_seed
-	run_wm ${MODEL} ${STIM_FILE}
+	run_wm models/${MODEL} ${STIM_FILE}
 
 	# rename dumped data, move into dir (make if doesn't exist)
 	mv "results/nd_files/zz.nd" "results/nd_files/s_dist/$H2ES.nd"
@@ -370,7 +382,7 @@ function run_s_dist_analysis {
 
 function run_wm {
 
-    wm mod $1/run.moo \
+    wm mod models/$1/run.moo \
 	stim/$2.stm \
 	response/${RESP_FILE}.rsp  tn ${TN} \
 	retina0/h_mesh.h1/gp ${H1GP} \
@@ -400,7 +412,7 @@ function run_mosaic {
     # remove old mosaic model
     rm mosaics/model.mosaic
 
-    wm mod ${MODEL}/run.moo stim/test_flash.stm \
+    wm mod models/${MODEL}/run.moo stim/test_flash.stm \
 	response/retina.rsp  tn ${TN}  gui_flag ${GUI} \
 	retina0/cone_mosaic/regular_s ${REGULAR_S} \
 	retina0/mesh_dump_type mosaic_coord \

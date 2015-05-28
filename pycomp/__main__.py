@@ -9,7 +9,7 @@ from util.nd_read import nd_read
 def main():
     '''	
     '''	
-    if 'human' in sys.argv:
+    if 'human' in sys.argv or 'WT' in sys.argv:
         SPECIES = 'human'
     elif 'macaque' in sys.argv:
         SPECIES = 'macaque'

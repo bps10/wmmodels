@@ -3,8 +3,23 @@
 # Import utility fuctions
 . ./util/retina_util.sh
 
-# Import default parameters (make model specific)
+# Import default parameters
 . ./util/default_vars.sh
+
+#-- 1. Import model specific parameters
+
+# find if model has been changed
+args=("$@")
+i=0
+while [ $i -lt $# ]; do
+    MODEL=$(check_arg -model $MODEL)
+    i=$((i+1))
+done
+
+# load appropriate model vars
+. ./models/${MODEL}/default_vars.sh
+
+#-- 2. Get analysis option
 
 # setup conditions to specify behavior
 analysis=(siso miso liso coneiso h1 h2 \
@@ -21,9 +36,7 @@ dump=(siso miso liso coneiso h_time knn h_sf bp_sf rgc_sf \
     h_tf bp_tf rgc_tf cone_inputs step)
 iso_cond=(siso miso liso coneiso)
 
-#-- 1. Get analysis option
 OPTS=()
-args=("$@")
 i=0
 while [ $i -lt $# ]; do
 
@@ -32,7 +45,6 @@ while [ $i -lt $# ]; do
 	OPTS+=(${args[$i]})
     fi
 
-    MODEL=$(check_arg -model $MODEL)
     FUND=$(check_arg -fund $FUND)
     SHAPE=$(check_arg -shape $SHAPE)
     RANDOM_S=$(check_arg -ran_s $RANDOM_S)
@@ -57,19 +69,19 @@ check_gui_flag
 
 check_block_plots_flag
 
-#-- 2. Print some info about parameters or a help file
+#-- 3. Print some info about parameters or a help file
 print_info
 
-#-- 3. Change the model behavior based on command line input
+#-- 4. Change the model behavior based on command line input
 change_parameters
 
-#-- 4. Change system matrix
+#-- 5. Change system matrix
 change_sys_matrix
 
-#-- 5. Delete old output files
+#-- 6. Delete old output files
 delete_old_file
 
-#-- 6. Perform the simulation(s)
+#-- 7. Perform the simulation(s)
 if [ $OPTS == "mosaic" ]
 then
     run_mosaic
@@ -93,7 +105,7 @@ else
 
 fi
 
-#-- 7. Plotting routines
+#-- 8. Plotting routines
 if [[ $(exists_in ${OPTS[0]} "${plots[*]}") == true && $GUI == 0 ]]
 then
     python pycomp ${MOSAIC_FILE} ${OPTS} ${MODEL} ${SHAPE} ${BLOCK_PLOTS}
@@ -102,7 +114,7 @@ then
     python pycomp ${MOSAIC_FILE} ${OPTS[1]} ${MODEL} ${SHAPE} ${BLOCK_PLOTS}
 fi
 
-#-- 8. Start nd viewer when appropriate
+#-- 9. Start nd viewer when appropriate
 if [[ $OPTS == "nd" ]]
 then
     java -jar ~/Projects/wmbuild/bin/nd.jar results/nd_files/zz.nd
