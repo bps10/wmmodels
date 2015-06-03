@@ -94,7 +94,7 @@ else
 
     if [ $(exists_in ${OPTS} "${runmod[*]}") == true ]
     then
-	run_wm ${MODEL} ${STIM_FILE}
+	run_wm models/${MODEL} ${STIM_FILE}
 	
 	if [ $GUI == 0 ] # make sure model was truly run
 	then
