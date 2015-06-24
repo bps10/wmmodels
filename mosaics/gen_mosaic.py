@@ -23,12 +23,13 @@ def point_in_poly(x,y,poly):
 
     return inside
 
-def gen_mosaic(mosaic_file='model.mosaic', subj_file='10001_WT.csv'):
+def gen_mosaic(mosaic_file='model.mosaic', subj_file='10001_WT.csv',
+               scale_factor=4.6, offset_factor=40):
     model = np.genfromtxt(mosaic_file)
     
     subj = np.genfromtxt(subj_file, delimiter=',')
-    subj[:, :2] = subj[:, :2] / 4.6 # scale it to be same size
-    subj[:, :2] = subj[:, :2] + 40 # offset to be in center
+    subj[:, :2] = subj[:, :2] / scale_factor # scale it to be same size
+    subj[:, :2] = subj[:, :2] + offset_factor # offset to be in center
 
     hull = ConvexHull(subj[:, :2])
     outline = zip(subj[hull.vertices, 0], subj[hull.vertices, 1])
@@ -166,26 +167,23 @@ def gen_mosaic(mosaic_file='model.mosaic', subj_file='10001_WT.csv'):
 
     plt.show()
 
-    # save space separated file
-    '''fid = open('subj_mosaic.txt', 'w+')
-    for row in data:
-        line = str(round(row[1], 4)) + '  ' + str(round(row[2], 4))
-        if row[0] == 0:
-            line += '  S\n'
-        elif row[0] == 1:
-            line += '  M\n'
-        elif row[0] == 2:
-            line += '  L\n'
-        fid.write(line)
-    fid.close()'''
-
     # rearrange data for saving in proper format
-    data[:, 3] = data[:, 0]
-    data[:, :2] = data[:, 1:3]
-    data[:, 2] = data[:, 3]
-    data = data[:, :3]
-    np.savetxt('subj_mosaic.txt', data, delimiter='  ', fmt="%f %f %d")
+    d = np.zeros((len(data[:, 0]), 3))                                      
+    d[:, 2] = data[:, 0]
+    d[:, :2] = data[:, 1:3]
+    #d = d[d[:, 1].argsort()]
 
+    # now have to do a hacky thing to get this list sorted
+    # there is an easier way to do this. Need to understand structured
+    # arrays better.
+    np.savetxt('subj_mosaic.txt', d, delimiter='  ', fmt="%f %f %d")
+    d = np.genfromtxt('subj_mosaic.txt', names=['a', 'b', 'c'])
+
+    # sort the structured array
+    d = np.sort(d, order=['b', 'a'])
+
+    # save the file in an ordered manner.
+    np.savetxt('subj_mosaic.txt', d, delimiter='  ', fmt="%f %f %d")
 
 def find_hc():
     '''
@@ -208,5 +206,10 @@ def find_hc():
 
 
 if __name__ == '__main__':
-    #gen_mosaic()
+
+    gen_mosaic(mosaic_file='model.mosaic', # model mosaic file
+               subj_file='10001_WT.csv', # subj mosaic file
+               scale_factor=4.6, # scale subj mosaic to fit density WT=4.6
+               offset_factor=40 # offset subj mosaic to be centered WT=40
+               )
     find_hc()

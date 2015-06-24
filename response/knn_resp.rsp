@@ -52,405 +52,405 @@ mon_stim_flag    1       # show stimulus during simulation
 outfile         results/nd_files/zz       # prefix for all output files
 write_ndata      *       # write spikes to output file
 
-save_pop_unit_as_cone_3690 f 500 bipolar 3690 0 0 photo
+save_pop_unit_as_cone_3124 f 500 bipolar 3124 0 0 photo
 
-save_pop_unit_as_h2_3690 f 500 bipolar 3690 0 0 h2
+save_pop_unit_as_h2_3124 f 500 bipolar 3124 0 0 h2
 
-save_pop_unit_as_h1_3690 f 500 bipolar 3690 0 0 horiz
+save_pop_unit_as_h1_3124 f 500 bipolar 3124 0 0 horiz
 
-save_pop_unit_as_h2_3616 f 500 bipolar 3616 0 0 h2
+save_pop_unit_as_h2_3077 f 500 bipolar 3077 0 0 h2
 
-save_pop_unit_as_h1_3616 f 500 bipolar 3616 0 0 horiz
+save_pop_unit_as_h1_3077 f 500 bipolar 3077 0 0 horiz
 
-save_pop_unit_as_h2_3691 f 500 bipolar 3691 0 0 h2
+save_pop_unit_as_h2_3078 f 500 bipolar 3078 0 0 h2
 
-save_pop_unit_as_h1_3691 f 500 bipolar 3691 0 0 horiz
+save_pop_unit_as_h1_3078 f 500 bipolar 3078 0 0 horiz
 
-save_pop_unit_as_h2_3765 f 500 bipolar 3765 0 0 h2
+save_pop_unit_as_h2_3123 f 500 bipolar 3123 0 0 h2
 
-save_pop_unit_as_h1_3765 f 500 bipolar 3765 0 0 horiz
+save_pop_unit_as_h1_3123 f 500 bipolar 3123 0 0 horiz
 
-save_pop_unit_as_h2_3615 f 500 bipolar 3615 0 0 h2
+save_pop_unit_as_h2_3125 f 500 bipolar 3125 0 0 h2
 
-save_pop_unit_as_h1_3615 f 500 bipolar 3615 0 0 horiz
+save_pop_unit_as_h1_3125 f 500 bipolar 3125 0 0 horiz
 
-save_pop_unit_as_h2_3764 f 500 bipolar 3764 0 0 h2
+save_pop_unit_as_h2_3170 f 500 bipolar 3170 0 0 h2
 
-save_pop_unit_as_h1_3764 f 500 bipolar 3764 0 0 horiz
+save_pop_unit_as_h1_3170 f 500 bipolar 3170 0 0 horiz
 
-save_pop_unit_as_h2_3689 f 500 bipolar 3689 0 0 h2
+save_pop_unit_as_h2_3171 f 500 bipolar 3171 0 0 h2
 
-save_pop_unit_as_h1_3689 f 500 bipolar 3689 0 0 horiz
+save_pop_unit_as_h1_3171 f 500 bipolar 3171 0 0 horiz
 
-save_pop_unit_as_h2_3766 f 500 bipolar 3766 0 0 h2
+save_pop_unit_as_h2_3076 f 500 bipolar 3076 0 0 h2
 
-save_pop_unit_as_h1_3766 f 500 bipolar 3766 0 0 horiz
+save_pop_unit_as_h1_3076 f 500 bipolar 3076 0 0 horiz
 
-save_pop_unit_as_h2_3541 f 500 bipolar 3541 0 0 h2
+save_pop_unit_as_h2_3169 f 500 bipolar 3169 0 0 h2
 
-save_pop_unit_as_h1_3541 f 500 bipolar 3541 0 0 horiz
+save_pop_unit_as_h1_3169 f 500 bipolar 3169 0 0 horiz
 
-save_pop_unit_as_h2_3614 f 500 bipolar 3614 0 0 h2
+save_pop_unit_as_h2_3030 f 500 bipolar 3030 0 0 h2
 
-save_pop_unit_as_h1_3614 f 500 bipolar 3614 0 0 horiz
+save_pop_unit_as_h1_3030 f 500 bipolar 3030 0 0 horiz
 
-save_pop_unit_as_h2_3617 f 500 bipolar 3617 0 0 h2
+save_pop_unit_as_h2_3079 f 500 bipolar 3079 0 0 h2
 
-save_pop_unit_as_h1_3617 f 500 bipolar 3617 0 0 horiz
+save_pop_unit_as_h1_3079 f 500 bipolar 3079 0 0 horiz
 
-save_pop_unit_as_h2_3839 f 500 bipolar 3839 0 0 h2
+save_pop_unit_as_h2_3029 f 500 bipolar 3029 0 0 h2
 
-save_pop_unit_as_h1_3839 f 500 bipolar 3839 0 0 horiz
+save_pop_unit_as_h1_3029 f 500 bipolar 3029 0 0 horiz
 
-save_pop_unit_as_h2_3542 f 500 bipolar 3542 0 0 h2
+save_pop_unit_as_h2_3217 f 500 bipolar 3217 0 0 h2
 
-save_pop_unit_as_h1_3542 f 500 bipolar 3542 0 0 horiz
+save_pop_unit_as_h1_3217 f 500 bipolar 3217 0 0 horiz
 
-save_pop_unit_as_h2_3763 f 500 bipolar 3763 0 0 h2
+save_pop_unit_as_h2_3172 f 500 bipolar 3172 0 0 h2
 
-save_pop_unit_as_h1_3763 f 500 bipolar 3763 0 0 horiz
+save_pop_unit_as_h1_3172 f 500 bipolar 3172 0 0 horiz
 
-save_pop_unit_as_h2_3840 f 500 bipolar 3840 0 0 h2
+save_pop_unit_as_h2_3122 f 500 bipolar 3122 0 0 h2
 
-save_pop_unit_as_h1_3840 f 500 bipolar 3840 0 0 horiz
+save_pop_unit_as_h1_3122 f 500 bipolar 3122 0 0 horiz
 
-save_pop_unit_as_h2_3692 f 500 bipolar 3692 0 0 h2
+save_pop_unit_as_h2_3126 f 500 bipolar 3126 0 0 h2
 
-save_pop_unit_as_h1_3692 f 500 bipolar 3692 0 0 horiz
+save_pop_unit_as_h1_3126 f 500 bipolar 3126 0 0 horiz
 
-save_pop_unit_as_h2_3688 f 500 bipolar 3688 0 0 h2
+save_pop_unit_as_h2_3031 f 500 bipolar 3031 0 0 h2
 
-save_pop_unit_as_h1_3688 f 500 bipolar 3688 0 0 horiz
+save_pop_unit_as_h1_3031 f 500 bipolar 3031 0 0 horiz
 
-save_pop_unit_as_h2_3540 f 500 bipolar 3540 0 0 h2
+save_pop_unit_as_h2_3216 f 500 bipolar 3216 0 0 h2
 
-save_pop_unit_as_h1_3540 f 500 bipolar 3540 0 0 horiz
+save_pop_unit_as_h1_3216 f 500 bipolar 3216 0 0 horiz
 
-save_pop_unit_as_h2_3838 f 500 bipolar 3838 0 0 h2
+save_pop_unit_as_h2_3218 f 500 bipolar 3218 0 0 h2
 
-save_pop_unit_as_h1_3838 f 500 bipolar 3838 0 0 horiz
+save_pop_unit_as_h1_3218 f 500 bipolar 3218 0 0 horiz
 
-save_pop_unit_as_h2_3543 f 500 bipolar 3543 0 0 h2
+save_pop_unit_as_h2_3028 f 500 bipolar 3028 0 0 h2
 
-save_pop_unit_as_h1_3543 f 500 bipolar 3543 0 0 horiz
+save_pop_unit_as_h1_3028 f 500 bipolar 3028 0 0 horiz
 
-save_pop_unit_as_h2_3618 f 500 bipolar 3618 0 0 h2
+save_pop_unit_as_h2_2984 f 500 bipolar 2984 0 0 h2
 
-save_pop_unit_as_h1_3618 f 500 bipolar 3618 0 0 horiz
+save_pop_unit_as_h1_2984 f 500 bipolar 2984 0 0 horiz
 
-save_pop_unit_as_h2_3467 f 500 bipolar 3467 0 0 h2
+save_pop_unit_as_h2_3075 f 500 bipolar 3075 0 0 h2
 
-save_pop_unit_as_h1_3467 f 500 bipolar 3467 0 0 horiz
+save_pop_unit_as_h1_3075 f 500 bipolar 3075 0 0 horiz
 
-save_pop_unit_as_h2_3466 f 500 bipolar 3466 0 0 h2
+save_pop_unit_as_h2_3168 f 500 bipolar 3168 0 0 h2
 
-save_pop_unit_as_h1_3466 f 500 bipolar 3466 0 0 horiz
+save_pop_unit_as_h1_3168 f 500 bipolar 3168 0 0 horiz
 
-save_pop_unit_as_h2_3767 f 500 bipolar 3767 0 0 h2
+save_pop_unit_as_h2_2983 f 500 bipolar 2983 0 0 h2
 
-save_pop_unit_as_h1_3767 f 500 bipolar 3767 0 0 horiz
+save_pop_unit_as_h1_2983 f 500 bipolar 2983 0 0 horiz
 
-save_pop_unit_as_h2_3914 f 500 bipolar 3914 0 0 h2
+save_pop_unit_as_h2_3080 f 500 bipolar 3080 0 0 h2
 
-save_pop_unit_as_h1_3914 f 500 bipolar 3914 0 0 horiz
+save_pop_unit_as_h1_3080 f 500 bipolar 3080 0 0 horiz
 
-save_pop_unit_as_h2_3613 f 500 bipolar 3613 0 0 h2
+save_pop_unit_as_h2_3032 f 500 bipolar 3032 0 0 h2
 
-save_pop_unit_as_h1_3613 f 500 bipolar 3613 0 0 horiz
+save_pop_unit_as_h1_3032 f 500 bipolar 3032 0 0 horiz
 
-save_pop_unit_as_h2_3841 f 500 bipolar 3841 0 0 h2
+save_pop_unit_as_h2_3219 f 500 bipolar 3219 0 0 h2
 
-save_pop_unit_as_h1_3841 f 500 bipolar 3841 0 0 horiz
+save_pop_unit_as_h1_3219 f 500 bipolar 3219 0 0 horiz
 
-save_pop_unit_as_h2_3913 f 500 bipolar 3913 0 0 h2
+save_pop_unit_as_h2_3264 f 500 bipolar 3264 0 0 h2
 
-save_pop_unit_as_h1_3913 f 500 bipolar 3913 0 0 horiz
+save_pop_unit_as_h1_3264 f 500 bipolar 3264 0 0 horiz
 
-save_pop_unit_as_h2_3539 f 500 bipolar 3539 0 0 h2
+save_pop_unit_as_h2_3173 f 500 bipolar 3173 0 0 h2
 
-save_pop_unit_as_h1_3539 f 500 bipolar 3539 0 0 horiz
+save_pop_unit_as_h1_3173 f 500 bipolar 3173 0 0 horiz
 
-save_pop_unit_as_h2_3837 f 500 bipolar 3837 0 0 h2
+save_pop_unit_as_h2_3265 f 500 bipolar 3265 0 0 h2
 
-save_pop_unit_as_h1_3837 f 500 bipolar 3837 0 0 horiz
+save_pop_unit_as_h1_3265 f 500 bipolar 3265 0 0 horiz
 
-save_pop_unit_as_h2_3762 f 500 bipolar 3762 0 0 h2
+save_pop_unit_as_h2_3215 f 500 bipolar 3215 0 0 h2
 
-save_pop_unit_as_h1_3762 f 500 bipolar 3762 0 0 horiz
+save_pop_unit_as_h1_3215 f 500 bipolar 3215 0 0 horiz
 
-save_pop_unit_as_h2_3693 f 500 bipolar 3693 0 0 h2
+save_pop_unit_as_h2_3127 f 500 bipolar 3127 0 0 h2
 
-save_pop_unit_as_h1_3693 f 500 bipolar 3693 0 0 horiz
+save_pop_unit_as_h1_3127 f 500 bipolar 3127 0 0 horiz
 
-save_pop_unit_as_h2_3915 f 500 bipolar 3915 0 0 h2
+save_pop_unit_as_h2_2985 f 500 bipolar 2985 0 0 h2
 
-save_pop_unit_as_h1_3915 f 500 bipolar 3915 0 0 horiz
+save_pop_unit_as_h1_2985 f 500 bipolar 2985 0 0 horiz
 
-save_pop_unit_as_h2_3468 f 500 bipolar 3468 0 0 h2
+save_pop_unit_as_h2_2982 f 500 bipolar 2982 0 0 h2
 
-save_pop_unit_as_h1_3468 f 500 bipolar 3468 0 0 horiz
+save_pop_unit_as_h1_2982 f 500 bipolar 2982 0 0 horiz
 
-save_pop_unit_as_h2_3912 f 500 bipolar 3912 0 0 h2
+save_pop_unit_as_h2_3121 f 500 bipolar 3121 0 0 h2
 
-save_pop_unit_as_h1_3912 f 500 bipolar 3912 0 0 horiz
+save_pop_unit_as_h1_3121 f 500 bipolar 3121 0 0 horiz
 
-save_pop_unit_as_h2_3465 f 500 bipolar 3465 0 0 h2
+save_pop_unit_as_h2_3266 f 500 bipolar 3266 0 0 h2
 
-save_pop_unit_as_h1_3465 f 500 bipolar 3465 0 0 horiz
+save_pop_unit_as_h1_3266 f 500 bipolar 3266 0 0 horiz
 
-save_pop_unit_as_h2_3687 f 500 bipolar 3687 0 0 h2
+save_pop_unit_as_h2_3263 f 500 bipolar 3263 0 0 h2
 
-save_pop_unit_as_h1_3687 f 500 bipolar 3687 0 0 horiz
+save_pop_unit_as_h1_3263 f 500 bipolar 3263 0 0 horiz
 
-save_pop_unit_as_h2_3544 f 500 bipolar 3544 0 0 h2
+save_pop_unit_as_h2_2936 f 500 bipolar 2936 0 0 h2
 
-save_pop_unit_as_h1_3544 f 500 bipolar 3544 0 0 horiz
+save_pop_unit_as_h1_2936 f 500 bipolar 2936 0 0 horiz
 
-save_pop_unit_as_h2_3842 f 500 bipolar 3842 0 0 h2
+save_pop_unit_as_h2_2981 f 500 bipolar 2981 0 0 h2
 
-save_pop_unit_as_h1_3842 f 500 bipolar 3842 0 0 horiz
+save_pop_unit_as_h1_2981 f 500 bipolar 2981 0 0 horiz
 
-save_pop_unit_as_h2_3988 f 500 bipolar 3988 0 0 h2
+save_pop_unit_as_h2_3214 f 500 bipolar 3214 0 0 h2
 
-save_pop_unit_as_h1_3988 f 500 bipolar 3988 0 0 horiz
+save_pop_unit_as_h1_3214 f 500 bipolar 3214 0 0 horiz
 
-save_pop_unit_as_h2_3392 f 500 bipolar 3392 0 0 h2
+save_pop_unit_as_h2_3027 f 500 bipolar 3027 0 0 h2
 
-save_pop_unit_as_h1_3392 f 500 bipolar 3392 0 0 horiz
+save_pop_unit_as_h1_3027 f 500 bipolar 3027 0 0 horiz
 
-save_pop_unit_as_h2_3768 f 500 bipolar 3768 0 0 h2
+save_pop_unit_as_h2_3033 f 500 bipolar 3033 0 0 h2
 
-save_pop_unit_as_h1_3768 f 500 bipolar 3768 0 0 horiz
+save_pop_unit_as_h1_3033 f 500 bipolar 3033 0 0 horiz
 
-save_pop_unit_as_h2_3393 f 500 bipolar 3393 0 0 h2
+save_pop_unit_as_h2_2937 f 500 bipolar 2937 0 0 h2
 
-save_pop_unit_as_h1_3393 f 500 bipolar 3393 0 0 horiz
+save_pop_unit_as_h1_2937 f 500 bipolar 2937 0 0 horiz
 
-save_pop_unit_as_h2_3836 f 500 bipolar 3836 0 0 h2
+save_pop_unit_as_h2_2935 f 500 bipolar 2935 0 0 h2
 
-save_pop_unit_as_h1_3836 f 500 bipolar 3836 0 0 horiz
+save_pop_unit_as_h1_2935 f 500 bipolar 2935 0 0 horiz
 
-save_pop_unit_as_h2_3464 f 500 bipolar 3464 0 0 h2
+save_pop_unit_as_h2_3074 f 500 bipolar 3074 0 0 h2
 
-save_pop_unit_as_h1_3464 f 500 bipolar 3464 0 0 horiz
+save_pop_unit_as_h1_3074 f 500 bipolar 3074 0 0 horiz
 
-save_pop_unit_as_h2_3469 f 500 bipolar 3469 0 0 h2
+save_pop_unit_as_h2_3220 f 500 bipolar 3220 0 0 h2
 
-save_pop_unit_as_h1_3469 f 500 bipolar 3469 0 0 horiz
+save_pop_unit_as_h1_3220 f 500 bipolar 3220 0 0 horiz
 
-save_pop_unit_as_h2_3987 f 500 bipolar 3987 0 0 h2
+save_pop_unit_as_h2_3311 f 500 bipolar 3311 0 0 h2
 
-save_pop_unit_as_h1_3987 f 500 bipolar 3987 0 0 horiz
+save_pop_unit_as_h1_3311 f 500 bipolar 3311 0 0 horiz
 
-save_pop_unit_as_h2_3619 f 500 bipolar 3619 0 0 h2
+save_pop_unit_as_h2_3167 f 500 bipolar 3167 0 0 h2
 
-save_pop_unit_as_h1_3619 f 500 bipolar 3619 0 0 horiz
+save_pop_unit_as_h1_3167 f 500 bipolar 3167 0 0 horiz
 
-save_pop_unit_as_h2_3916 f 500 bipolar 3916 0 0 h2
+save_pop_unit_as_h2_2986 f 500 bipolar 2986 0 0 h2
 
-save_pop_unit_as_h1_3916 f 500 bipolar 3916 0 0 horiz
+save_pop_unit_as_h1_2986 f 500 bipolar 2986 0 0 horiz
 
-save_pop_unit_as_h2_3911 f 500 bipolar 3911 0 0 h2
+save_pop_unit_as_h2_3312 f 500 bipolar 3312 0 0 h2
 
-save_pop_unit_as_h1_3911 f 500 bipolar 3911 0 0 horiz
+save_pop_unit_as_h1_3312 f 500 bipolar 3312 0 0 horiz
 
-save_pop_unit_as_h2_3391 f 500 bipolar 3391 0 0 h2
+save_pop_unit_as_h2_3267 f 500 bipolar 3267 0 0 h2
 
-save_pop_unit_as_h1_3391 f 500 bipolar 3391 0 0 horiz
+save_pop_unit_as_h1_3267 f 500 bipolar 3267 0 0 horiz
 
-save_pop_unit_as_h2_3538 f 500 bipolar 3538 0 0 h2
+save_pop_unit_as_h2_3081 f 500 bipolar 3081 0 0 h2
 
-save_pop_unit_as_h1_3538 f 500 bipolar 3538 0 0 horiz
+save_pop_unit_as_h1_3081 f 500 bipolar 3081 0 0 horiz
 
-save_pop_unit_as_h2_3989 f 500 bipolar 3989 0 0 h2
+save_pop_unit_as_h2_3174 f 500 bipolar 3174 0 0 h2
 
-save_pop_unit_as_h1_3989 f 500 bipolar 3989 0 0 horiz
+save_pop_unit_as_h1_3174 f 500 bipolar 3174 0 0 horiz
 
-save_pop_unit_as_h2_3612 f 500 bipolar 3612 0 0 h2
+save_pop_unit_as_h2_3310 f 500 bipolar 3310 0 0 h2
 
-save_pop_unit_as_h1_3612 f 500 bipolar 3612 0 0 horiz
+save_pop_unit_as_h1_3310 f 500 bipolar 3310 0 0 horiz
 
-save_pop_unit_as_h2_3761 f 500 bipolar 3761 0 0 h2
+save_pop_unit_as_h2_3262 f 500 bipolar 3262 0 0 h2
 
-save_pop_unit_as_h1_3761 f 500 bipolar 3761 0 0 horiz
+save_pop_unit_as_h1_3262 f 500 bipolar 3262 0 0 horiz
 
-save_pop_unit_as_h2_3694 f 500 bipolar 3694 0 0 h2
+save_pop_unit_as_h2_3120 f 500 bipolar 3120 0 0 h2
 
-save_pop_unit_as_h1_3694 f 500 bipolar 3694 0 0 horiz
+save_pop_unit_as_h1_3120 f 500 bipolar 3120 0 0 horiz
 
-save_pop_unit_as_h2_3390 f 500 bipolar 3390 0 0 h2
+save_pop_unit_as_h2_2934 f 500 bipolar 2934 0 0 h2
 
-save_pop_unit_as_h1_3390 f 500 bipolar 3390 0 0 horiz
+save_pop_unit_as_h1_2934 f 500 bipolar 2934 0 0 horiz
 
-save_pop_unit_as_h2_3394 f 500 bipolar 3394 0 0 h2
+save_pop_unit_as_h2_2938 f 500 bipolar 2938 0 0 h2
 
-save_pop_unit_as_h1_3394 f 500 bipolar 3394 0 0 horiz
+save_pop_unit_as_h1_2938 f 500 bipolar 2938 0 0 horiz
 
-save_pop_unit_as_h2_3986 f 500 bipolar 3986 0 0 h2
+save_pop_unit_as_h2_3309 f 500 bipolar 3309 0 0 h2
 
-save_pop_unit_as_h1_3986 f 500 bipolar 3986 0 0 horiz
+save_pop_unit_as_h1_3309 f 500 bipolar 3309 0 0 horiz
 
-save_pop_unit_as_h2_3990 f 500 bipolar 3990 0 0 h2
+save_pop_unit_as_h2_3313 f 500 bipolar 3313 0 0 h2
 
-save_pop_unit_as_h1_3990 f 500 bipolar 3990 0 0 horiz
+save_pop_unit_as_h1_3313 f 500 bipolar 3313 0 0 horiz
 
-save_pop_unit_as_h2_3686 f 500 bipolar 3686 0 0 h2
+save_pop_unit_as_h2_3128 f 500 bipolar 3128 0 0 h2
 
-save_pop_unit_as_h1_3686 f 500 bipolar 3686 0 0 horiz
+save_pop_unit_as_h1_3128 f 500 bipolar 3128 0 0 horiz
 
-save_pop_unit_as_h2_3843 f 500 bipolar 3843 0 0 h2
+save_pop_unit_as_h2_2987 f 500 bipolar 2987 0 0 h2
 
-save_pop_unit_as_h1_3843 f 500 bipolar 3843 0 0 horiz
+save_pop_unit_as_h1_2987 f 500 bipolar 2987 0 0 horiz
 
-save_pop_unit_as_h2_3545 f 500 bipolar 3545 0 0 h2
+save_pop_unit_as_h2_2980 f 500 bipolar 2980 0 0 h2
 
-save_pop_unit_as_h1_3545 f 500 bipolar 3545 0 0 horiz
+save_pop_unit_as_h1_2980 f 500 bipolar 2980 0 0 horiz
 
-save_pop_unit_as_h2_3318 f 500 bipolar 3318 0 0 h2
+save_pop_unit_as_h2_2889 f 500 bipolar 2889 0 0 h2
 
-save_pop_unit_as_h1_3318 f 500 bipolar 3318 0 0 horiz
+save_pop_unit_as_h1_2889 f 500 bipolar 2889 0 0 horiz
 
-save_pop_unit_as_h2_3317 f 500 bipolar 3317 0 0 h2
+save_pop_unit_as_h2_2890 f 500 bipolar 2890 0 0 h2
 
-save_pop_unit_as_h1_3317 f 500 bipolar 3317 0 0 horiz
+save_pop_unit_as_h1_2890 f 500 bipolar 2890 0 0 horiz
 
-save_pop_unit_as_h2_3463 f 500 bipolar 3463 0 0 h2
+save_pop_unit_as_h2_3034 f 500 bipolar 3034 0 0 h2
 
-save_pop_unit_as_h1_3463 f 500 bipolar 3463 0 0 horiz
+save_pop_unit_as_h1_3034 f 500 bipolar 3034 0 0 horiz
 
-save_pop_unit_as_h2_3910 f 500 bipolar 3910 0 0 h2
+save_pop_unit_as_h2_3213 f 500 bipolar 3213 0 0 h2
 
-save_pop_unit_as_h1_3910 f 500 bipolar 3910 0 0 horiz
+save_pop_unit_as_h1_3213 f 500 bipolar 3213 0 0 horiz
 
-save_pop_unit_as_h2_3470 f 500 bipolar 3470 0 0 h2
+save_pop_unit_as_h2_3026 f 500 bipolar 3026 0 0 h2
 
-save_pop_unit_as_h1_3470 f 500 bipolar 3470 0 0 horiz
+save_pop_unit_as_h1_3026 f 500 bipolar 3026 0 0 horiz
 
-save_pop_unit_as_h2_3917 f 500 bipolar 3917 0 0 h2
+save_pop_unit_as_h2_2888 f 500 bipolar 2888 0 0 h2
 
-save_pop_unit_as_h1_3917 f 500 bipolar 3917 0 0 horiz
+save_pop_unit_as_h1_2888 f 500 bipolar 2888 0 0 horiz
 
-save_pop_unit_as_h2_4063 f 500 bipolar 4063 0 0 h2
+save_pop_unit_as_h2_3261 f 500 bipolar 3261 0 0 h2
 
-save_pop_unit_as_h1_4063 f 500 bipolar 4063 0 0 horiz
+save_pop_unit_as_h1_3261 f 500 bipolar 3261 0 0 horiz
 
-save_pop_unit_as_h2_3319 f 500 bipolar 3319 0 0 h2
+save_pop_unit_as_h2_3268 f 500 bipolar 3268 0 0 h2
 
-save_pop_unit_as_h1_3319 f 500 bipolar 3319 0 0 horiz
+save_pop_unit_as_h1_3268 f 500 bipolar 3268 0 0 horiz
 
-save_pop_unit_as_h2_3537 f 500 bipolar 3537 0 0 h2
+save_pop_unit_as_h2_2891 f 500 bipolar 2891 0 0 h2
 
-save_pop_unit_as_h1_3537 f 500 bipolar 3537 0 0 horiz
+save_pop_unit_as_h1_2891 f 500 bipolar 2891 0 0 horiz
 
-save_pop_unit_as_h2_3835 f 500 bipolar 3835 0 0 h2
+save_pop_unit_as_h2_2939 f 500 bipolar 2939 0 0 h2
 
-save_pop_unit_as_h1_3835 f 500 bipolar 3835 0 0 horiz
+save_pop_unit_as_h1_2939 f 500 bipolar 2939 0 0 horiz
 
-save_pop_unit_as_h2_3316 f 500 bipolar 3316 0 0 h2
+save_pop_unit_as_h2_3166 f 500 bipolar 3166 0 0 h2
 
-save_pop_unit_as_h1_3316 f 500 bipolar 3316 0 0 horiz
+save_pop_unit_as_h1_3166 f 500 bipolar 3166 0 0 horiz
 
-save_pop_unit_as_h2_4062 f 500 bipolar 4062 0 0 h2
+save_pop_unit_as_h2_3082 f 500 bipolar 3082 0 0 h2
 
-save_pop_unit_as_h1_4062 f 500 bipolar 4062 0 0 horiz
+save_pop_unit_as_h1_3082 f 500 bipolar 3082 0 0 horiz
 
-save_pop_unit_as_h2_3985 f 500 bipolar 3985 0 0 h2
+save_pop_unit_as_h2_3221 f 500 bipolar 3221 0 0 h2
 
-save_pop_unit_as_h1_3985 f 500 bipolar 3985 0 0 horiz
+save_pop_unit_as_h1_3221 f 500 bipolar 3221 0 0 horiz
 
-save_pop_unit_as_h2_4064 f 500 bipolar 4064 0 0 h2
+save_pop_unit_as_h2_3073 f 500 bipolar 3073 0 0 h2
 
-save_pop_unit_as_h1_4064 f 500 bipolar 4064 0 0 horiz
+save_pop_unit_as_h1_3073 f 500 bipolar 3073 0 0 horiz
 
-save_pop_unit_as_h2_3769 f 500 bipolar 3769 0 0 h2
+save_pop_unit_as_h2_3358 f 500 bipolar 3358 0 0 h2
 
-save_pop_unit_as_h1_3769 f 500 bipolar 3769 0 0 horiz
+save_pop_unit_as_h1_3358 f 500 bipolar 3358 0 0 horiz
 
-save_pop_unit_as_h2_4061 f 500 bipolar 4061 0 0 h2
+save_pop_unit_as_h2_3314 f 500 bipolar 3314 0 0 h2
 
-save_pop_unit_as_h1_4061 f 500 bipolar 4061 0 0 horiz
+save_pop_unit_as_h1_3314 f 500 bipolar 3314 0 0 horiz
 
-save_pop_unit_as_h2_3389 f 500 bipolar 3389 0 0 h2
+save_pop_unit_as_h2_2933 f 500 bipolar 2933 0 0 h2
 
-save_pop_unit_as_h1_3389 f 500 bipolar 3389 0 0 horiz
+save_pop_unit_as_h1_2933 f 500 bipolar 2933 0 0 horiz
 
-save_pop_unit_as_h2_3611 f 500 bipolar 3611 0 0 h2
+save_pop_unit_as_h2_3359 f 500 bipolar 3359 0 0 h2
 
-save_pop_unit_as_h1_3611 f 500 bipolar 3611 0 0 horiz
+save_pop_unit_as_h1_3359 f 500 bipolar 3359 0 0 horiz
 
-save_pop_unit_as_h2_3620 f 500 bipolar 3620 0 0 h2
+save_pop_unit_as_h2_3175 f 500 bipolar 3175 0 0 h2
 
-save_pop_unit_as_h1_3620 f 500 bipolar 3620 0 0 horiz
+save_pop_unit_as_h1_3175 f 500 bipolar 3175 0 0 horiz
 
-save_pop_unit_as_h2_3991 f 500 bipolar 3991 0 0 h2
+save_pop_unit_as_h2_3357 f 500 bipolar 3357 0 0 h2
 
-save_pop_unit_as_h1_3991 f 500 bipolar 3991 0 0 horiz
+save_pop_unit_as_h1_3357 f 500 bipolar 3357 0 0 horiz
 
-save_pop_unit_as_h2_3395 f 500 bipolar 3395 0 0 h2
+save_pop_unit_as_h2_3308 f 500 bipolar 3308 0 0 h2
 
-save_pop_unit_as_h1_3395 f 500 bipolar 3395 0 0 horiz
+save_pop_unit_as_h1_3308 f 500 bipolar 3308 0 0 horiz
 
-save_pop_unit_as_h2_3760 f 500 bipolar 3760 0 0 h2
+save_pop_unit_as_h2_2892 f 500 bipolar 2892 0 0 h2
 
-save_pop_unit_as_h1_3760 f 500 bipolar 3760 0 0 horiz
+save_pop_unit_as_h1_2892 f 500 bipolar 2892 0 0 horiz
 
-save_pop_unit_as_h2_3320 f 500 bipolar 3320 0 0 h2
+save_pop_unit_as_h2_3360 f 500 bipolar 3360 0 0 h2
 
-save_pop_unit_as_h1_3320 f 500 bipolar 3320 0 0 horiz
+save_pop_unit_as_h1_3360 f 500 bipolar 3360 0 0 horiz
 
-save_pop_unit_as_h2_4065 f 500 bipolar 4065 0 0 h2
+save_pop_unit_as_h2_2887 f 500 bipolar 2887 0 0 h2
 
-save_pop_unit_as_h1_4065 f 500 bipolar 4065 0 0 horiz
+save_pop_unit_as_h1_2887 f 500 bipolar 2887 0 0 horiz
 
-save_pop_unit_as_h2_3315 f 500 bipolar 3315 0 0 h2
+save_pop_unit_as_h2_3356 f 500 bipolar 3356 0 0 h2
 
-save_pop_unit_as_h1_3315 f 500 bipolar 3315 0 0 horiz
+save_pop_unit_as_h1_3356 f 500 bipolar 3356 0 0 horiz
 
-save_pop_unit_as_h2_3695 f 500 bipolar 3695 0 0 h2
+save_pop_unit_as_h2_2818 f 500 bipolar 2818 0 0 h2
 
-save_pop_unit_as_h1_3695 f 500 bipolar 3695 0 0 horiz
+save_pop_unit_as_h1_2818 f 500 bipolar 2818 0 0 horiz
 
-save_pop_unit_as_h2_4060 f 500 bipolar 4060 0 0 h2
+save_pop_unit_as_h2_3119 f 500 bipolar 3119 0 0 h2
 
-save_pop_unit_as_h1_4060 f 500 bipolar 4060 0 0 horiz
+save_pop_unit_as_h1_3119 f 500 bipolar 3119 0 0 horiz
 
-save_pop_unit_as_h2_3685 f 500 bipolar 3685 0 0 h2
+save_pop_unit_as_h2_2979 f 500 bipolar 2979 0 0 h2
 
-save_pop_unit_as_h1_3685 f 500 bipolar 3685 0 0 horiz
+save_pop_unit_as_h1_2979 f 500 bipolar 2979 0 0 horiz
 
-save_pop_unit_as_h2_3546 f 500 bipolar 3546 0 0 h2
+save_pop_unit_as_h2_3129 f 500 bipolar 3129 0 0 h2
 
-save_pop_unit_as_h1_3546 f 500 bipolar 3546 0 0 horiz
+save_pop_unit_as_h1_3129 f 500 bipolar 3129 0 0 horiz
 
-save_pop_unit_as_h2_3243 f 500 bipolar 3243 0 0 h2
+save_pop_unit_as_h2_2988 f 500 bipolar 2988 0 0 h2
 
-save_pop_unit_as_h1_3243 f 500 bipolar 3243 0 0 horiz
+save_pop_unit_as_h1_2988 f 500 bipolar 2988 0 0 horiz
 
-save_pop_unit_as_h2_3918 f 500 bipolar 3918 0 0 h2
+save_pop_unit_as_h2_3361 f 500 bipolar 3361 0 0 h2
 
-save_pop_unit_as_h1_3918 f 500 bipolar 3918 0 0 horiz
+save_pop_unit_as_h1_3361 f 500 bipolar 3361 0 0 horiz
 
-save_pop_unit_as_h2_3396 f 500 bipolar 3396 0 0 h2
+save_pop_unit_as_h2_3025 f 500 bipolar 3025 0 0 h2
 
-save_pop_unit_as_h1_3396 f 500 bipolar 3396 0 0 horiz
+save_pop_unit_as_h1_3025 f 500 bipolar 3025 0 0 horiz
 
-save_pop_unit_as_h2_3244 f 500 bipolar 3244 0 0 h2
+save_pop_unit_as_h2_2817 f 500 bipolar 2817 0 0 h2
 
-save_pop_unit_as_h1_3244 f 500 bipolar 3244 0 0 horiz
+save_pop_unit_as_h1_2817 f 500 bipolar 2817 0 0 horiz
 
-save_pop_unit_as_h2_3909 f 500 bipolar 3909 0 0 h2
+save_pop_unit_as_h2_2940 f 500 bipolar 2940 0 0 h2
 
-save_pop_unit_as_h1_3909 f 500 bipolar 3909 0 0 horiz
+save_pop_unit_as_h1_2940 f 500 bipolar 2940 0 0 horiz
 
-save_pop_unit_as_h2_3471 f 500 bipolar 3471 0 0 h2
+save_pop_unit_as_h2_3035 f 500 bipolar 3035 0 0 h2
 
-save_pop_unit_as_h1_3471 f 500 bipolar 3471 0 0 horiz
+save_pop_unit_as_h1_3035 f 500 bipolar 3035 0 0 horiz
 
-save_pop_unit_as_h2_4137 f 500 bipolar 4137 0 0 h2
+save_pop_unit_as_h2_3260 f 500 bipolar 3260 0 0 h2
 
-save_pop_unit_as_h1_4137 f 500 bipolar 4137 0 0 horiz
+save_pop_unit_as_h1_3260 f 500 bipolar 3260 0 0 horiz
 
-save_pop_unit_as_h2_3388 f 500 bipolar 3388 0 0 h2
+save_pop_unit_as_h2_2819 f 500 bipolar 2819 0 0 h2
 
-save_pop_unit_as_h1_3388 f 500 bipolar 3388 0 0 horiz
+save_pop_unit_as_h1_2819 f 500 bipolar 2819 0 0 horiz
 

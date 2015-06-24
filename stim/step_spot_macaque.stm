@@ -13,8 +13,8 @@ stim_form   3c       # Stimulus format, 3d, 3c, 3d_b
 
 st0          0.100   # start time (s)
 stn          0.5   # duration (s)
-cx           0.05#137    # center (deg)
-cy           -0.01#14    # center (deg)
+cx           0.137    # center (deg)
+cy           0.14    # center (deg)
 direction    0       # Direction of drift
 sf           0       # Spatial period (cyc/deg)
 phase        90       # Degrees

@@ -70,8 +70,8 @@ function change_parameters {
 
     elif [ $MODEL == "WT" ]
     then
-	DUMP_CID=184
-	SCONE=184
+	DUMP_CID=3123 # L cone to left of center S cone
+	SCONE=3124
 	MOSAIC_FILE=WT.mosaic
     fi
 
@@ -111,7 +111,7 @@ function change_parameters {
     then
 	stim_gen ${OPTS} ${SHAPE}
 	STIM_FILE=cone_iso_step
-	RESP_FILE=retina_line
+	RESP_FILE=retina_line_${MODEL}
 	
     elif [[ $OPTS == "knn" || $OPTS == "s_dist" ]]
     then
@@ -146,7 +146,7 @@ function change_parameters {
     then
 
 	stim_gen siso ${SHAPE}
-	STIM_FILE=test_flash #cone_iso_step
+	STIM_FILE=cone_iso_step
     fi
 }
 
@@ -157,7 +157,7 @@ function stim_gen {
     local fname=iso_step # uniform full field case
     if [ $2 == spot ]
     then
-        fname=step_spot
+        fname=step_spot_${MODEL}
     elif [ $2 == grating ]
     then
 	fname=iso_sine
@@ -363,7 +363,7 @@ function run_s_dist_analysis {
 	echo "Trial: $count, H2ES: $H2ES"
 
 	# run wm with new H2 e_seed
-	run_wm models/${MODEL} ${STIM_FILE}
+	run_wm ${MODEL} ${STIM_FILE}
 
 	# rename dumped data, move into dir (make if doesn't exist)
 	mv "results/nd_files/zz.nd" "results/nd_files/s_dist/$H2ES.nd"

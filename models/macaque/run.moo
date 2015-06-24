@@ -184,10 +184,10 @@ mod_trial_reset  1  # reset state between stimuli, default 1
     degpermm     5.34     # degrees per mm on retina
     ncone     6600        # number of cones to create (extra discarded)
     seed_loc  1777        # randomization of cone locations
-    noise        0.3      # amplitude of spatial noise, 0..1
+    noise        0.0      # amplitude of spatial noise, 0..1
     seed_col   1977       # randomization of cone color (L,M,S) - Red Center
 
-    lm_ratio     1.0   # L:M cone ratio
+    lm_ratio     2.0   # L:M cone ratio
     prob_s       0.06   # S cone probability [Ignored if 'regular_s' > 0]
     regular_s    4     # Leave this many cones between S cones (1,2,3,...)
     

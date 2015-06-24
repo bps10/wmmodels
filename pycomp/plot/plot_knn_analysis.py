@@ -91,8 +91,10 @@ def s_cone_hist(mosaic_file, species, single_cone=True,
             
             # find amplitude of signal
             cell = d['tr'][t]['r'][r]['x']
-            fft = np.fft.fft(cell)
-            amp  = np.abs(fft[tf]) * 2 / N
+            amp = cell.max() - cell[50]
+
+            #fft = np.fft.fft(cell)
+            #amp  = np.abs(fft[tf]) * 2 / N
 
             if celldat[ind, 1] == 0:
                 s.append([distance, amp])
