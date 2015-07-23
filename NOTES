@@ -61,3 +61,31 @@ Added macaque.sh to run all analyses.
 Speed up photoreceptors to bring temporal frequency of horizontal cells more in line with what is known.
 
 May need to play with speed of horizontal cells themselves (Gp).
+
+
+----------
+
+6/25/2015
+
+The following produces a good cone input diagram:
+
+./retina.sh -model WT cone_inputs -W 0.65 -H 0.04 -w 0.4 -t 0.85 -h 0.02 -p 1.0 -l 0.1 -m 0.1
+
+model is set to: WT
+fundamentals set to: true
+stim shape is set to: full_field
+random S is set to: false
+h1 gp is set to: 0.15
+h1 gh is set to: 0.04
+h1 percent0 is set to: 0.0
+h1 e_seed is set to: 3413
+h1 lm bipolar is set to: 0.65
+h2 gp is set to: 1.0
+h2 gh is set to: 0.02
+h2 percent0 is set to: 0.85
+h2 e_seed is set to: 2658
+h2 l weight is set to: 0.1
+h2 m weight is set to: 0.1
+h2 s weight is set to: 1.0
+h2 lm bioplar is set to: 0.4
+analysis option: params

@@ -208,7 +208,7 @@ def find_hc():
 if __name__ == '__main__':
 
     gen_mosaic(mosaic_file='model.mosaic', # model mosaic file
-               subj_file='10001_WT.csv', # subj mosaic file
+               subj_file='20076_BPS.csv', # subj mosaic file
                scale_factor=4.6, # scale subj mosaic to fit density WT=4.6
                offset_factor=40 # offset subj mosaic to be centered WT=40
                )

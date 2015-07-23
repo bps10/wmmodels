@@ -1,6 +1,6 @@
  
 MODEL=WT
 FUND=true
-SHAPE=spot
+SHAPE=full_field
 RANDOM_S=false
 TN=512

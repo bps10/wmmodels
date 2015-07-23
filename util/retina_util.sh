@@ -70,9 +70,15 @@ function change_parameters {
 
     elif [ $MODEL == "WT" ]
     then
-	DUMP_CID=3123 # L cone to left of center S cone
-	SCONE=3124
+	DUMP_CID=3039 # L cone to left of center S cone
+	SCONE=3049
 	MOSAIC_FILE=WT.mosaic
+
+    elif [ $MODEL == "BPS" ]
+    then
+	DUMP_CID=3134 # L cone to left of center S cone
+	SCONE=3145
+	MOSAIC_FILE=BPS.mosaic
     fi
 
     # Default settings
@@ -112,6 +118,15 @@ function change_parameters {
 	stim_gen ${OPTS} ${SHAPE}
 	STIM_FILE=cone_iso_step
 	RESP_FILE=retina_line_${MODEL}
+
+    elif [ $OPTS == "cone_inputs" ]
+    then
+	# has to be bp cells so that looks at output of h1, h2 vs cone
+	knn_resp ${SCONE} 400 bp
+        # sine wave would require change to analysis.py?
+	stim_gen coneiso ${SHAPE} #full_field
+	STIM_FILE=cone_iso_step
+	RESP_FILE=knn_resp
 	
     elif [[ $OPTS == "knn" || $OPTS == "s_dist" ]]
     then
@@ -134,13 +149,6 @@ function change_parameters {
     then
 	STIM_FILE=sine_tf
 	RESP_FILE=retina_line
-
-    elif [ $OPTS == "cone_inputs" ]
-    then
-	knn_resp ${SCONE} 100 bp
-	stim_gen coneiso full_field
-	STIM_FILE=cone_iso_step
-	RESP_FILE=knn_resp
 
     elif [ $OPTS == "gui" ]
     then
@@ -167,6 +175,12 @@ function stim_gen {
     elif [ $2 == sine_spot ]
     then
 	fname=sine_spot
+    else
+	if [ $2 != full_field ]
+	then
+	# let the use know that the shape is not supported.
+	    echo Shape $2 not understood. Going with full_field.
+	fi
     fi
 
     # Paste the first part of the stimulus file

@@ -5,7 +5,8 @@ import matplotlib.pylab as plt
 from base import plot as pf
 
 
-def mosaic(FILE='mosaics/model.mosaic', block_plot=True, invert=False):
+def mosaic(FILE='mosaics/model.mosaic', block_plot=True, invert=False, 
+           return_ax=False):
 
     mosaic = np.genfromtxt(FILE)
     fig = plt.figure(figsize=(9, 9))
@@ -29,8 +30,12 @@ def mosaic(FILE='mosaics/model.mosaic', block_plot=True, invert=False):
     if invert:
         pf.invert(ax, fig, bk_color='k')
 
-    fig.savefig('results/img/mosaic.svg', edgecolor='none')
-    plt.show(block=block_plot)
+    if not return_ax:
+        fig.savefig('results/img/mosaic.svg', edgecolor='none')
+        plt.show(block=block_plot)
+
+    else:
+        return ax, fig
 
 if __name__ == '__main__':
     plot_mosaic()

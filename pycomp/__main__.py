@@ -7,11 +7,11 @@ from util.nd_read import nd_read
 
 
 def main():
-    '''	
-    '''	
-    if 'human' in sys.argv or 'WT' in sys.argv:
+    '''
+    '''
+    if 'human' in sys.argv: # or 'WT' in sys.argv:
         SPECIES = 'human'
-    elif 'macaque' in sys.argv:
+    elif 'macaque' in sys.argv or 'WT' in sys.argv or 'BPS' in sys.argv:
         SPECIES = 'macaque'
 
     mosaic_file = 'mosaics/' + sys.argv[1]
@@ -31,16 +31,16 @@ def main():
 
     for arg in sys.argv:
         if arg in h1:
-            data['h1'] = np.genfromtxt('results/pl_files/h1.dist.pl',             
-				       skip_header=2)
+            data['h1'] = np.genfromtxt('results/pl_files/h1.dist.pl',
+                                       skip_header=2)
             if 'horiz' not in plots:
                 plots.append('horiz')
         if arg in h2:
-            data['h2'] = np.genfromtxt('results/pl_files/h2.dist.pl', 
-				       skip_header=2)            
+            data['h2'] = np.genfromtxt('results/pl_files/h2.dist.pl',
+                                       skip_header=2)
             if 'horiz' not in plots:
                 plots.append('horiz')
-    
+
         if arg in stack:
             if 'stack' not in plots:
                 plots.append('stack')
@@ -71,7 +71,7 @@ def main():
     if 'noblock' in sys.argv:
         block_plots = False
 
-    if ('stack' in plots or 'h_time' in plots or 'knn' in plots or 
+    if ('stack' in plots or 'h_time' in plots or 'knn' in plots or
         'tuning' in plots or 'c_inputs' in plots):
         d = nd_read('results/nd_files/zz.nd')
 
@@ -98,10 +98,11 @@ def main():
 
     if 's_dist' in plots:
         # single_cone (False=nearest S cone)
-        plot.s_cone_hist(mosaic_file, SPECIES, single_cone, block_plots) 
+        plot.s_cone_hist(mosaic_file, SPECIES, single_cone, block_plots)
 
     if 'c_inputs' in plots:
-        plot.cone_inputs(d, cell_type, block_plots)
+        plot.cone_inputs(d, mosaic_file, cell_type, block_plots, 
+                         [48.768, 22.265, 18.576])
 
 
 if __name__ == '__main__':
