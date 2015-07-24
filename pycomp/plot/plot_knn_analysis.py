@@ -4,11 +4,12 @@ import matplotlib.pylab as plt
 
 from base import plot as pf
 from base import files as f
+
 from util import nearest_neighbor as nn
 from util import get_cell_list, get_cell_data, num, conversion_factors
 from util.nd_read import nd_read
 
-def knn(d, block_plots=True):
+def knn(d, model, block_plots=True):
     '''
     TO DO:
 
@@ -46,11 +47,12 @@ def knn(d, block_plots=True):
         if celldat[ind, 1] == 2:
             ax.plot(distance, amp, 'ro')
 
-    fig.savefig('results/img/knn.svg', edgecolor='none')
+    f.make_dir('results/img/' + model)
+    fig.savefig('results/img/' + model + '/knn.svg', edgecolor='none')
     plt.show(block=block_plots)
 
 
-def s_cone_hist(mosaic_file, species, single_cone=True, 
+def s_cone_hist(model, mosaic_file, species, single_cone=True, 
                 block_plots=True):
     '''
     TO DO:
@@ -133,7 +135,10 @@ def s_cone_hist(mosaic_file, species, single_cone=True,
     ax2.set_xlabel('amplitude')
 
     # Save plots
-    fig1.savefig('results/img/s_dist_scatter.svg', edgecolor='none')
-    fig2.savefig('results/img/s_dist_hist.svg', edgecolor='none')
+    f.make_dir('results/img/' + model)
+    fig1.savefig('results/img/' + model + '/s_dist_scatter.svg', 
+                 edgecolor='none')
+    fig2.savefig('results/img/' + model + 's_dist_hist.svg', 
+                 edgecolor='none')
     
     plt.show(block=block_plots)

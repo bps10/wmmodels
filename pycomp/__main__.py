@@ -15,6 +15,7 @@ def main():
         SPECIES = 'macaque'
 
     mosaic_file = 'mosaics/' + sys.argv[1]
+    model = mosaic_file.split('/')[1].split('.')[0]
 
     plots = []
     data = {}
@@ -77,31 +78,32 @@ def main():
 
     # decide what to plot
     if 'mosaic' in sys.argv:
-        plot.mosaic(block_plot=block_plots)
+        plot.mosaic(model, block_plot=block_plots)
 
     if 'stack' in plots:
-        plot.stack(d, block_plots)
+        plot.stack(d, model, block_plots)
 
     if 'h_time' in plots:
-        plot.horiz_time_const(d, block_plots)
+        plot.horiz_time_const(d, model, block_plots)
 
     if 'horiz' in plots:
         if data is not {}:
-            plot.dist(data, SPECIES, block_plots)
+            plot.dist(data, model, SPECIES, block_plots)
 
     if 'knn' in plots:
-        plot.knn(d, block_plots)
+        plot.knn(d, model, block_plots)
 
     if 'tuning' in plots:
-        plot.tuning_curve(d, cell_type=cell_type, tuning_type=tuning_type,
+        plot.tuning_curve(d, model, cell_type=cell_type, 
+                          tuning_type=tuning_type,
                           block_plots=block_plots)
 
     if 's_dist' in plots:
         # single_cone (False=nearest S cone)
-        plot.s_cone_hist(mosaic_file, SPECIES, single_cone, block_plots)
+        plot.s_cone_hist(model, mosaic_file, SPECIES, single_cone, block_plots)
 
     if 'c_inputs' in plots:
-        plot.cone_inputs(d, mosaic_file, cell_type, block_plots, 
+        plot.cone_inputs(d, model, mosaic_file, cell_type, block_plots, 
                          [48.768, 22.265, 18.576])
 
 

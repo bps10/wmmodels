@@ -2,12 +2,13 @@ from __future__ import division
 import numpy as np
 import matplotlib.pylab as plt
 
+from base import files as f
 from base import plot as pf
 
 from util.conversion import conversion_factors
 
 
-def dist(data, species, block_plots=True, invert=False, 
+def dist(data, model, species, block_plots=True, invert=False, 
 	 normalize=True):
 	'''
 	'''
@@ -41,7 +42,8 @@ def dist(data, species, block_plots=True, invert=False,
 	if invert:
 		pf.invert(ax, fig, bk_color='k')
 
-	fig.savefig('results/img/h_space_const.svg', 
+	f.make_dir('results/img/' + model)
+	fig.savefig('results/img/' + model + '/h_space_const.svg', 
 		    #facecolor=fig.get_facecolor(), 
 		    edgecolor='none')
 

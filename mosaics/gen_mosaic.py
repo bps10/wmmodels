@@ -28,8 +28,13 @@ def gen_mosaic(mosaic_file='model.mosaic', subj_file='10001_WT.csv',
     model = np.genfromtxt(mosaic_file)
     
     subj = np.genfromtxt(subj_file, delimiter=',')
+    tmp = np.zeros((len(subj[:, 2]), 4))
+    tmp[:, :2] = subj[:, :2]
     subj[:, :2] = subj[:, :2] / scale_factor # scale it to be same size
     subj[:, :2] = subj[:, :2] + offset_factor # offset to be in center
+    tmp[:, 2:] = subj[:, :2]
+    np.savetxt('old_new.csv', tmp)
+    del tmp
 
     hull = ConvexHull(subj[:, :2])
     outline = zip(subj[hull.vertices, 0], subj[hull.vertices, 1])

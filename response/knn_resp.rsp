@@ -52,805 +52,805 @@ mon_stim_flag    1       # show stimulus during simulation
 outfile         results/nd_files/zz       # prefix for all output files
 write_ndata      *       # write spikes to output file
 
-save_pop_unit_as_cone_3049 f 500 bipolar 3049 0 0 photo
+save_pop_unit_as_cone_3145 f 500 bipolar 3145 0 0 photo
 
-save_pop_unit_as_bp_3049 f 500 bipolar 3049 0 0 diff
+save_pop_unit_as_bp_3145 f 500 bipolar 3145 0 0 diff
 
-save_pop_unit_as_bp_2977 f 500 bipolar 2977 0 0 diff
+save_pop_unit_as_bp_3069 f 500 bipolar 3069 0 0 diff
 
-save_pop_unit_as_bp_3039 f 500 bipolar 3039 0 0 diff
-
-save_pop_unit_as_bp_2980 f 500 bipolar 2980 0 0 diff
-
-save_pop_unit_as_bp_3123 f 500 bipolar 3123 0 0 diff
-
-save_pop_unit_as_bp_3124 f 500 bipolar 3124 0 0 diff
-
-save_pop_unit_as_bp_3050 f 500 bipolar 3050 0 0 diff
-
-save_pop_unit_as_bp_2960 f 500 bipolar 2960 0 0 diff
-
-save_pop_unit_as_bp_3189 f 500 bipolar 3189 0 0 diff
-
-save_pop_unit_as_bp_3118 f 500 bipolar 3118 0 0 diff
-
-save_pop_unit_as_bp_2973 f 500 bipolar 2973 0 0 diff
-
-save_pop_unit_as_bp_2976 f 500 bipolar 2976 0 0 diff
-
-save_pop_unit_as_bp_3188 f 500 bipolar 3188 0 0 diff
-
-save_pop_unit_as_bp_2904 f 500 bipolar 2904 0 0 diff
-
-save_pop_unit_as_bp_3198 f 500 bipolar 3198 0 0 diff
-
-save_pop_unit_as_bp_2891 f 500 bipolar 2891 0 0 diff
-
-save_pop_unit_as_bp_2892 f 500 bipolar 2892 0 0 diff
-
-save_pop_unit_as_bp_3181 f 500 bipolar 3181 0 0 diff
-
-save_pop_unit_as_bp_3258 f 500 bipolar 3258 0 0 diff
-
-save_pop_unit_as_bp_3053 f 500 bipolar 3053 0 0 diff
-
-save_pop_unit_as_bp_3048 f 500 bipolar 3048 0 0 diff
-
-save_pop_unit_as_bp_2902 f 500 bipolar 2902 0 0 diff
-
-save_pop_unit_as_bp_3264 f 500 bipolar 3264 0 0 diff
-
-save_pop_unit_as_bp_3180 f 500 bipolar 3180 0 0 diff
-
-save_pop_unit_as_bp_3182 f 500 bipolar 3182 0 0 diff
-
-save_pop_unit_as_bp_2886 f 500 bipolar 2886 0 0 diff
-
-save_pop_unit_as_bp_3257 f 500 bipolar 3257 0 0 diff
-
-save_pop_unit_as_bp_2957 f 500 bipolar 2957 0 0 diff
-
-save_pop_unit_as_bp_2882 f 500 bipolar 2882 0 0 diff
-
-save_pop_unit_as_bp_3033 f 500 bipolar 3033 0 0 diff
-
-save_pop_unit_as_bp_3274 f 500 bipolar 3274 0 0 diff
-
-save_pop_unit_as_bp_2959 f 500 bipolar 2959 0 0 diff
-
-save_pop_unit_as_bp_2819 f 500 bipolar 2819 0 0 diff
-
-save_pop_unit_as_bp_3205 f 500 bipolar 3205 0 0 diff
-
-save_pop_unit_as_bp_2814 f 500 bipolar 2814 0 0 diff
-
-save_pop_unit_as_bp_3108 f 500 bipolar 3108 0 0 diff
-
-save_pop_unit_as_bp_3336 f 500 bipolar 3336 0 0 diff
-
-save_pop_unit_as_bp_3052 f 500 bipolar 3052 0 0 diff
-
-save_pop_unit_as_bp_3030 f 500 bipolar 3030 0 0 diff
-
-save_pop_unit_as_bp_2815 f 500 bipolar 2815 0 0 diff
-
-save_pop_unit_as_bp_3328 f 500 bipolar 3328 0 0 diff
-
-save_pop_unit_as_bp_2755 f 500 bipolar 2755 0 0 diff
-
-save_pop_unit_as_bp_3348 f 500 bipolar 3348 0 0 diff
-
-save_pop_unit_as_bp_3204 f 500 bipolar 3204 0 0 diff
-
-save_pop_unit_as_bp_2883 f 500 bipolar 2883 0 0 diff
-
-save_pop_unit_as_bp_2818 f 500 bipolar 2818 0 0 diff
-
-save_pop_unit_as_bp_3122 f 500 bipolar 3122 0 0 diff
-
-save_pop_unit_as_bp_2754 f 500 bipolar 2754 0 0 diff
-
-save_pop_unit_as_bp_3329 f 500 bipolar 3329 0 0 diff
-
-save_pop_unit_as_bp_2974 f 500 bipolar 2974 0 0 diff
-
-save_pop_unit_as_bp_3351 f 500 bipolar 3351 0 0 diff
-
-save_pop_unit_as_bp_3260 f 500 bipolar 3260 0 0 diff
-
-save_pop_unit_as_bp_2810 f 500 bipolar 2810 0 0 diff
-
-save_pop_unit_as_bp_2896 f 500 bipolar 2896 0 0 diff
-
-save_pop_unit_as_bp_3194 f 500 bipolar 3194 0 0 diff
-
-save_pop_unit_as_bp_2832 f 500 bipolar 2832 0 0 diff
-
-save_pop_unit_as_bp_3411 f 500 bipolar 3411 0 0 diff
-
-save_pop_unit_as_bp_3046 f 500 bipolar 3046 0 0 diff
-
-save_pop_unit_as_bp_2738 f 500 bipolar 2738 0 0 diff
-
-save_pop_unit_as_bp_3339 f 500 bipolar 3339 0 0 diff
-
-save_pop_unit_as_bp_3045 f 500 bipolar 3045 0 0 diff
-
-save_pop_unit_as_bp_3352 f 500 bipolar 3352 0 0 diff
-
-save_pop_unit_as_bp_2895 f 500 bipolar 2895 0 0 diff
-
-save_pop_unit_as_bp_3115 f 500 bipolar 3115 0 0 diff
-
-save_pop_unit_as_bp_2972 f 500 bipolar 2972 0 0 diff
-
-save_pop_unit_as_bp_3418 f 500 bipolar 3418 0 0 diff
-
-save_pop_unit_as_bp_2739 f 500 bipolar 2739 0 0 diff
-
-save_pop_unit_as_bp_3119 f 500 bipolar 3119 0 0 diff
-
-save_pop_unit_as_bp_3278 f 500 bipolar 3278 0 0 diff
-
-save_pop_unit_as_bp_3410 f 500 bipolar 3410 0 0 diff
-
-save_pop_unit_as_bp_2680 f 500 bipolar 2680 0 0 diff
-
-save_pop_unit_as_bp_2811 f 500 bipolar 2811 0 0 diff
-
-save_pop_unit_as_bp_2746 f 500 bipolar 2746 0 0 diff
-
-save_pop_unit_as_bp_3201 f 500 bipolar 3201 0 0 diff
-
-save_pop_unit_as_bp_2676 f 500 bipolar 2676 0 0 diff
-
-save_pop_unit_as_bp_3343 f 500 bipolar 3343 0 0 diff
-
-save_pop_unit_as_bp_3429 f 500 bipolar 3429 0 0 diff
-
-save_pop_unit_as_bp_2679 f 500 bipolar 2679 0 0 diff
-
-save_pop_unit_as_bp_2667 f 500 bipolar 2667 0 0 diff
-
-save_pop_unit_as_bp_2905 f 500 bipolar 2905 0 0 diff
-
-save_pop_unit_as_bp_3195 f 500 bipolar 3195 0 0 diff
-
-save_pop_unit_as_bp_3265 f 500 bipolar 3265 0 0 diff
-
-save_pop_unit_as_bp_3415 f 500 bipolar 3415 0 0 diff
-
-save_pop_unit_as_bp_2735 f 500 bipolar 2735 0 0 diff
-
-save_pop_unit_as_bp_2824 f 500 bipolar 2824 0 0 diff
-
-save_pop_unit_as_bp_2825 f 500 bipolar 2825 0 0 diff
-
-save_pop_unit_as_bp_3179 f 500 bipolar 3179 0 0 diff
-
-save_pop_unit_as_bp_3031 f 500 bipolar 3031 0 0 diff
-
-save_pop_unit_as_bp_3407 f 500 bipolar 3407 0 0 diff
-
-save_pop_unit_as_bp_3271 f 500 bipolar 3271 0 0 diff
-
-save_pop_unit_as_bp_3032 f 500 bipolar 3032 0 0 diff
-
-save_pop_unit_as_bp_3491 f 500 bipolar 3491 0 0 diff
-
-save_pop_unit_as_bp_3492 f 500 bipolar 3492 0 0 diff
-
-save_pop_unit_as_bp_2901 f 500 bipolar 2901 0 0 diff
-
-save_pop_unit_as_bp_3482 f 500 bipolar 3482 0 0 diff
-
-save_pop_unit_as_bp_2753 f 500 bipolar 2753 0 0 diff
-
-save_pop_unit_as_bp_3113 f 500 bipolar 3113 0 0 diff
-
-save_pop_unit_as_bp_2606 f 500 bipolar 2606 0 0 diff
-
-save_pop_unit_as_bp_2658 f 500 bipolar 2658 0 0 diff
-
-save_pop_unit_as_bp_3481 f 500 bipolar 3481 0 0 diff
-
-save_pop_unit_as_bp_3337 f 500 bipolar 3337 0 0 diff
-
-save_pop_unit_as_bp_3342 f 500 bipolar 3342 0 0 diff
-
-save_pop_unit_as_bp_2662 f 500 bipolar 2662 0 0 diff
-
-save_pop_unit_as_bp_2749 f 500 bipolar 2749 0 0 diff
-
-save_pop_unit_as_bp_3112 f 500 bipolar 3112 0 0 diff
-
-save_pop_unit_as_bp_2678 f 500 bipolar 2678 0 0 diff
-
-save_pop_unit_as_bp_3412 f 500 bipolar 3412 0 0 diff
-
-save_pop_unit_as_bp_3206 f 500 bipolar 3206 0 0 diff
-
-save_pop_unit_as_bp_3503 f 500 bipolar 3503 0 0 diff
-
-save_pop_unit_as_bp_3276 f 500 bipolar 3276 0 0 diff
-
-save_pop_unit_as_bp_2657 f 500 bipolar 2657 0 0 diff
-
-save_pop_unit_as_bp_2826 f 500 bipolar 2826 0 0 diff
-
-save_pop_unit_as_bp_3483 f 500 bipolar 3483 0 0 diff
-
-save_pop_unit_as_bp_2681 f 500 bipolar 2681 0 0 diff
-
-save_pop_unit_as_bp_2893 f 500 bipolar 2893 0 0 diff
-
-save_pop_unit_as_bp_2956 f 500 bipolar 2956 0 0 diff
-
-save_pop_unit_as_bp_2593 f 500 bipolar 2593 0 0 diff
-
-save_pop_unit_as_bp_3183 f 500 bipolar 3183 0 0 diff
-
-save_pop_unit_as_bp_3559 f 500 bipolar 3559 0 0 diff
-
-save_pop_unit_as_bp_3036 f 500 bipolar 3036 0 0 diff
-
-save_pop_unit_as_bp_3556 f 500 bipolar 3556 0 0 diff
-
-save_pop_unit_as_bp_3334 f 500 bipolar 3334 0 0 diff
-
-save_pop_unit_as_bp_3423 f 500 bipolar 3423 0 0 diff
-
-save_pop_unit_as_bp_2594 f 500 bipolar 2594 0 0 diff
-
-save_pop_unit_as_bp_3563 f 500 bipolar 3563 0 0 diff
-
-save_pop_unit_as_bp_3504 f 500 bipolar 3504 0 0 diff
-
-save_pop_unit_as_bp_2967 f 500 bipolar 2967 0 0 diff
-
-save_pop_unit_as_bp_2748 f 500 bipolar 2748 0 0 diff
-
-save_pop_unit_as_bp_3038 f 500 bipolar 3038 0 0 diff
-
-save_pop_unit_as_bp_2823 f 500 bipolar 2823 0 0 diff
-
-save_pop_unit_as_bp_3200 f 500 bipolar 3200 0 0 diff
-
-save_pop_unit_as_bp_2684 f 500 bipolar 2684 0 0 diff
-
-save_pop_unit_as_bp_2750 f 500 bipolar 2750 0 0 diff
-
-save_pop_unit_as_bp_2586 f 500 bipolar 2586 0 0 diff
-
-save_pop_unit_as_bp_3495 f 500 bipolar 3495 0 0 diff
-
-save_pop_unit_as_bp_3408 f 500 bipolar 3408 0 0 diff
-
-save_pop_unit_as_bp_2604 f 500 bipolar 2604 0 0 diff
-
-save_pop_unit_as_bp_3110 f 500 bipolar 3110 0 0 diff
-
-save_pop_unit_as_bp_2532 f 500 bipolar 2532 0 0 diff
-
-save_pop_unit_as_bp_2531 f 500 bipolar 2531 0 0 diff
-
-save_pop_unit_as_bp_3575 f 500 bipolar 3575 0 0 diff
+save_pop_unit_as_bp_3218 f 500 bipolar 3218 0 0 diff
 
 save_pop_unit_as_bp_3128 f 500 bipolar 3128 0 0 diff
 
-save_pop_unit_as_bp_3406 f 500 bipolar 3406 0 0 diff
-
-save_pop_unit_as_bp_3327 f 500 bipolar 3327 0 0 diff
-
-save_pop_unit_as_bp_3562 f 500 bipolar 3562 0 0 diff
-
-save_pop_unit_as_bp_2884 f 500 bipolar 2884 0 0 diff
-
-save_pop_unit_as_bp_2580 f 500 bipolar 2580 0 0 diff
-
-save_pop_unit_as_bp_3576 f 500 bipolar 3576 0 0 diff
-
-save_pop_unit_as_bp_3479 f 500 bipolar 3479 0 0 diff
-
-save_pop_unit_as_bp_2816 f 500 bipolar 2816 0 0 diff
-
-save_pop_unit_as_bp_2521 f 500 bipolar 2521 0 0 diff
-
-save_pop_unit_as_bp_2601 f 500 bipolar 2601 0 0 diff
-
-save_pop_unit_as_bp_2966 f 500 bipolar 2966 0 0 diff
-
-save_pop_unit_as_bp_3277 f 500 bipolar 3277 0 0 diff
-
-save_pop_unit_as_bp_3564 f 500 bipolar 3564 0 0 diff
-
-save_pop_unit_as_bp_3634 f 500 bipolar 3634 0 0 diff
-
-save_pop_unit_as_bp_2668 f 500 bipolar 2668 0 0 diff
-
-save_pop_unit_as_bp_3501 f 500 bipolar 3501 0 0 diff
-
-save_pop_unit_as_bp_3582 f 500 bipolar 3582 0 0 diff
-
-save_pop_unit_as_bp_3129 f 500 bipolar 3129 0 0 diff
-
-save_pop_unit_as_bp_2656 f 500 bipolar 2656 0 0 diff
-
-save_pop_unit_as_bp_3425 f 500 bipolar 3425 0 0 diff
-
-save_pop_unit_as_bp_2597 f 500 bipolar 2597 0 0 diff
-
-save_pop_unit_as_bp_2530 f 500 bipolar 2530 0 0 diff
-
-save_pop_unit_as_bp_2885 f 500 bipolar 2885 0 0 diff
-
-save_pop_unit_as_bp_3353 f 500 bipolar 3353 0 0 diff
-
-save_pop_unit_as_bp_3263 f 500 bipolar 3263 0 0 diff
-
-save_pop_unit_as_bp_2979 f 500 bipolar 2979 0 0 diff
-
-save_pop_unit_as_bp_3202 f 500 bipolar 3202 0 0 diff
-
-save_pop_unit_as_bp_3107 f 500 bipolar 3107 0 0 diff
-
-save_pop_unit_as_bp_2745 f 500 bipolar 2745 0 0 diff
-
-save_pop_unit_as_bp_2515 f 500 bipolar 2515 0 0 diff
-
-save_pop_unit_as_bp_3572 f 500 bipolar 3572 0 0 diff
-
-save_pop_unit_as_bp_3652 f 500 bipolar 3652 0 0 diff
-
-save_pop_unit_as_bp_2675 f 500 bipolar 2675 0 0 diff
-
-save_pop_unit_as_bp_2677 f 500 bipolar 2677 0 0 diff
-
-save_pop_unit_as_bp_2454 f 500 bipolar 2454 0 0 diff
-
-save_pop_unit_as_bp_2906 f 500 bipolar 2906 0 0 diff
-
-save_pop_unit_as_bp_2452 f 500 bipolar 2452 0 0 diff
-
-save_pop_unit_as_bp_3186 f 500 bipolar 3186 0 0 diff
-
-save_pop_unit_as_bp_3502 f 500 bipolar 3502 0 0 diff
-
-save_pop_unit_as_bp_2809 f 500 bipolar 2809 0 0 diff
-
-save_pop_unit_as_bp_2900 f 500 bipolar 2900 0 0 diff
-
-save_pop_unit_as_bp_3635 f 500 bipolar 3635 0 0 diff
-
-save_pop_unit_as_bp_3653 f 500 bipolar 3653 0 0 diff
-
-save_pop_unit_as_bp_3651 f 500 bipolar 3651 0 0 diff
-
-save_pop_unit_as_bp_3054 f 500 bipolar 3054 0 0 diff
-
-save_pop_unit_as_bp_2522 f 500 bipolar 2522 0 0 diff
-
-save_pop_unit_as_bp_3029 f 500 bipolar 3029 0 0 diff
-
-save_pop_unit_as_bp_2460 f 500 bipolar 2460 0 0 diff
-
-save_pop_unit_as_bp_3426 f 500 bipolar 3426 0 0 diff
-
-save_pop_unit_as_bp_2455 f 500 bipolar 2455 0 0 diff
-
-save_pop_unit_as_bp_2598 f 500 bipolar 2598 0 0 diff
-
-save_pop_unit_as_bp_3577 f 500 bipolar 3577 0 0 diff
-
-save_pop_unit_as_bp_3350 f 500 bipolar 3350 0 0 diff
-
-save_pop_unit_as_bp_2529 f 500 bipolar 2529 0 0 diff
-
-save_pop_unit_as_bp_2970 f 500 bipolar 2970 0 0 diff
-
-save_pop_unit_as_bp_3344 f 500 bipolar 3344 0 0 diff
-
-save_pop_unit_as_bp_2685 f 500 bipolar 2685 0 0 diff
-
-save_pop_unit_as_bp_3642 f 500 bipolar 3642 0 0 diff
-
-save_pop_unit_as_bp_2805 f 500 bipolar 2805 0 0 diff
-
-save_pop_unit_as_bp_3184 f 500 bipolar 3184 0 0 diff
-
-save_pop_unit_as_bp_2514 f 500 bipolar 2514 0 0 diff
-
-save_pop_unit_as_bp_2822 f 500 bipolar 2822 0 0 diff
-
-save_pop_unit_as_bp_3706 f 500 bipolar 3706 0 0 diff
-
-save_pop_unit_as_bp_2442 f 500 bipolar 2442 0 0 diff
-
-save_pop_unit_as_bp_3654 f 500 bipolar 3654 0 0 diff
-
-save_pop_unit_as_bp_2596 f 500 bipolar 2596 0 0 diff
-
-save_pop_unit_as_bp_2527 f 500 bipolar 2527 0 0 diff
-
-save_pop_unit_as_bp_3268 f 500 bipolar 3268 0 0 diff
-
-save_pop_unit_as_bp_2438 f 500 bipolar 2438 0 0 diff
-
-save_pop_unit_as_bp_3498 f 500 bipolar 3498 0 0 diff
-
-save_pop_unit_as_bp_3199 f 500 bipolar 3199 0 0 diff
-
-save_pop_unit_as_bp_3416 f 500 bipolar 3416 0 0 diff
-
-save_pop_unit_as_bp_3718 f 500 bipolar 3718 0 0 diff
-
-save_pop_unit_as_bp_3629 f 500 bipolar 3629 0 0 diff
-
-save_pop_unit_as_bp_3722 f 500 bipolar 3722 0 0 diff
-
-save_pop_unit_as_bp_2388 f 500 bipolar 2388 0 0 diff
-
-save_pop_unit_as_bp_3111 f 500 bipolar 3111 0 0 diff
-
-save_pop_unit_as_bp_3326 f 500 bipolar 3326 0 0 diff
-
-save_pop_unit_as_bp_2827 f 500 bipolar 2827 0 0 diff
-
-save_pop_unit_as_bp_2605 f 500 bipolar 2605 0 0 diff
-
-save_pop_unit_as_bp_2441 f 500 bipolar 2441 0 0 diff
-
-save_pop_unit_as_bp_3650 f 500 bipolar 3650 0 0 diff
-
-save_pop_unit_as_bp_3494 f 500 bipolar 3494 0 0 diff
-
-save_pop_unit_as_bp_2666 f 500 bipolar 2666 0 0 diff
-
-save_pop_unit_as_bp_3574 f 500 bipolar 3574 0 0 diff
-
-save_pop_unit_as_bp_3727 f 500 bipolar 3727 0 0 diff
-
-save_pop_unit_as_bp_3035 f 500 bipolar 3035 0 0 diff
-
-save_pop_unit_as_bp_2903 f 500 bipolar 2903 0 0 diff
-
-save_pop_unit_as_bp_3571 f 500 bipolar 3571 0 0 diff
-
-save_pop_unit_as_bp_2449 f 500 bipolar 2449 0 0 diff
-
-save_pop_unit_as_bp_3051 f 500 bipolar 3051 0 0 diff
-
-save_pop_unit_as_bp_2384 f 500 bipolar 2384 0 0 diff
-
-save_pop_unit_as_bp_2440 f 500 bipolar 2440 0 0 diff
-
-save_pop_unit_as_bp_2734 f 500 bipolar 2734 0 0 diff
-
-save_pop_unit_as_bp_3730 f 500 bipolar 3730 0 0 diff
-
-save_pop_unit_as_bp_3723 f 500 bipolar 3723 0 0 diff
-
-save_pop_unit_as_bp_3207 f 500 bipolar 3207 0 0 diff
-
-save_pop_unit_as_bp_3267 f 500 bipolar 3267 0 0 diff
-
-save_pop_unit_as_bp_3330 f 500 bipolar 3330 0 0 diff
-
-save_pop_unit_as_bp_3486 f 500 bipolar 3486 0 0 diff
-
-save_pop_unit_as_bp_2374 f 500 bipolar 2374 0 0 diff
-
-save_pop_unit_as_bp_3708 f 500 bipolar 3708 0 0 diff
-
-save_pop_unit_as_bp_3178 f 500 bipolar 3178 0 0 diff
-
-save_pop_unit_as_bp_2963 f 500 bipolar 2963 0 0 diff
-
-save_pop_unit_as_bp_2528 f 500 bipolar 2528 0 0 diff
-
-save_pop_unit_as_bp_2831 f 500 bipolar 2831 0 0 diff
-
-save_pop_unit_as_bp_2741 f 500 bipolar 2741 0 0 diff
-
-save_pop_unit_as_bp_2887 f 500 bipolar 2887 0 0 diff
-
-save_pop_unit_as_bp_2669 f 500 bipolar 2669 0 0 diff
-
-save_pop_unit_as_bp_3647 f 500 bipolar 3647 0 0 diff
-
-save_pop_unit_as_bp_2385 f 500 bipolar 2385 0 0 diff
-
-save_pop_unit_as_bp_2369 f 500 bipolar 2369 0 0 diff
-
-save_pop_unit_as_bp_2373 f 500 bipolar 2373 0 0 diff
-
-save_pop_unit_as_bp_2456 f 500 bipolar 2456 0 0 diff
-
-save_pop_unit_as_bp_3480 f 500 bipolar 3480 0 0 diff
-
-save_pop_unit_as_bp_2453 f 500 bipolar 2453 0 0 diff
-
-save_pop_unit_as_bp_3788 f 500 bipolar 3788 0 0 diff
-
-save_pop_unit_as_bp_3794 f 500 bipolar 3794 0 0 diff
-
-save_pop_unit_as_bp_2742 f 500 bipolar 2742 0 0 diff
-
-save_pop_unit_as_bp_2526 f 500 bipolar 2526 0 0 diff
-
-save_pop_unit_as_bp_3409 f 500 bipolar 3409 0 0 diff
-
-save_pop_unit_as_bp_2363 f 500 bipolar 2363 0 0 diff
-
-save_pop_unit_as_bp_3733 f 500 bipolar 3733 0 0 diff
-
-save_pop_unit_as_bp_2812 f 500 bipolar 2812 0 0 diff
-
-save_pop_unit_as_bp_2587 f 500 bipolar 2587 0 0 diff
-
-save_pop_unit_as_bp_3341 f 500 bipolar 3341 0 0 diff
-
-save_pop_unit_as_bp_3793 f 500 bipolar 3793 0 0 diff
-
-save_pop_unit_as_bp_3557 f 500 bipolar 3557 0 0 diff
-
-save_pop_unit_as_bp_2592 f 500 bipolar 2592 0 0 diff
-
-save_pop_unit_as_bp_3354 f 500 bipolar 3354 0 0 diff
-
-save_pop_unit_as_bp_3724 f 500 bipolar 3724 0 0 diff
-
-save_pop_unit_as_bp_3799 f 500 bipolar 3799 0 0 diff
-
-save_pop_unit_as_bp_3630 f 500 bipolar 3630 0 0 diff
-
-save_pop_unit_as_bp_3103 f 500 bipolar 3103 0 0 diff
-
-save_pop_unit_as_bp_3705 f 500 bipolar 3705 0 0 diff
-
-save_pop_unit_as_bp_3427 f 500 bipolar 3427 0 0 diff
-
-save_pop_unit_as_bp_3570 f 500 bipolar 3570 0 0 diff
-
-save_pop_unit_as_bp_2978 f 500 bipolar 2978 0 0 diff
-
-save_pop_unit_as_bp_3190 f 500 bipolar 3190 0 0 diff
-
-save_pop_unit_as_bp_3790 f 500 bipolar 3790 0 0 diff
-
-save_pop_unit_as_bp_3641 f 500 bipolar 3641 0 0 diff
-
-save_pop_unit_as_bp_2368 f 500 bipolar 2368 0 0 diff
-
-save_pop_unit_as_bp_3555 f 500 bipolar 3555 0 0 diff
-
-save_pop_unit_as_bp_2376 f 500 bipolar 2376 0 0 diff
-
-save_pop_unit_as_bp_2674 f 500 bipolar 2674 0 0 diff
-
-save_pop_unit_as_bp_2457 f 500 bipolar 2457 0 0 diff
-
-save_pop_unit_as_bp_2301 f 500 bipolar 2301 0 0 diff
-
-save_pop_unit_as_bp_3114 f 500 bipolar 3114 0 0 diff
-
-save_pop_unit_as_bp_3711 f 500 bipolar 3711 0 0 diff
-
-save_pop_unit_as_bp_2383 f 500 bipolar 2383 0 0 diff
-
-save_pop_unit_as_bp_2310 f 500 bipolar 2310 0 0 diff
-
-save_pop_unit_as_bp_2603 f 500 bipolar 2603 0 0 diff
-
-save_pop_unit_as_bp_3335 f 500 bipolar 3335 0 0 diff
-
-save_pop_unit_as_bp_3806 f 500 bipolar 3806 0 0 diff
-
-save_pop_unit_as_bp_3496 f 500 bipolar 3496 0 0 diff
-
-save_pop_unit_as_bp_3861 f 500 bipolar 3861 0 0 diff
-
-save_pop_unit_as_bp_3047 f 500 bipolar 3047 0 0 diff
-
-save_pop_unit_as_bp_2599 f 500 bipolar 2599 0 0 diff
-
-save_pop_unit_as_bp_3261 f 500 bipolar 3261 0 0 diff
-
-save_pop_unit_as_bp_3197 f 500 bipolar 3197 0 0 diff
-
-save_pop_unit_as_bp_2899 f 500 bipolar 2899 0 0 diff
-
-save_pop_unit_as_bp_2297 f 500 bipolar 2297 0 0 diff
-
-save_pop_unit_as_bp_2302 f 500 bipolar 2302 0 0 diff
-
-save_pop_unit_as_bp_3792 f 500 bipolar 3792 0 0 diff
-
-save_pop_unit_as_bp_2958 f 500 bipolar 2958 0 0 diff
-
-save_pop_unit_as_bp_2813 f 500 bipolar 2813 0 0 diff
-
-save_pop_unit_as_bp_3273 f 500 bipolar 3273 0 0 diff
-
-save_pop_unit_as_bp_2448 f 500 bipolar 2448 0 0 diff
-
-save_pop_unit_as_bp_3869 f 500 bipolar 3869 0 0 diff
-
-save_pop_unit_as_bp_2387 f 500 bipolar 2387 0 0 diff
-
-save_pop_unit_as_bp_3789 f 500 bipolar 3789 0 0 diff
-
-save_pop_unit_as_bp_2461 f 500 bipolar 2461 0 0 diff
-
-save_pop_unit_as_bp_2659 f 500 bipolar 2659 0 0 diff
-
-save_pop_unit_as_bp_3567 f 500 bipolar 3567 0 0 diff
-
-save_pop_unit_as_bp_2364 f 500 bipolar 2364 0 0 diff
-
-save_pop_unit_as_bp_3856 f 500 bipolar 3856 0 0 diff
-
-save_pop_unit_as_bp_3713 f 500 bipolar 3713 0 0 diff
-
-save_pop_unit_as_bp_3732 f 500 bipolar 3732 0 0 diff
-
-save_pop_unit_as_bp_3868 f 500 bipolar 3868 0 0 diff
-
-save_pop_unit_as_bp_3493 f 500 bipolar 3493 0 0 diff
-
-save_pop_unit_as_bp_2285 f 500 bipolar 2285 0 0 diff
-
-save_pop_unit_as_bp_3419 f 500 bipolar 3419 0 0 diff
-
-save_pop_unit_as_bp_3636 f 500 bipolar 3636 0 0 diff
-
-save_pop_unit_as_bp_3185 f 500 bipolar 3185 0 0 diff
-
-save_pop_unit_as_bp_2291 f 500 bipolar 2291 0 0 diff
-
-save_pop_unit_as_bp_2829 f 500 bipolar 2829 0 0 diff
-
-save_pop_unit_as_bp_3422 f 500 bipolar 3422 0 0 diff
-
-save_pop_unit_as_bp_2686 f 500 bipolar 2686 0 0 diff
-
-save_pop_unit_as_bp_3127 f 500 bipolar 3127 0 0 diff
-
-save_pop_unit_as_bp_3640 f 500 bipolar 3640 0 0 diff
-
-save_pop_unit_as_bp_2459 f 500 bipolar 2459 0 0 diff
-
-save_pop_unit_as_bp_2756 f 500 bipolar 2756 0 0 diff
-
-save_pop_unit_as_bp_2292 f 500 bipolar 2292 0 0 diff
-
-save_pop_unit_as_bp_3870 f 500 bipolar 3870 0 0 diff
-
-save_pop_unit_as_bp_3874 f 500 bipolar 3874 0 0 diff
-
-save_pop_unit_as_bp_3721 f 500 bipolar 3721 0 0 diff
-
-save_pop_unit_as_bp_3347 f 500 bipolar 3347 0 0 diff
-
-save_pop_unit_as_bp_2309 f 500 bipolar 2309 0 0 diff
-
-save_pop_unit_as_bp_2377 f 500 bipolar 2377 0 0 diff
-
-save_pop_unit_as_bp_3800 f 500 bipolar 3800 0 0 diff
-
-save_pop_unit_as_bp_3044 f 500 bipolar 3044 0 0 diff
-
-save_pop_unit_as_bp_3580 f 500 bipolar 3580 0 0 diff
-
-save_pop_unit_as_bp_2525 f 500 bipolar 2525 0 0 diff
-
-save_pop_unit_as_bp_2293 f 500 bipolar 2293 0 0 diff
-
-save_pop_unit_as_bp_2290 f 500 bipolar 2290 0 0 diff
-
-save_pop_unit_as_bp_3709 f 500 bipolar 3709 0 0 diff
-
-save_pop_unit_as_bp_2523 f 500 bipolar 2523 0 0 diff
-
-save_pop_unit_as_bp_2821 f 500 bipolar 2821 0 0 diff
-
-save_pop_unit_as_bp_2226 f 500 bipolar 2226 0 0 diff
-
-save_pop_unit_as_bp_3109 f 500 bipolar 3109 0 0 diff
-
-save_pop_unit_as_bp_3034 f 500 bipolar 3034 0 0 diff
-
-save_pop_unit_as_bp_3331 f 500 bipolar 3331 0 0 diff
-
-save_pop_unit_as_bp_3499 f 500 bipolar 3499 0 0 diff
-
-save_pop_unit_as_bp_2971 f 500 bipolar 2971 0 0 diff
+save_pop_unit_as_bp_3134 f 500 bipolar 3134 0 0 diff
 
 save_pop_unit_as_bp_3208 f 500 bipolar 3208 0 0 diff
 
-save_pop_unit_as_bp_2733 f 500 bipolar 2733 0 0 diff
+save_pop_unit_as_bp_3222 f 500 bipolar 3222 0 0 diff
 
-save_pop_unit_as_bp_3930 f 500 bipolar 3930 0 0 diff
+save_pop_unit_as_bp_3205 f 500 bipolar 3205 0 0 diff
 
-save_pop_unit_as_bp_3937 f 500 bipolar 3937 0 0 diff
+save_pop_unit_as_bp_3000 f 500 bipolar 3000 0 0 diff
 
-save_pop_unit_as_bp_2591 f 500 bipolar 2591 0 0 diff
+save_pop_unit_as_bp_3290 f 500 bipolar 3290 0 0 diff
 
-save_pop_unit_as_bp_3355 f 500 bipolar 3355 0 0 diff
+save_pop_unit_as_bp_3054 f 500 bipolar 3054 0 0 diff
 
-save_pop_unit_as_bp_3872 f 500 bipolar 3872 0 0 diff
+save_pop_unit_as_bp_2999 f 500 bipolar 2999 0 0 diff
 
-save_pop_unit_as_bp_2589 f 500 bipolar 2589 0 0 diff
+save_pop_unit_as_bp_3138 f 500 bipolar 3138 0 0 diff
 
-save_pop_unit_as_bp_3936 f 500 bipolar 3936 0 0 diff
+save_pop_unit_as_bp_3129 f 500 bipolar 3129 0 0 diff
 
-save_pop_unit_as_bp_3568 f 500 bipolar 3568 0 0 diff
+save_pop_unit_as_bp_3064 f 500 bipolar 3064 0 0 diff
 
-save_pop_unit_as_bp_2889 f 500 bipolar 2889 0 0 diff
+save_pop_unit_as_bp_3280 f 500 bipolar 3280 0 0 diff
 
-save_pop_unit_as_bp_3855 f 500 bipolar 3855 0 0 diff
+save_pop_unit_as_bp_2984 f 500 bipolar 2984 0 0 diff
 
-save_pop_unit_as_bp_2289 f 500 bipolar 2289 0 0 diff
+save_pop_unit_as_bp_3299 f 500 bipolar 3299 0 0 diff
 
-save_pop_unit_as_bp_2220 f 500 bipolar 2220 0 0 diff
+save_pop_unit_as_bp_3217 f 500 bipolar 3217 0 0 diff
 
-save_pop_unit_as_bp_3720 f 500 bipolar 3720 0 0 diff
+save_pop_unit_as_bp_2975 f 500 bipolar 2975 0 0 diff
 
-save_pop_unit_as_bp_2898 f 500 bipolar 2898 0 0 diff
+save_pop_unit_as_bp_3352 f 500 bipolar 3352 0 0 diff
 
-save_pop_unit_as_bp_3262 f 500 bipolar 3262 0 0 diff
+save_pop_unit_as_bp_3209 f 500 bipolar 3209 0 0 diff
 
-save_pop_unit_as_bp_3879 f 500 bipolar 3879 0 0 diff
+save_pop_unit_as_bp_3281 f 500 bipolar 3281 0 0 diff
 
-save_pop_unit_as_bp_2447 f 500 bipolar 2447 0 0 diff
+save_pop_unit_as_bp_3365 f 500 bipolar 3365 0 0 diff
 
-save_pop_unit_as_bp_3421 f 500 bipolar 3421 0 0 diff
+save_pop_unit_as_bp_2988 f 500 bipolar 2988 0 0 diff
 
-save_pop_unit_as_bp_3561 f 500 bipolar 3561 0 0 diff
+save_pop_unit_as_bp_3001 f 500 bipolar 3001 0 0 diff
 
-save_pop_unit_as_bp_3637 f 500 bipolar 3637 0 0 diff
+save_pop_unit_as_bp_3146 f 500 bipolar 3146 0 0 diff
 
-save_pop_unit_as_bp_2303 f 500 bipolar 2303 0 0 diff
+save_pop_unit_as_bp_3073 f 500 bipolar 3073 0 0 diff
 
-save_pop_unit_as_bp_2380 f 500 bipolar 2380 0 0 diff
+save_pop_unit_as_bp_3070 f 500 bipolar 3070 0 0 diff
 
-save_pop_unit_as_bp_3801 f 500 bipolar 3801 0 0 diff
+save_pop_unit_as_bp_3379 f 500 bipolar 3379 0 0 diff
 
-save_pop_unit_as_bp_2378 f 500 bipolar 2378 0 0 diff
+save_pop_unit_as_bp_2911 f 500 bipolar 2911 0 0 diff
 
-save_pop_unit_as_bp_2217 f 500 bipolar 2217 0 0 diff
+save_pop_unit_as_bp_3049 f 500 bipolar 3049 0 0 diff
 
-save_pop_unit_as_bp_2661 f 500 bipolar 2661 0 0 diff
+save_pop_unit_as_bp_3362 f 500 bipolar 3362 0 0 diff
 
-save_pop_unit_as_bp_3798 f 500 bipolar 3798 0 0 diff
+save_pop_unit_as_bp_3294 f 500 bipolar 3294 0 0 diff
 
-save_pop_unit_as_bp_2660 f 500 bipolar 2660 0 0 diff
+save_pop_unit_as_bp_3370 f 500 bipolar 3370 0 0 diff
 
-save_pop_unit_as_bp_3795 f 500 bipolar 3795 0 0 diff
+save_pop_unit_as_bp_2919 f 500 bipolar 2919 0 0 diff
 
-save_pop_unit_as_bp_2219 f 500 bipolar 2219 0 0 diff
+save_pop_unit_as_bp_2905 f 500 bipolar 2905 0 0 diff
 
-save_pop_unit_as_bp_2806 f 500 bipolar 2806 0 0 diff
+save_pop_unit_as_bp_3154 f 500 bipolar 3154 0 0 diff
 
-save_pop_unit_as_bp_2161 f 500 bipolar 2161 0 0 diff
+save_pop_unit_as_bp_3285 f 500 bipolar 3285 0 0 diff
 
-save_pop_unit_as_bp_3430 f 500 bipolar 3430 0 0 diff
+save_pop_unit_as_bp_3228 f 500 bipolar 3228 0 0 diff
 
-save_pop_unit_as_bp_3196 f 500 bipolar 3196 0 0 diff
+save_pop_unit_as_bp_2895 f 500 bipolar 2895 0 0 diff
+
+save_pop_unit_as_bp_2991 f 500 bipolar 2991 0 0 diff
+
+save_pop_unit_as_bp_3435 f 500 bipolar 3435 0 0 diff
+
+save_pop_unit_as_bp_3440 f 500 bipolar 3440 0 0 diff
+
+save_pop_unit_as_bp_3443 f 500 bipolar 3443 0 0 diff
+
+save_pop_unit_as_bp_3369 f 500 bipolar 3369 0 0 diff
+
+save_pop_unit_as_bp_3210 f 500 bipolar 3210 0 0 diff
+
+save_pop_unit_as_bp_2916 f 500 bipolar 2916 0 0 diff
+
+save_pop_unit_as_bp_3298 f 500 bipolar 3298 0 0 diff
+
+save_pop_unit_as_bp_3056 f 500 bipolar 3056 0 0 diff
+
+save_pop_unit_as_bp_3353 f 500 bipolar 3353 0 0 diff
+
+save_pop_unit_as_bp_3126 f 500 bipolar 3126 0 0 diff
+
+save_pop_unit_as_bp_2840 f 500 bipolar 2840 0 0 diff
+
+save_pop_unit_as_bp_3436 f 500 bipolar 3436 0 0 diff
+
+save_pop_unit_as_bp_2896 f 500 bipolar 2896 0 0 diff
+
+save_pop_unit_as_bp_2974 f 500 bipolar 2974 0 0 diff
+
+save_pop_unit_as_bp_2834 f 500 bipolar 2834 0 0 diff
+
+save_pop_unit_as_bp_3052 f 500 bipolar 3052 0 0 diff
+
+save_pop_unit_as_bp_3139 f 500 bipolar 3139 0 0 diff
+
+save_pop_unit_as_bp_3460 f 500 bipolar 3460 0 0 diff
+
+save_pop_unit_as_bp_2842 f 500 bipolar 2842 0 0 diff
+
+save_pop_unit_as_bp_2921 f 500 bipolar 2921 0 0 diff
+
+save_pop_unit_as_bp_3153 f 500 bipolar 3153 0 0 diff
+
+save_pop_unit_as_bp_3515 f 500 bipolar 3515 0 0 diff
+
+save_pop_unit_as_bp_3457 f 500 bipolar 3457 0 0 diff
+
+save_pop_unit_as_bp_3451 f 500 bipolar 3451 0 0 diff
+
+save_pop_unit_as_bp_3226 f 500 bipolar 3226 0 0 diff
+
+save_pop_unit_as_bp_3461 f 500 bipolar 3461 0 0 diff
+
+save_pop_unit_as_bp_3363 f 500 bipolar 3363 0 0 diff
+
+save_pop_unit_as_bp_2826 f 500 bipolar 2826 0 0 diff
+
+save_pop_unit_as_bp_3074 f 500 bipolar 3074 0 0 diff
+
+save_pop_unit_as_bp_3383 f 500 bipolar 3383 0 0 diff
+
+save_pop_unit_as_bp_2845 f 500 bipolar 2845 0 0 diff
+
+save_pop_unit_as_bp_3291 f 500 bipolar 3291 0 0 diff
+
+save_pop_unit_as_bp_2900 f 500 bipolar 2900 0 0 diff
+
+save_pop_unit_as_bp_3526 f 500 bipolar 3526 0 0 diff
+
+save_pop_unit_as_bp_3223 f 500 bipolar 3223 0 0 diff
+
+save_pop_unit_as_bp_2995 f 500 bipolar 2995 0 0 diff
+
+save_pop_unit_as_bp_2833 f 500 bipolar 2833 0 0 diff
+
+save_pop_unit_as_bp_2763 f 500 bipolar 2763 0 0 diff
+
+save_pop_unit_as_bp_3351 f 500 bipolar 3351 0 0 diff
+
+save_pop_unit_as_bp_3378 f 500 bipolar 3378 0 0 diff
+
+save_pop_unit_as_bp_2823 f 500 bipolar 2823 0 0 diff
+
+save_pop_unit_as_bp_3446 f 500 bipolar 3446 0 0 diff
+
+save_pop_unit_as_bp_2762 f 500 bipolar 2762 0 0 diff
+
+save_pop_unit_as_bp_2915 f 500 bipolar 2915 0 0 diff
+
+save_pop_unit_as_bp_2990 f 500 bipolar 2990 0 0 diff
+
+save_pop_unit_as_bp_2920 f 500 bipolar 2920 0 0 diff
+
+save_pop_unit_as_bp_2757 f 500 bipolar 2757 0 0 diff
+
+save_pop_unit_as_bp_3590 f 500 bipolar 3590 0 0 diff
+
+save_pop_unit_as_bp_3152 f 500 bipolar 3152 0 0 diff
+
+save_pop_unit_as_bp_3063 f 500 bipolar 3063 0 0 diff
+
+save_pop_unit_as_bp_3155 f 500 bipolar 3155 0 0 diff
+
+save_pop_unit_as_bp_2766 f 500 bipolar 2766 0 0 diff
+
+save_pop_unit_as_bp_3532 f 500 bipolar 3532 0 0 diff
+
+save_pop_unit_as_bp_2846 f 500 bipolar 2846 0 0 diff
+
+save_pop_unit_as_bp_3525 f 500 bipolar 3525 0 0 diff
+
+save_pop_unit_as_bp_3462 f 500 bipolar 3462 0 0 diff
+
+save_pop_unit_as_bp_3594 f 500 bipolar 3594 0 0 diff
+
+save_pop_unit_as_bp_3227 f 500 bipolar 3227 0 0 diff
+
+save_pop_unit_as_bp_2839 f 500 bipolar 2839 0 0 diff
+
+save_pop_unit_as_bp_2701 f 500 bipolar 2701 0 0 diff
+
+save_pop_unit_as_bp_3523 f 500 bipolar 3523 0 0 diff
+
+save_pop_unit_as_bp_3591 f 500 bipolar 3591 0 0 diff
+
+save_pop_unit_as_bp_3297 f 500 bipolar 3297 0 0 diff
+
+save_pop_unit_as_bp_3364 f 500 bipolar 3364 0 0 diff
+
+save_pop_unit_as_bp_2985 f 500 bipolar 2985 0 0 diff
+
+save_pop_unit_as_bp_3055 f 500 bipolar 3055 0 0 diff
+
+save_pop_unit_as_bp_3434 f 500 bipolar 3434 0 0 diff
+
+save_pop_unit_as_bp_3437 f 500 bipolar 3437 0 0 diff
+
+save_pop_unit_as_bp_3130 f 500 bipolar 3130 0 0 diff
+
+save_pop_unit_as_bp_3463 f 500 bipolar 3463 0 0 diff
+
+save_pop_unit_as_bp_3604 f 500 bipolar 3604 0 0 diff
+
+save_pop_unit_as_bp_2686 f 500 bipolar 2686 0 0 diff
 
 save_pop_unit_as_bp_2682 f 500 bipolar 2682 0 0 diff
 
-save_pop_unit_as_bp_3117 f 500 bipolar 3117 0 0 diff
+save_pop_unit_as_bp_3148 f 500 bipolar 3148 0 0 diff
 
-save_pop_unit_as_bp_3704 f 500 bipolar 3704 0 0 diff
+save_pop_unit_as_bp_3617 f 500 bipolar 3617 0 0 diff
 
-save_pop_unit_as_bp_3875 f 500 bipolar 3875 0 0 diff
+save_pop_unit_as_bp_2697 f 500 bipolar 2697 0 0 diff
 
-save_pop_unit_as_bp_3948 f 500 bipolar 3948 0 0 diff
+save_pop_unit_as_bp_2761 f 500 bipolar 2761 0 0 diff
 
-save_pop_unit_as_bp_2221 f 500 bipolar 2221 0 0 diff
+save_pop_unit_as_bp_3151 f 500 bipolar 3151 0 0 diff
 
-save_pop_unit_as_bp_3338 f 500 bipolar 3338 0 0 diff
+save_pop_unit_as_bp_3514 f 500 bipolar 3514 0 0 diff
+
+save_pop_unit_as_bp_2998 f 500 bipolar 2998 0 0 diff
+
+save_pop_unit_as_bp_3611 f 500 bipolar 3611 0 0 diff
+
+save_pop_unit_as_bp_3533 f 500 bipolar 3533 0 0 diff
+
+save_pop_unit_as_bp_2914 f 500 bipolar 2914 0 0 diff
+
+save_pop_unit_as_bp_2683 f 500 bipolar 2683 0 0 diff
+
+save_pop_unit_as_bp_3072 f 500 bipolar 3072 0 0 diff
+
+save_pop_unit_as_bp_3540 f 500 bipolar 3540 0 0 diff
+
+save_pop_unit_as_bp_3374 f 500 bipolar 3374 0 0 diff
+
+save_pop_unit_as_bp_2702 f 500 bipolar 2702 0 0 diff
+
+save_pop_unit_as_bp_3671 f 500 bipolar 3671 0 0 diff
+
+save_pop_unit_as_bp_2901 f 500 bipolar 2901 0 0 diff
+
+save_pop_unit_as_bp_3607 f 500 bipolar 3607 0 0 diff
+
+save_pop_unit_as_bp_2769 f 500 bipolar 2769 0 0 diff
+
+save_pop_unit_as_bp_3384 f 500 bipolar 3384 0 0 diff
+
+save_pop_unit_as_bp_3455 f 500 bipolar 3455 0 0 diff
+
+save_pop_unit_as_bp_2838 f 500 bipolar 2838 0 0 diff
+
+save_pop_unit_as_bp_3279 f 500 bipolar 3279 0 0 diff
+
+save_pop_unit_as_bp_3610 f 500 bipolar 3610 0 0 diff
+
+save_pop_unit_as_bp_2829 f 500 bipolar 2829 0 0 diff
+
+save_pop_unit_as_bp_3673 f 500 bipolar 3673 0 0 diff
+
+save_pop_unit_as_bp_2922 f 500 bipolar 2922 0 0 diff
+
+save_pop_unit_as_bp_3454 f 500 bipolar 3454 0 0 diff
+
+save_pop_unit_as_bp_2618 f 500 bipolar 2618 0 0 diff
+
+save_pop_unit_as_bp_3300 f 500 bipolar 3300 0 0 diff
+
+save_pop_unit_as_bp_3605 f 500 bipolar 3605 0 0 diff
+
+save_pop_unit_as_bp_3350 f 500 bipolar 3350 0 0 diff
+
+save_pop_unit_as_bp_2696 f 500 bipolar 2696 0 0 diff
+
+save_pop_unit_as_bp_3229 f 500 bipolar 3229 0 0 diff
+
+save_pop_unit_as_bp_3135 f 500 bipolar 3135 0 0 diff
+
+save_pop_unit_as_bp_2613 f 500 bipolar 2613 0 0 diff
+
+save_pop_unit_as_bp_2760 f 500 bipolar 2760 0 0 diff
+
+save_pop_unit_as_bp_3216 f 500 bipolar 3216 0 0 diff
+
+save_pop_unit_as_bp_2992 f 500 bipolar 2992 0 0 diff
+
+save_pop_unit_as_bp_2673 f 500 bipolar 2673 0 0 diff
+
+save_pop_unit_as_bp_2902 f 500 bipolar 2902 0 0 diff
+
+save_pop_unit_as_bp_3137 f 500 bipolar 3137 0 0 diff
+
+save_pop_unit_as_bp_2614 f 500 bipolar 2614 0 0 diff
+
+save_pop_unit_as_bp_3534 f 500 bipolar 3534 0 0 diff
+
+save_pop_unit_as_bp_3687 f 500 bipolar 3687 0 0 diff
+
+save_pop_unit_as_bp_3593 f 500 bipolar 3593 0 0 diff
+
+save_pop_unit_as_bp_3531 f 500 bipolar 3531 0 0 diff
+
+save_pop_unit_as_bp_3371 f 500 bipolar 3371 0 0 diff
+
+save_pop_unit_as_bp_3051 f 500 bipolar 3051 0 0 diff
+
+save_pop_unit_as_bp_2698 f 500 bipolar 2698 0 0 diff
+
+save_pop_unit_as_bp_3439 f 500 bipolar 3439 0 0 diff
+
+save_pop_unit_as_bp_3616 f 500 bipolar 3616 0 0 diff
+
+save_pop_unit_as_bp_3603 f 500 bipolar 3603 0 0 diff
+
+save_pop_unit_as_bp_3444 f 500 bipolar 3444 0 0 diff
+
+save_pop_unit_as_bp_2841 f 500 bipolar 2841 0 0 diff
+
+save_pop_unit_as_bp_3296 f 500 bipolar 3296 0 0 diff
+
+save_pop_unit_as_bp_3743 f 500 bipolar 3743 0 0 diff
+
+save_pop_unit_as_bp_2674 f 500 bipolar 2674 0 0 diff
+
+save_pop_unit_as_bp_3748 f 500 bipolar 3748 0 0 diff
+
+save_pop_unit_as_bp_3211 f 500 bipolar 3211 0 0 diff
+
+save_pop_unit_as_bp_3071 f 500 bipolar 3071 0 0 diff
+
+save_pop_unit_as_bp_2606 f 500 bipolar 2606 0 0 diff
+
+save_pop_unit_as_bp_2703 f 500 bipolar 2703 0 0 diff
+
+save_pop_unit_as_bp_2598 f 500 bipolar 2598 0 0 diff
+
+save_pop_unit_as_bp_2973 f 500 bipolar 2973 0 0 diff
+
+save_pop_unit_as_bp_3679 f 500 bipolar 3679 0 0 diff
+
+save_pop_unit_as_bp_2906 f 500 bipolar 2906 0 0 diff
+
+save_pop_unit_as_bp_2832 f 500 bipolar 2832 0 0 diff
+
+save_pop_unit_as_bp_3747 f 500 bipolar 3747 0 0 diff
+
+save_pop_unit_as_bp_2690 f 500 bipolar 2690 0 0 diff
+
+save_pop_unit_as_bp_2764 f 500 bipolar 2764 0 0 diff
+
+save_pop_unit_as_bp_2904 f 500 bipolar 2904 0 0 diff
+
+save_pop_unit_as_bp_3524 f 500 bipolar 3524 0 0 diff
+
+save_pop_unit_as_bp_2616 f 500 bipolar 2616 0 0 diff
+
+save_pop_unit_as_bp_3690 f 500 bipolar 3690 0 0 diff
+
+save_pop_unit_as_bp_3521 f 500 bipolar 3521 0 0 diff
+
+save_pop_unit_as_bp_3068 f 500 bipolar 3068 0 0 diff
+
+save_pop_unit_as_bp_3221 f 500 bipolar 3221 0 0 diff
+
+save_pop_unit_as_bp_2538 f 500 bipolar 2538 0 0 diff
+
+save_pop_unit_as_bp_3140 f 500 bipolar 3140 0 0 diff
+
+save_pop_unit_as_bp_3377 f 500 bipolar 3377 0 0 diff
+
+save_pop_unit_as_bp_2982 f 500 bipolar 2982 0 0 diff
+
+save_pop_unit_as_bp_3674 f 500 bipolar 3674 0 0 diff
+
+save_pop_unit_as_bp_3301 f 500 bipolar 3301 0 0 diff
+
+save_pop_unit_as_bp_2759 f 500 bipolar 2759 0 0 diff
+
+save_pop_unit_as_bp_3686 f 500 bipolar 3686 0 0 diff
+
+save_pop_unit_as_bp_2541 f 500 bipolar 2541 0 0 diff
+
+save_pop_unit_as_bp_3758 f 500 bipolar 3758 0 0 diff
+
+save_pop_unit_as_bp_3669 f 500 bipolar 3669 0 0 diff
+
+save_pop_unit_as_bp_3441 f 500 bipolar 3441 0 0 diff
+
+save_pop_unit_as_bp_3612 f 500 bipolar 3612 0 0 diff
+
+save_pop_unit_as_bp_3599 f 500 bipolar 3599 0 0 diff
+
+save_pop_unit_as_bp_3600 f 500 bipolar 3600 0 0 diff
+
+save_pop_unit_as_bp_2528 f 500 bipolar 2528 0 0 diff
+
+save_pop_unit_as_bp_3769 f 500 bipolar 3769 0 0 diff
+
+save_pop_unit_as_bp_2615 f 500 bipolar 2615 0 0 diff
+
+save_pop_unit_as_bp_3750 f 500 bipolar 3750 0 0 diff
+
+save_pop_unit_as_bp_2981 f 500 bipolar 2981 0 0 diff
+
+save_pop_unit_as_bp_3456 f 500 bipolar 3456 0 0 diff
+
+save_pop_unit_as_bp_2835 f 500 bipolar 2835 0 0 diff
+
+save_pop_unit_as_bp_2600 f 500 bipolar 2600 0 0 diff
+
+save_pop_unit_as_bp_3207 f 500 bipolar 3207 0 0 diff
+
+save_pop_unit_as_bp_3520 f 500 bipolar 3520 0 0 diff
+
+save_pop_unit_as_bp_3823 f 500 bipolar 3823 0 0 diff
+
+save_pop_unit_as_bp_2765 f 500 bipolar 2765 0 0 diff
+
+save_pop_unit_as_bp_3212 f 500 bipolar 3212 0 0 diff
+
+save_pop_unit_as_bp_3372 f 500 bipolar 3372 0 0 diff
+
+save_pop_unit_as_bp_2689 f 500 bipolar 2689 0 0 diff
+
+save_pop_unit_as_bp_2831 f 500 bipolar 2831 0 0 diff
+
+save_pop_unit_as_bp_2907 f 500 bipolar 2907 0 0 diff
+
+save_pop_unit_as_bp_2678 f 500 bipolar 2678 0 0 diff
+
+save_pop_unit_as_bp_2537 f 500 bipolar 2537 0 0 diff
+
+save_pop_unit_as_bp_2619 f 500 bipolar 2619 0 0 diff
+
+save_pop_unit_as_bp_2545 f 500 bipolar 2545 0 0 diff
+
+save_pop_unit_as_bp_2699 f 500 bipolar 2699 0 0 diff
+
+save_pop_unit_as_bp_2470 f 500 bipolar 2470 0 0 diff
+
+save_pop_unit_as_bp_3768 f 500 bipolar 3768 0 0 diff
+
+save_pop_unit_as_bp_3744 f 500 bipolar 3744 0 0 diff
+
+save_pop_unit_as_bp_3283 f 500 bipolar 3283 0 0 diff
+
+save_pop_unit_as_bp_2469 f 500 bipolar 2469 0 0 diff
+
+save_pop_unit_as_bp_3136 f 500 bipolar 3136 0 0 diff
+
+save_pop_unit_as_bp_2471 f 500 bipolar 2471 0 0 diff
+
+save_pop_unit_as_bp_3539 f 500 bipolar 3539 0 0 diff
+
+save_pop_unit_as_bp_3361 f 500 bipolar 3361 0 0 diff
+
+save_pop_unit_as_bp_3760 f 500 bipolar 3760 0 0 diff
+
+save_pop_unit_as_bp_3830 f 500 bipolar 3830 0 0 diff
+
+save_pop_unit_as_bp_2533 f 500 bipolar 2533 0 0 diff
+
+save_pop_unit_as_bp_3601 f 500 bipolar 3601 0 0 diff
+
+save_pop_unit_as_bp_3832 f 500 bipolar 3832 0 0 diff
+
+save_pop_unit_as_bp_3127 f 500 bipolar 3127 0 0 diff
+
+save_pop_unit_as_bp_3289 f 500 bipolar 3289 0 0 diff
+
+save_pop_unit_as_bp_3065 f 500 bipolar 3065 0 0 diff
+
+save_pop_unit_as_bp_3742 f 500 bipolar 3742 0 0 diff
+
+save_pop_unit_as_bp_2899 f 500 bipolar 2899 0 0 diff
+
+save_pop_unit_as_bp_3831 f 500 bipolar 3831 0 0 diff
+
+save_pop_unit_as_bp_3002 f 500 bipolar 3002 0 0 diff
+
+save_pop_unit_as_bp_3821 f 500 bipolar 3821 0 0 diff
+
+save_pop_unit_as_bp_3447 f 500 bipolar 3447 0 0 diff
+
+save_pop_unit_as_bp_2756 f 500 bipolar 2756 0 0 diff
+
+save_pop_unit_as_bp_3688 f 500 bipolar 3688 0 0 diff
+
+save_pop_unit_as_bp_2542 f 500 bipolar 2542 0 0 diff
+
+save_pop_unit_as_bp_2603 f 500 bipolar 2603 0 0 diff
+
+save_pop_unit_as_bp_3450 f 500 bipolar 3450 0 0 diff
+
+save_pop_unit_as_bp_3841 f 500 bipolar 3841 0 0 diff
+
+save_pop_unit_as_bp_3203 f 500 bipolar 3203 0 0 diff
+
+save_pop_unit_as_bp_2976 f 500 bipolar 2976 0 0 diff
+
+save_pop_unit_as_bp_2770 f 500 bipolar 2770 0 0 diff
+
+save_pop_unit_as_bp_2597 f 500 bipolar 2597 0 0 diff
+
+save_pop_unit_as_bp_3837 f 500 bipolar 3837 0 0 diff
+
+save_pop_unit_as_bp_2531 f 500 bipolar 2531 0 0 diff
+
+save_pop_unit_as_bp_2620 f 500 bipolar 2620 0 0 diff
+
+save_pop_unit_as_bp_3678 f 500 bipolar 3678 0 0 diff
+
+save_pop_unit_as_bp_3595 f 500 bipolar 3595 0 0 diff
+
+save_pop_unit_as_bp_2451 f 500 bipolar 2451 0 0 diff
+
+save_pop_unit_as_bp_2447 f 500 bipolar 2447 0 0 diff
+
+save_pop_unit_as_bp_3215 f 500 bipolar 3215 0 0 diff
+
+save_pop_unit_as_bp_2461 f 500 bipolar 2461 0 0 diff
+
+save_pop_unit_as_bp_2672 f 500 bipolar 2672 0 0 diff
+
+save_pop_unit_as_bp_3672 f 500 bipolar 3672 0 0 diff
+
+save_pop_unit_as_bp_3530 f 500 bipolar 3530 0 0 diff
+
+save_pop_unit_as_bp_2687 f 500 bipolar 2687 0 0 diff
+
+save_pop_unit_as_bp_3898 f 500 bipolar 3898 0 0 diff
+
+save_pop_unit_as_bp_2972 f 500 bipolar 2972 0 0 diff
+
+save_pop_unit_as_bp_3062 f 500 bipolar 3062 0 0 diff
+
+save_pop_unit_as_bp_2450 f 500 bipolar 2450 0 0 diff
+
+save_pop_unit_as_bp_3767 f 500 bipolar 3767 0 0 diff
+
+save_pop_unit_as_bp_3762 f 500 bipolar 3762 0 0 diff
+
+save_pop_unit_as_bp_3527 f 500 bipolar 3527 0 0 diff
+
+save_pop_unit_as_bp_3354 f 500 bipolar 3354 0 0 diff
+
+save_pop_unit_as_bp_3836 f 500 bipolar 3836 0 0 diff
+
+save_pop_unit_as_bp_3615 f 500 bipolar 3615 0 0 diff
+
+save_pop_unit_as_bp_2844 f 500 bipolar 2844 0 0 diff
+
+save_pop_unit_as_bp_3826 f 500 bipolar 3826 0 0 diff
+
+save_pop_unit_as_bp_3230 f 500 bipolar 3230 0 0 diff
+
+save_pop_unit_as_bp_3380 f 500 bipolar 3380 0 0 diff
+
+save_pop_unit_as_bp_3907 f 500 bipolar 3907 0 0 diff
+
+save_pop_unit_as_bp_3896 f 500 bipolar 3896 0 0 diff
+
+save_pop_unit_as_bp_2596 f 500 bipolar 2596 0 0 diff
+
+save_pop_unit_as_bp_3131 f 500 bipolar 3131 0 0 diff
+
+save_pop_unit_as_bp_2898 f 500 bipolar 2898 0 0 diff
+
+save_pop_unit_as_bp_2685 f 500 bipolar 2685 0 0 diff
+
+save_pop_unit_as_bp_2460 f 500 bipolar 2460 0 0 diff
+
+save_pop_unit_as_bp_3753 f 500 bipolar 3753 0 0 diff
+
+save_pop_unit_as_bp_3293 f 500 bipolar 3293 0 0 diff
+
+save_pop_unit_as_bp_3691 f 500 bipolar 3691 0 0 diff
+
+save_pop_unit_as_bp_2828 f 500 bipolar 2828 0 0 diff
+
+save_pop_unit_as_bp_3368 f 500 bipolar 3368 0 0 diff
+
+save_pop_unit_as_bp_2393 f 500 bipolar 2393 0 0 diff
+
+save_pop_unit_as_bp_3053 f 500 bipolar 3053 0 0 diff
+
+save_pop_unit_as_bp_2524 f 500 bipolar 2524 0 0 diff
+
+save_pop_unit_as_bp_2462 f 500 bipolar 2462 0 0 diff
+
+save_pop_unit_as_bp_2750 f 500 bipolar 2750 0 0 diff
+
+save_pop_unit_as_bp_2773 f 500 bipolar 2773 0 0 diff
+
+save_pop_unit_as_bp_3906 f 500 bipolar 3906 0 0 diff
+
+save_pop_unit_as_bp_3761 f 500 bipolar 3761 0 0 diff
+
+save_pop_unit_as_bp_2599 f 500 bipolar 2599 0 0 diff
+
+save_pop_unit_as_bp_3835 f 500 bipolar 3835 0 0 diff
+
+save_pop_unit_as_bp_2700 f 500 bipolar 2700 0 0 diff
+
+save_pop_unit_as_bp_2523 f 500 bipolar 2523 0 0 diff
+
+save_pop_unit_as_bp_3144 f 500 bipolar 3144 0 0 diff
+
+save_pop_unit_as_bp_2446 f 500 bipolar 2446 0 0 diff
+
+save_pop_unit_as_bp_3449 f 500 bipolar 3449 0 0 diff
+
+save_pop_unit_as_bp_2994 f 500 bipolar 2994 0 0 diff
+
+save_pop_unit_as_bp_3464 f 500 bipolar 3464 0 0 diff
+
+save_pop_unit_as_bp_2381 f 500 bipolar 2381 0 0 diff
+
+save_pop_unit_as_bp_3920 f 500 bipolar 3920 0 0 diff
+
+save_pop_unit_as_bp_2379 f 500 bipolar 2379 0 0 diff
+
+save_pop_unit_as_bp_2380 f 500 bipolar 2380 0 0 diff
+
+save_pop_unit_as_bp_2392 f 500 bipolar 2392 0 0 diff
+
+save_pop_unit_as_bp_3608 f 500 bipolar 3608 0 0 diff
+
+save_pop_unit_as_bp_2612 f 500 bipolar 2612 0 0 diff
+
+save_pop_unit_as_bp_2909 f 500 bipolar 2909 0 0 diff
+
+save_pop_unit_as_bp_2382 f 500 bipolar 2382 0 0 diff
+
+save_pop_unit_as_bp_3899 f 500 bipolar 3899 0 0 diff
+
+save_pop_unit_as_bp_2617 f 500 bipolar 2617 0 0 diff
+
+save_pop_unit_as_bp_3829 f 500 bipolar 3829 0 0 diff
+
+save_pop_unit_as_bp_3067 f 500 bipolar 3067 0 0 diff
+
+save_pop_unit_as_bp_3303 f 500 bipolar 3303 0 0 diff
+
+save_pop_unit_as_bp_3522 f 500 bipolar 3522 0 0 diff
+
+save_pop_unit_as_bp_3602 f 500 bipolar 3602 0 0 diff
+
+save_pop_unit_as_bp_3921 f 500 bipolar 3921 0 0 diff
+
+save_pop_unit_as_bp_2913 f 500 bipolar 2913 0 0 diff
+
+save_pop_unit_as_bp_3973 f 500 bipolar 3973 0 0 diff
+
+save_pop_unit_as_bp_3156 f 500 bipolar 3156 0 0 diff
+
+save_pop_unit_as_bp_3535 f 500 bipolar 3535 0 0 diff
+
+save_pop_unit_as_bp_3977 f 500 bipolar 3977 0 0 diff
+
+save_pop_unit_as_bp_3911 f 500 bipolar 3911 0 0 diff
+
+save_pop_unit_as_bp_3741 f 500 bipolar 3741 0 0 diff
+
+save_pop_unit_as_bp_3224 f 500 bipolar 3224 0 0 diff
+
+save_pop_unit_as_bp_2540 f 500 bipolar 2540 0 0 diff
+
+save_pop_unit_as_bp_2391 f 500 bipolar 2391 0 0 diff
+
+save_pop_unit_as_bp_2768 f 500 bipolar 2768 0 0 diff
+
+save_pop_unit_as_bp_2671 f 500 bipolar 2671 0 0 diff
+
+save_pop_unit_as_bp_2396 f 500 bipolar 2396 0 0 diff
+
+save_pop_unit_as_bp_3745 f 500 bipolar 3745 0 0 diff
+
+save_pop_unit_as_bp_3842 f 500 bipolar 3842 0 0 diff
+
+save_pop_unit_as_bp_3922 f 500 bipolar 3922 0 0 diff
+
+save_pop_unit_as_bp_3381 f 500 bipolar 3381 0 0 diff
+
+save_pop_unit_as_bp_3985 f 500 bipolar 3985 0 0 diff
+
+save_pop_unit_as_bp_3820 f 500 bipolar 3820 0 0 diff
+
+save_pop_unit_as_bp_2525 f 500 bipolar 2525 0 0 diff
+
+save_pop_unit_as_bp_2468 f 500 bipolar 2468 0 0 diff
+
+save_pop_unit_as_bp_2546 f 500 bipolar 2546 0 0 diff
+
+save_pop_unit_as_bp_2821 f 500 bipolar 2821 0 0 diff
+
+save_pop_unit_as_bp_2458 f 500 bipolar 2458 0 0 diff
+
+save_pop_unit_as_bp_3360 f 500 bipolar 3360 0 0 diff
+
+save_pop_unit_as_bp_3677 f 500 bipolar 3677 0 0 diff
+
+save_pop_unit_as_bp_3675 f 500 bipolar 3675 0 0 diff
+
+save_pop_unit_as_bp_3220 f 500 bipolar 3220 0 0 diff
+
+save_pop_unit_as_bp_2449 f 500 bipolar 2449 0 0 diff
+
+save_pop_unit_as_bp_3764 f 500 bipolar 3764 0 0 diff
+
+save_pop_unit_as_bp_3433 f 500 bipolar 3433 0 0 diff
+
+save_pop_unit_as_bp_2977 f 500 bipolar 2977 0 0 diff
+
+save_pop_unit_as_bp_3912 f 500 bipolar 3912 0 0 diff
+
+save_pop_unit_as_bp_2997 f 500 bipolar 2997 0 0 diff
+
+save_pop_unit_as_bp_2692 f 500 bipolar 2692 0 0 diff
+
+save_pop_unit_as_bp_3124 f 500 bipolar 3124 0 0 diff
+
+save_pop_unit_as_bp_2675 f 500 bipolar 2675 0 0 diff
+
+save_pop_unit_as_bp_3833 f 500 bipolar 3833 0 0 diff
+
+save_pop_unit_as_bp_3458 f 500 bipolar 3458 0 0 diff
+
+save_pop_unit_as_bp_3991 f 500 bipolar 3991 0 0 diff
+
+save_pop_unit_as_bp_2318 f 500 bipolar 2318 0 0 diff
+
+save_pop_unit_as_bp_2311 f 500 bipolar 2311 0 0 diff
+
+save_pop_unit_as_bp_2304 f 500 bipolar 2304 0 0 diff
+
+save_pop_unit_as_bp_2394 f 500 bipolar 2394 0 0 diff
+
+save_pop_unit_as_bp_3984 f 500 bipolar 3984 0 0 diff
+
+save_pop_unit_as_bp_3905 f 500 bipolar 3905 0 0 diff
+
+save_pop_unit_as_bp_3994 f 500 bipolar 3994 0 0 diff
 
 save_pop_unit_as_bp_2305 f 500 bipolar 2305 0 0 diff
+
+save_pop_unit_as_bp_3143 f 500 bipolar 3143 0 0 diff
+
+save_pop_unit_as_bp_2300 f 500 bipolar 2300 0 0 diff
+
+save_pop_unit_as_bp_2825 f 500 bipolar 2825 0 0 diff
+
+save_pop_unit_as_bp_2847 f 500 bipolar 2847 0 0 diff
+
+save_pop_unit_as_bp_2319 f 500 bipolar 2319 0 0 diff
+
+save_pop_unit_as_bp_3536 f 500 bipolar 3536 0 0 diff
+
+save_pop_unit_as_bp_3995 f 500 bipolar 3995 0 0 diff
+
+save_pop_unit_as_bp_3613 f 500 bipolar 3613 0 0 diff
+
+save_pop_unit_as_bp_3519 f 500 bipolar 3519 0 0 diff
+
+save_pop_unit_as_bp_2378 f 500 bipolar 2378 0 0 diff
+
+save_pop_unit_as_bp_3974 f 500 bipolar 3974 0 0 diff
+
+save_pop_unit_as_bp_3302 f 500 bipolar 3302 0 0 diff
+
+save_pop_unit_as_bp_2465 f 500 bipolar 2465 0 0 diff
+
+save_pop_unit_as_bp_2681 f 500 bipolar 2681 0 0 diff
+
+save_pop_unit_as_bp_3592 f 500 bipolar 3592 0 0 diff
+
+save_pop_unit_as_bp_2980 f 500 bipolar 2980 0 0 diff
 

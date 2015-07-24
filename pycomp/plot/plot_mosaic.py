@@ -3,9 +3,10 @@ import numpy as np
 import matplotlib.pylab as plt
 
 from base import plot as pf
+from base import files as f
 
 
-def mosaic(FILE='mosaics/model.mosaic', block_plot=True, invert=False, 
+def mosaic(model, FILE='mosaics/model.mosaic', block_plot=True, invert=False, 
            return_ax=False):
 
     mosaic = np.genfromtxt(FILE)
@@ -31,7 +32,8 @@ def mosaic(FILE='mosaics/model.mosaic', block_plot=True, invert=False,
         pf.invert(ax, fig, bk_color='k')
 
     if not return_ax:
-        fig.savefig('results/img/mosaic.svg', edgecolor='none')
+        f.make_dir('results/img/' + model)
+        fig.savefig('results/img/' + model + '/mosaic.svg', edgecolor='none')
         plt.show(block=block_plot)
 
     else:

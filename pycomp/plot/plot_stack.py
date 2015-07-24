@@ -3,11 +3,13 @@ import numpy as np
 import matplotlib.pylab as plt
 
 from base import plot as pf
+from base import files as f
+
 import analysis as an
 import util as u
 
 
-def stack(d, block_plots=True):
+def stack(d, model, block_plots=True):
     '''
     TO DO:
     * Add rgc option
@@ -70,15 +72,17 @@ def stack(d, block_plots=True):
         for i in ax:
             figs[t]['ax'][i].set_ylim(ylim[i])
     
+        f.make_dir('results/img/' + model)
         for i in ax:
             #pf.invert(ax[i], fig, bk_color='k')
-            figs[t]['f'].savefig('results/img/stack_t' + str(t) + '.svg',
+            figs[t]['f'].savefig('results/img/' + model + 
+                                 '/stack_t' + str(t) + '.svg',
                                  edgecolor='none')
 
     plt.show(block=block_plots)
 
 
-def horiz_time_const(d, block_plots=True):
+def horiz_time_const(d, model, block_plots=True):
     '''
     TO DO:
     '''
@@ -108,13 +112,14 @@ def horiz_time_const(d, block_plots=True):
     ax.set_xlabel('time (ms)')
     ax.legend(fontsize=22, loc='lower right')
 
-    fig.savefig('results/img/h_time_const' + str(t) + '.svg', 
+    f.make_dir('results/img/' + model)
+    fig.savefig('results/img/' + model + '/h_time_const' + str(t) + '.svg', 
                 edgecolor='none')
 
     plt.show(block=block_plots)
 
 
-def tuning_curve(d, cell_type='h1', tuning_type='sf', block_plots=True):
+def tuning_curve(d, model, cell_type='h1', tuning_type='sf', block_plots=True):
     '''
     '''
     # Get this with conversion call
@@ -177,7 +182,9 @@ def tuning_curve(d, cell_type='h1', tuning_type='sf', block_plots=True):
         ax2.set_xlabel('cycles / $\mu$m')
         ax2.set_xscale('log')
 
-    fig.savefig('results/img/' + cell_type + '_' + tuning_type + '_tuning.svg',
+    f.make_dir('results/img/' + model)
+    fig.savefig('results/img/' + model + '/' + cell_type + '_' + 
+                tuning_type + '_tuning.svg',
                 edgecolor='none')
     plt.show(block=block_plots)
 
