@@ -138,7 +138,7 @@ def s_cone_hist(model, mosaic_file, species, single_cone=True,
     f.make_dir('results/img/' + model)
     fig1.savefig('results/img/' + model + '/s_dist_scatter.svg', 
                  edgecolor='none')
-    fig2.savefig('results/img/' + model + 's_dist_hist.svg', 
+    fig2.savefig('results/img/' + model + '/s_dist_hist.svg', 
                  edgecolor='none')
     
     plt.show(block=block_plots)

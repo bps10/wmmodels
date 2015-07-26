@@ -37,13 +37,13 @@ def cone_inputs(d, model, mosaic_file, cell_type='bp', block_plots=True,
     # get results
     celllist = get_cell_list(d)
 
-    # get response -- find way to pass cone contrast properly
+    # get response
     r = an.response(d, cell_type, 'cone_inputs', 
                     cone_contrast=cone_contrast)
 
     # get mosaic plot
-    mos, mos_fig = mosaic(FILE=mosaic_file, return_ax=True)
-    mos2, mos_fig2 = mosaic(FILE=mosaic_file, return_ax=True)
+    mos, mos_fig = mosaic(model, FILE=mosaic_file, return_ax=True)
+    mos2, mos_fig2 = mosaic(model, FILE=mosaic_file, return_ax=True)
 
     cnaming = np.genfromtxt('mosaics/' + model + '_white_bkgd.csv', 
                             delimiter=',', skip_header=1)
@@ -116,7 +116,11 @@ def cone_inputs(d, model, mosaic_file, cell_type='bp', block_plots=True,
     colors = ['w', 'r', 'g', 'b', 'y']
     for i in range(len(output[:, 1])):
         maxind = output[i, 5:].argmax()
-        ax1.plot(output[i, 3], output[i, 2], 'o' + colors[maxind],
+        symbol = 'o'
+        if output[i, 5 + maxind] < 0.65:
+            symbol = '^'
+
+        ax1.plot(output[i, 3], output[i, 2], symbol + colors[maxind],
                  markeredgewidth=2, markeredgecolor='k', alpha=0.5)
 
     # set come fig params

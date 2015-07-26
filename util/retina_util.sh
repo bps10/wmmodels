@@ -260,17 +260,6 @@ function save_defaults {
 }
 
 
-function dump_results {
-    # dump output if appropriate (dump list) or force flag set (-f)
-    if [[ $(exists_in ${OPTS} "${dump[*]}") == true  || $1 == -f ]]
-    then
-	~/Projects/wmbuild/bin/ndutil nd2text \
-	    results/nd_files/zz.nd \
-	    results/txt_files/zz.txt 
-    fi
-}
-
-
 function change_sys_matrix() {
     sys=$(python pycomp/cone_iso.py sys stockman ${FUND})
     perl -p -e "s/rgb_here/$sys/g" models/${MODEL}/${MOO_FILE}.moo > \
@@ -336,10 +325,11 @@ function print_info {
     fi
 }
 
+
 function delete_old_file {
     if [ -e "results/pl_files/$OUT_FILE" ] 
     then
-	rm results/pl_files/${OUT_FILE}
+	rm results/pl_files/${MODEL}/${OUT_FILE}
 	echo "rm results/pl_files/rm $OUT_FILE"
     fi	
 }
@@ -348,13 +338,14 @@ function delete_old_file {
 function run_s_dist_analysis {
 
     # make dir for data if doesn't exist already
-    if [ ! -d "results/nd_files/s_dist" ]
+    if [ ! -d "results/nd_files/$MODEL/s_dist" ]
     then
-	mkdir "results/nd_files/s_dist"
+	mkdir "results/nd_files/$MODEL/s_dist"
     fi
     
     # cp nn_results.txt into s_dist folder
-    cp results/txt_files/nn_results.txt results/nd_files/s_dist/nn_results.txt
+    cp results/txt_files/nn_results.txt \
+	results/nd_files/${MODEL}/s_dist/nn_results.txt
     
     # get random numbers
     rnums=$(python pycomp/util/gen_rand.py)
@@ -380,7 +371,7 @@ function run_s_dist_analysis {
 	run_wm ${MODEL} ${STIM_FILE}
 
 	# rename dumped data, move into dir (make if doesn't exist)
-	mv "results/nd_files/zz.nd" "results/nd_files/s_dist/$H2ES.nd"
+	mv "results/nd_files/zz.nd" "results/nd_files/$MODEL/s_dist/$H2ES.nd"
 
 	# increase count
 	count=$(($count+1))
@@ -388,11 +379,12 @@ function run_s_dist_analysis {
     done
 
     # save parameters
-    print_info > "results/nd_files/s_dist/params.txt"
+    print_info > "results/nd_files/$MODEL/s_dist/params.txt"
 
     # save defaults
     save_defaults
 }
+
 
 function run_wm {
 
@@ -418,6 +410,16 @@ function run_wm {
 	retina0/mesh_dump_cid ${MESH_DUMP_CID} \
 	retina0/stim_override_binary ${STIM_OVERRIDE_BINARY} \
     	gui_flag ${GUI}
+
+    if [[ $OPTS == "h2" || $OPTS == "h1" ]]
+    then
+	mkdir -p results/pl_files/${MODEL}
+	mv results/pl_files/${OPTS}.dist.pl \
+	    results/pl_files/${MODEL}/${OPTS}.dist.pl
+    else
+	mkdir -p results/nd_files/${MODEL}
+	mv results/nd_files/zz.nd results/nd_files/${MODEL}/zz.nd
+    fi
 
 }
 

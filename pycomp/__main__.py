@@ -32,13 +32,13 @@ def main():
 
     for arg in sys.argv:
         if arg in h1:
-            data['h1'] = np.genfromtxt('results/pl_files/h1.dist.pl',
-                                       skip_header=2)
+            data['h1'] = np.genfromtxt('results/pl_files/' + model + 
+                                       '/h1.dist.pl', skip_header=2)
             if 'horiz' not in plots:
                 plots.append('horiz')
         if arg in h2:
-            data['h2'] = np.genfromtxt('results/pl_files/h2.dist.pl',
-                                       skip_header=2)
+            data['h2'] = np.genfromtxt('results/pl_files/' + model + 
+                                       '/h2.dist.pl', skip_header=2)
             if 'horiz' not in plots:
                 plots.append('horiz')
 
@@ -74,7 +74,7 @@ def main():
 
     if ('stack' in plots or 'h_time' in plots or 'knn' in plots or
         'tuning' in plots or 'c_inputs' in plots):
-        d = nd_read('results/nd_files/zz.nd')
+        d = nd_read('results/nd_files/' + model + '/zz.nd')
 
     # decide what to plot
     if 'mosaic' in sys.argv:
