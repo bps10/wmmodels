@@ -22,3 +22,4 @@ results/nd_files/*
 results/*
 test.sh
 *.bak
+response/knn_resp.rsp

@@ -74,7 +74,8 @@ def main():
 
     if ('stack' in plots or 'h_time' in plots or 'knn' in plots or
         'tuning' in plots or 'c_inputs' in plots):
-        d = nd_read('results/nd_files/' + model + '/zz.nd')
+        # read in the proper nd_file: model and analysis specific
+        d = nd_read('results/nd_files/' + model + '/' + sys.argv[2] + '.nd')
 
     # decide what to plot
     if 'mosaic' in sys.argv:

@@ -123,6 +123,9 @@ function change_parameters {
     then
 	# has to be bp cells so that looks at output of h1, h2 vs cone
 	knn_resp ${SCONE} 400 bp
+	mkdir -p results/txt_files/$MODEL
+	mv results/txt_files/nn_results.txt \
+	    results/txt_files/$MODEL/nn_results.txt
         # sine wave would require change to analysis.py?
 	stim_gen coneiso ${SHAPE} #full_field
 	STIM_FILE=cone_iso_step
@@ -418,7 +421,7 @@ function run_wm {
 	    results/pl_files/${MODEL}/${OPTS}.dist.pl
     else
 	mkdir -p results/nd_files/${MODEL}
-	mv results/nd_files/zz.nd results/nd_files/${MODEL}/zz.nd
+	mv results/nd_files/zz.nd results/nd_files/${MODEL}/${OPTS}.nd
     fi
 
 }
