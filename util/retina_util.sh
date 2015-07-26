@@ -419,6 +419,14 @@ function run_wm {
 	mkdir -p results/pl_files/${MODEL}
 	mv results/pl_files/${OPTS}.dist.pl \
 	    results/pl_files/${MODEL}/${OPTS}.dist.pl
+    elif [[ $OPTS == "h_sf" || $OPTS == "bp_sf" || $OPTS == "rgc_sf" ]]
+    then
+	mkdir -p results/nd_files/${MODEL}
+	mv results/nd_files/zz.nd results/nd_files/${MODEL}/sf.nd
+    elif [[ $OPTS == "h_tf" || $OPTS == "bp_tf" || $OPTS == "rgc_tf" ]]
+    then
+	mkdir -p results/nd_files/${MODEL}
+	mv results/nd_files/zz.nd results/nd_files/${MODEL}/sf.nd
     else
 	mkdir -p results/nd_files/${MODEL}
 	mv results/nd_files/zz.nd results/nd_files/${MODEL}/${OPTS}.nd
@@ -437,7 +445,7 @@ function run_mosaic {
 	retina0/mesh_dump_type mosaic_coord \
 	retina0/mesh_dump_file mosaics/model.mosaic
     
-    python pycomp $BLOCK_PLOTS mosaic
+    python pycomp $MODEL $BLOCK_PLOTS mosaic
 
 }
 

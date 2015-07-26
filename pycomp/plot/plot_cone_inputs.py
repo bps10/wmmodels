@@ -49,10 +49,12 @@ def cone_inputs(d, model, mosaic_file, cell_type='bp', block_plots=True,
     cnaming = np.genfromtxt('mosaics/' + model + '_white_bkgd.csv', 
                             delimiter=',', skip_header=1)
     newold = np.genfromtxt('mosaics/' + model + '_old_new.csv')
+    mosaiclist = np.genfromtxt('mosaics/' + model + '_mosaic.txt')
 
     # get the nearest neighbors to the specified cone
     to_newold = spat.KDTree(newold[:, 2:])
     to_cnaming = spat.KDTree(cnaming[:, :2])
+    to_simmos = spat.KDTree(mosaiclist[:, :2])
     count = 0
 
     for c in r: # for each cell type in results
@@ -80,16 +82,19 @@ def cone_inputs(d, model, mosaic_file, cell_type='bp', block_plots=True,
 
             # associate cones in model and AO
             oldcoord = to_newold.query(loc, 1)
+            moscoord = to_simmos.query(loc, 1)
             if oldcoord[0] < 0.1:
                 newcoord = newold[oldcoord[1], :2]
                 cname_ind = to_cnaming.query(newcoord, 1)
                 if cname_ind[0] < 0.1:
                     cnames = cnaming[cname_ind[1], :]
-
-                    output[count, :2] = loc
-                    output[count, 2:5] = cone_weights
                     total = cnames[6:].sum()
                     if total > 8: # make sure more than 8 seen trials
+                        output[count, :2] = loc
+                        print loc, mosaiclist[moscoord[1]][:2].round(2)
+                        print moscoord[1]
+
+                        output[count, 2:5] = cone_weights
                         output[count, 5:] = cnames[6:] # / total
                         count += 1
 
