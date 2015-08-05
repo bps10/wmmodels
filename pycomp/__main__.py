@@ -78,6 +78,8 @@ def main():
         tmp = sys.argv[2].split('_')[-1]
         if tmp in ['sf', 'tf']:
             opt = tmp
+        elif tmp in ['verbose']:
+            opt = 'h_time'
         else:
             opt = sys.argv[2]
         d = nd_read('results/nd_files/' + model + '/' + opt + '.nd')

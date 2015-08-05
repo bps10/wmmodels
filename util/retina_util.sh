@@ -76,8 +76,8 @@ function change_parameters {
 
     elif [ $MODEL == "BPS" ]
     then
-	DUMP_CID=3134 # L cone to left of center S cone
-	SCONE=3145
+	DUMP_CID=3153 # L cone to left of bottom left 5 S cone patch
+	SCONE=2914 # the dark cone
 	MOSAIC_FILE=BPS.mosaic
     fi
 
@@ -414,22 +414,25 @@ function run_wm {
 	retina0/stim_override_binary ${STIM_OVERRIDE_BINARY} \
     	gui_flag ${GUI}
 
-    if [[ $OPTS == "h2" || $OPTS == "h1" ]]
+    if [ $GUI == 0 ]
     then
-	mkdir -p results/pl_files/${MODEL}
-	mv results/pl_files/${OPTS}.dist.pl \
-	    results/pl_files/${MODEL}/${OPTS}.dist.pl
-    elif [[ $OPTS == "h_sf" || $OPTS == "bp_sf" || $OPTS == "rgc_sf" ]]
-    then
-	mkdir -p results/nd_files/${MODEL}
-	mv results/nd_files/zz.nd results/nd_files/${MODEL}/sf.nd
-    elif [[ $OPTS == "h_tf" || $OPTS == "bp_tf" || $OPTS == "rgc_tf" ]]
-    then
-	mkdir -p results/nd_files/${MODEL}
-	mv results/nd_files/zz.nd results/nd_files/${MODEL}/sf.nd
-    else
-	mkdir -p results/nd_files/${MODEL}
-	mv results/nd_files/zz.nd results/nd_files/${MODEL}/${OPTS}.nd
+	if [[ $OPTS == "h2" || $OPTS == "h1" ]]
+	then
+	    mkdir -p results/pl_files/${MODEL}
+	    mv results/pl_files/${OPTS}.dist.pl \
+		results/pl_files/${MODEL}/${OPTS}.dist.pl
+	elif [[ $OPTS == "h_sf" || $OPTS == "bp_sf" || $OPTS == "rgc_sf" ]]
+	then
+	    mkdir -p results/nd_files/${MODEL}
+	    mv results/nd_files/zz.nd results/nd_files/${MODEL}/sf.nd
+	elif [[ $OPTS == "h_tf" || $OPTS == "bp_tf" || $OPTS == "rgc_tf" ]]
+	then
+	    mkdir -p results/nd_files/${MODEL}
+	    mv results/nd_files/zz.nd results/nd_files/${MODEL}/sf.nd
+	else
+	    mkdir -p results/nd_files/${MODEL}
+	    mv results/nd_files/zz.nd results/nd_files/${MODEL}/${OPTS}.nd
+	fi
     fi
 
 }
