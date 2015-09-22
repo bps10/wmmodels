@@ -1,6 +1,6 @@
  
 MODEL=macaque
 FUND=true
-SHAPE=grating
+SHAPE=uniform
 RANDOM_S=false
 TN=512

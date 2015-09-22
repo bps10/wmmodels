@@ -47,7 +47,7 @@ function exists_in {
 
 
 function change_parameters {
-
+    N_CONES=200 # number of cones used in cone_inputs
     REGULAR_S=4
     # Deal with model specific parameters
     # put these into default param files for each model
@@ -56,6 +56,7 @@ function change_parameters {
 	MOSAIC_FILE=nonrandom_model.mosaic
 	DUMP_CID=3240 
 	SCONE=3690 # (non-random mosaic)
+
 	if [ $RANDOM_S == "true" ] 
 	then
 	    SCONE=3839 # (random mosaic)
@@ -73,6 +74,7 @@ function change_parameters {
 	DUMP_CID=3039 # L cone to left of center S cone
 	SCONE=3049
 	MOSAIC_FILE=WT.mosaic
+	N_CONES=600 # number of cones used in cone_inputs
 
     elif [ $MODEL == "BPS" ]
     then
@@ -80,6 +82,7 @@ function change_parameters {
 	DUMP_CID=3990 # L cone to upper right of dark cone
 	SCONE=2914 # the dark cone
 	MOSAIC_FILE=BPS.mosaic
+	N_CONES=600 # number of cones used in cone_inputs
     fi
 
     # Default settings
@@ -123,7 +126,7 @@ function change_parameters {
     elif [ $OPTS == "cone_inputs" ]
     then
 	# has to be bp cells so that looks at output of h1, h2 vs cone
-	knn_resp ${SCONE} 600 bp
+	knn_resp ${SCONE} $N_CONES bp
 	mkdir -p results/txt_files/$MODEL
 	mv results/txt_files/nn_results.txt \
 	    results/txt_files/$MODEL/nn_results.txt
@@ -430,7 +433,7 @@ function run_wm {
 	elif [[ $OPTS == "h_tf" || $OPTS == "bp_tf" || $OPTS == "rgc_tf" ]]
 	then
 	    mkdir -p results/nd_files/${MODEL}
-	    mv results/nd_files/zz.nd results/nd_files/${MODEL}/sf.nd
+	    mv results/nd_files/zz.nd results/nd_files/${MODEL}/tf.nd
 	else
 	    mkdir -p results/nd_files/${MODEL}
 	    mv results/nd_files/zz.nd results/nd_files/${MODEL}/${OPTS}.nd

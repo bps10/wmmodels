@@ -121,7 +121,7 @@ def cone_inputs(d, model, mosaic_file, cell_type='bp', block_plots=True,
     mos_fig2.savefig('results/img/' + model + '/cone_inputs_mosaic2.svg', 
                      edgecolor='none')
 
-    plt.show()
+    plt.show(block=block_plots)
 
 
 def get_color_names(output, count, to_newold, to_simmos, to_cnaming, 
