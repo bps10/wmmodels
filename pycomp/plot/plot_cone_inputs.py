@@ -51,16 +51,18 @@ def cone_inputs(d, model, mosaic_file, cell_type='bp', block_plots=True,
     mos, mos_fig = mosaic(model, FILE=mosaic_file, return_ax=True)
     mos2, mos_fig2 = mosaic(model, FILE=mosaic_file, return_ax=True)
 
-    cnaming = np.genfromtxt('mosaics/' + model + '_white_bkgd.csv', 
-                            delimiter=',', skip_header=1)
-    newold = np.genfromtxt('mosaics/' + model + '_old_new.csv')
-    mosaiclist = np.genfromtxt('mosaics/' + model + '_mosaic.txt')
+    if model.lower() in ['wt', 'bps']:
+        cnaming = np.genfromtxt('mosaics/' + model + '_white_bkgd.csv', 
+                                delimiter=',', skip_header=1)
+        newold = np.genfromtxt('mosaics/' + model + '_old_new.csv')
+        mosaiclist = np.genfromtxt('mosaics/' + model + '_mosaic.txt')
 
-    # get the nearest neighbors to the specified cone
-    to_newold = spat.KDTree(newold[:, 2:])
-    to_cnaming = spat.KDTree(cnaming[:, :2])
-    to_simmos = spat.KDTree(mosaiclist[:, :2])
-    count = 0
+        # get the nearest neighbors to the specified cone
+        to_newold = spat.KDTree(newold[:, 2:])
+        to_cnaming = spat.KDTree(cnaming[:, :2])
+        to_simmos = spat.KDTree(mosaiclist[:, :2])
+        count = 0
+
     for c in r: # for each cell type in results
         output = np.zeros((len(r[c][:, 0]), 37))
         for cone in range(0, len(r[c][:, 0])):
@@ -84,41 +86,21 @@ def cone_inputs(d, model, mosaic_file, cell_type='bp', block_plots=True,
             mos2.plot(loc[0], loc[1], 'o', markersize=14, fillstyle='full',
                       color=np.abs(cone_weights))
 
-            # associate cones in model and AO
-            oldcoord = to_newold.query(loc, 1)
-            moscoord = to_simmos.query(loc, 11)
-            if oldcoord[0] < 0.01:
-                cone_type = mosaiclist[oldcoord[1], 2]
-                newcoord = newold[oldcoord[1], :2]
-                cname_ind = to_cnaming.query(newcoord, 1)
-                if cname_ind[0] < 0.01:
-                    cnames = cnaming[cname_ind[1], :]
-                    total = cnames[6:].sum()
-                    # make sure more than 8 seen trials and cone is not S
-                    if total > 8 and cone_type > 0: 
-                        output[count, :2] = loc
-                        output[count, 2:5] = cone_weights
-                        output[count, 5:10] = cnames[6:] # / total
-
-                        # now need to associate mosaiclist w cone inputs
-                        j = 10
-                        for i in range(1, 9): # 10 nearest neighbors
-                            ind1 = np.where(celldat[:, 0] == moscoord[1][i])[0]
-                            #ind1 = np.random.randint(0, 400, 1)
-                            neighbor = r[c][ind1]
-                            output[count, j:j + 3] = neighbor
-                            j += 3
-                        count += 1
-
+            if model.lower() in ['wt', 'bps']:
+                output, count = get_color_names(output, count,
+                                                to_newold, to_simmos, to_cnaming, 
+                                                mosaiclist, newold, cnaming, loc, 
+                                                cone_weights, celldat, r, c)
+                        
     # remove zeros
-    output = output[~np.all(output == 0, axis=1)]
-    print count 
-
-    # save output
-    np.savetxt('results/txt_files/' + model + '/cone_analysis.csv', output)
-
-    # if subject mosaic, plot color name plot
     if model.lower() in ['wt', 'bps']:
+        output = output[~np.all(output == 0, axis=1)]
+        print count 
+                
+        # save output
+        np.savetxt('results/txt_files/' + model + '/cone_analysis.csv', output)
+
+        # if subject mosaic, plot color name plot
         plot_color_names(model, output)
 
     # set come fig params
@@ -140,6 +122,39 @@ def cone_inputs(d, model, mosaic_file, cell_type='bp', block_plots=True,
                      edgecolor='none')
 
     plt.show()
+
+
+def get_color_names(output, count, to_newold, to_simmos, to_cnaming, 
+                    mosaiclist, newold, cnaming, loc, cone_weights, 
+                    celldat, r, c):
+
+    # associate cones in model and AO
+    oldcoord = to_newold.query(loc, 1)
+    moscoord = to_simmos.query(loc, 11)
+    if oldcoord[0] < 0.01:
+        cone_type = mosaiclist[oldcoord[1], 2]
+        newcoord = newold[oldcoord[1], :2]
+        cname_ind = to_cnaming.query(newcoord, 1)
+        if cname_ind[0] < 0.01:
+            cnames = cnaming[cname_ind[1], :]
+            total = cnames[6:].sum()
+
+            # make sure more than 8 seen trials and cone is not S
+            if total > 8 and cone_type > 0: 
+                output[count, :2] = loc
+                output[count, 2:5] = cone_weights
+                output[count, 5:10] = cnames[6:] # / total
+                
+                # now need to associate mosaiclist w cone inputs
+                j = 10
+                for i in range(1, 9): # 10 nearest neighbors
+                    ind1 = np.where(celldat[:, 0] == moscoord[1][i])[0]
+                            #ind1 = np.random.randint(0, 400, 1)
+                    neighbor = r[c][ind1]
+                    output[count, j:j + 3] = neighbor
+                    j += 3
+                count += 1
+    return output, count
 
 
 def plot_color_names(model, output):
@@ -184,10 +199,10 @@ def plot_color_names(model, output):
                                 19, 20, 21, 22, 23, 24, 25, 26, 27]] 
     else:
         # organize in opponent fashion
-        N = 5 # center cone and nearest x
-        predictors = np.zeros((len(output[:, 0]), N))
+        N = 4 # center cone and nearest x
+        predictors = np.zeros((len(output[:, 0]), N + 1))
         _inds = [2, 10, 13, 16, 19, 22, 25, 28, 31]
-        for i in range(N):
+        for i in range(N + 1):
             predictors[:, i] = ((output[:, _inds[i]] + output[:, _inds[i] + 2]) -
                                 output[:, _inds[i] + 1])
 
@@ -207,8 +222,8 @@ def plot_color_names(model, output):
     if ridge_reg:
         clfs.append(Ridge())
 
-    ax, fig2 = pf.get_axes(1, 1, nticks=[3, 3], return_fig=True)
-    ax = ax[0]
+    ax2, fig2 = pf.get_axes(1, 1, nticks=[3, 3], return_fig=True)
+    ax2 = ax2[0]
     Ntrials = 100
     mae = np.zeros((Ntrials, 1))
     for i in range(Ntrials):
@@ -220,21 +235,33 @@ def plot_color_names(model, output):
             clf.fit(x_train, y_train) 
             mae[i] = mean_absolute_error(y_test, clf.predict(x_test))    
 
-            ax.plot(y_test, clf.predict(x_test), 'ko', alpha=0.5)
+            ax2.plot(y_test, clf.predict(x_test), 'ko', alpha=0.5)
 
     print '\n\n'
     print mae.mean(), mae.std()
 
-    ax.set_xlabel('observed')
-    ax.set_ylabel('predicted')
-    ax.set_aspect('equal')
+    ax2.set_xlabel('observed')
+    ax2.set_ylabel('predicted')
+    ax2.set_aspect('equal')
 
     if y_train.min() < 0:
-        plt.plot([-1, 1], [-1, 1], 'k-')
-        ax.set_ylim([-1, 1])
-        ax.set_xlim([-1, 1])
+        ax2.plot([-1, 1], [-1, 1], 'k-')
+        ax2.set_ylim([-1, 1])
+        ax2.set_xlim([-1, 1])
     else:
-        plt.plot([0, 1], [0, 1], 'k-')
+        ax2.plot([0, 1], [0, 1], 'k-')
+
+    ax3, fig3 = pf.get_axes(1, 1, nticks=[3, 3], return_fig=True)
+    inds = output[:, 4] < 0.4
+    ax3 = ax3[0]
+    ax3.plot(output[inds, 4], np.abs(rg[inds]), 'ko')
+    '''X = sm.add_constant(output[inds, 4], prepend=True)
+    OLSmodel = sm.OLS(rg[inds], X) #GLM(rg, X)
+    res = OLSmodel.fit()
+    #print res.rsquared
+    print '\n\n\n'
+    print (res.summary())'''
+
 
     fig1.savefig('results/img/' + model + '/cone_inputs_w_naming.svg',
                 edgecolor='none')

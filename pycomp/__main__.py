@@ -15,7 +15,7 @@ def main():
         SPECIES = 'macaque'
 
     mosaic_file = 'mosaics/' + sys.argv[1]
-    model = mosaic_file.split('/')[1].split('.')[0]
+    model = sys.argv[3] #mosaic_file.split('/')[1].split('.')[0]
 
     plots = []
     data = {}

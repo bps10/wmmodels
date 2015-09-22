@@ -60,7 +60,8 @@ def s_cone_hist(model, mosaic_file, species, single_cone=True,
     '''
     deg_per_pix, mm_per_deg = conversion_factors(species)
 
-    celldat = np.genfromtxt('results/nd_files/s_dist/nn_results.txt')
+    celldat = np.genfromtxt('results/nd_files/' + model + 
+                            '/s_dist/nn_results.txt')
     cellIDs = celldat[:, 0]
     if not single_cone:
         dist2S =  nn.find_nearest_S(celldat[:, 2:4], mosaic_file)[0]
@@ -71,8 +72,9 @@ def s_cone_hist(model, mosaic_file, species, single_cone=True,
     dist2S *= deg_per_pix * 60
 
     # get all nd files in s_dist analysis dir
-    fnames = f.getAllFiles('./results/nd_files/s_dist', suffix='.nd',
-                          subdirectories=0)
+    fnames = f.getAllFiles('./results/nd_files/' + model + '/s_dist', 
+                           suffix='.nd', subdirectories=0)
+
     s = []
     lm = []
     for fname in fnames:

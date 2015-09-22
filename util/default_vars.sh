@@ -1,6 +1,6 @@
  
-MODEL=BPS
+MODEL=macaque
 FUND=true
-SHAPE=full_field
+SHAPE=grating
 RANDOM_S=false
 TN=512

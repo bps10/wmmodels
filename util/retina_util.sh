@@ -76,7 +76,8 @@ function change_parameters {
 
     elif [ $MODEL == "BPS" ]
     then
-	DUMP_CID=3153 # L cone to left of bottom left 5 S cone patch
+	#DUMP_CID=3153 # L cone to left of bottom left 5 S cone patch
+	DUMP_CID=3990 # L cone to upper right of dark cone
 	SCONE=2914 # the dark cone
 	MOSAIC_FILE=BPS.mosaic
     fi
@@ -122,7 +123,7 @@ function change_parameters {
     elif [ $OPTS == "cone_inputs" ]
     then
 	# has to be bp cells so that looks at output of h1, h2 vs cone
-	knn_resp ${SCONE} 400 bp
+	knn_resp ${SCONE} 600 bp
 	mkdir -p results/txt_files/$MODEL
 	mv results/txt_files/nn_results.txt \
 	    results/txt_files/$MODEL/nn_results.txt
@@ -374,7 +375,8 @@ function run_s_dist_analysis {
 	run_wm ${MODEL} ${STIM_FILE}
 
 	# rename dumped data, move into dir (make if doesn't exist)
-	mv "results/nd_files/zz.nd" "results/nd_files/$MODEL/s_dist/$H2ES.nd"
+	mv "results/nd_files/$MODEL/s_dist.nd" \
+	    "results/nd_files/$MODEL/s_dist/$H2ES.nd"
 
 	# increase count
 	count=$(($count+1))
