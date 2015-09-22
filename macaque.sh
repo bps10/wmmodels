@@ -11,19 +11,19 @@ function run_model {
     fi
     if [ -z $3 ]
     then 
-	local shape=uniform
+	local shape=full_field
     else 
 	local shape=$3
     fi
 
     # print out what we are doing
     echo ./retina.sh -model macaque -P $H1GP -H $H1GH -W $H1W \
-	-p $H2GP -h $H2GH -w $H2W -ran_s $RAN_S -shape $shape \
+	-p $H2GP -h $H2GH -w $H2W -ran_s $RAN_S -shape $shape -t $H2P0 \
 	noblock $analysis $secondopt
 
     # now run the model
     ./retina.sh -model macaque -P $H1GP -H $H1GH -W $H1W \
-	-p $H2GP -h $H2GH -w $H2W -ran_s $RAN_S -shape $shape \
+	-p $H2GP -h $H2GH -w $H2W -ran_s $RAN_S -shape $shape -t $H2P0 \
 	noblock $analysis $secondopt
 }
 
@@ -34,7 +34,7 @@ function move_files {
 	results/img/macaque/$1/$2/s_dist_scatter.svg
     # move into s_dist folder to globstar move nd files
     cd results/nd_files/macaque/s_dist/
-    mv *.nd results/img/macaque/$1/$2/
+    mv *.nd ../../../../results/img/macaque/$1/$2/
     cd ../../../../
 }
 
@@ -123,9 +123,9 @@ function s_dist_plots {
 	run_model mosaic
 	mv results/img/mosaic/mosaic.svg results/img/macaque/$DIR/mosaic.svg
 
-# Uniform
-	run_model s_dist foo uniform
-	move_files $DIR uniform
+# Uniform (full field)
+	run_model s_dist foo full_field
+	move_files $DIR full_field
 
 # 5 cpd grating
 	run_model s_dist foo grating
@@ -151,7 +151,7 @@ function verbose_plots {
 
     sf_tuning_plots
 
-    tf_tuning_plots
+    #tf_tuning_plots
 
     s_dist_plots
     
@@ -168,7 +168,15 @@ function main {
     else
 	eccentricity=fovea;
     fi
+    if [ "$#" -gt 1 ];
+    then
+	H2P0=$2
+    else
+	H2P0=0.0
+    fi
     echo Eccentricity set to: $eccentricity
+    echo H2 percept0 set to: $H2P0
+
     # Params 
     #                    H1GP, H1GH, H1W,  H2GP, H2GH, H2W 
     # eccentric loc =   (0.15, 2.0,  0.7,  1.0,  1.0,  0.4)
@@ -176,17 +184,17 @@ function main {
     if [ "$eccentricity" == "fovea" ]
     then
 	H1GP=0.15
-	H1GH=0.04 #2.0
-	H1W=0.65 #0.7
-	H2GP=1.3 #1.0
-	H2GH=0.02 #1.0
+	H1GH=0.04
+	H1W=0.65
+	H2GP=1.3
+	H2GH=0.02
 	H2W=0.4
 	RAN_S=false
     elif [ "$eccentricity" == "periph" ] || [ "$eccentricity" == "periphery" ]
     then
 	H1GP=0.15
 	H1GH=2.0
-	H1W=0.7
+	H1W=0.65
 	H2GP=1.0
 	H2GH=1.0
 	H2W=0.4
@@ -195,10 +203,12 @@ function main {
 	echo $1 not understood. Eccentricity must be fovea or periphery
     fi
     ### save parameters to directory
-    ./retina.sh params > results/img/macaque/start_params
+    ./retina.sh params -model macaque -P $H1GP -H $H1GH -W $H1W \
+	-p $H2GP -h $H2GH -w $H2W -ran_s $RAN_S -t $H2P0 > \
+	results/img/macaque/start_params
 
     verbose_plots
 }
 
 # run main function
-main $1
+main $1 $2
