@@ -11,7 +11,7 @@ function run_model {
     fi
     if [ -z $3 ]
     then 
-	local shape=full_field
+	local shape=uniform
     else 
 	local shape=$3
     fi
@@ -19,12 +19,12 @@ function run_model {
     # print out what we are doing
     echo ./retina.sh -model macaque -P $H1GP -H $H1GH -W $H1W \
 	-p $H2GP -h $H2GH -w $H2W -ran_s $RAN_S -shape $shape -t $H2P0 \
-	noblock $analysis $secondopt
+	-lm_ratio $LM_RATIO noblock $analysis $secondopt
 
     # now run the model
     ./retina.sh -model macaque -P $H1GP -H $H1GH -W $H1W \
 	-p $H2GP -h $H2GH -w $H2W -ran_s $RAN_S -shape $shape -t $H2P0 \
-	noblock $analysis $secondopt
+	-lm_ratio $LM_RATIO noblock $analysis $secondopt
 }
 
 function move_files {
@@ -124,8 +124,8 @@ function s_dist_plots {
 	mv results/img/mosaic/mosaic.svg results/img/macaque/$DIR/mosaic.svg
 
 # Uniform (full field)
-	run_model s_dist foo full_field
-	move_files $DIR full_field
+	run_model s_dist foo uniform
+	move_files $DIR uniform
 
 # 5 cpd grating
 	run_model s_dist foo grating
@@ -174,9 +174,15 @@ function main {
     else
 	H2P0=0.0
     fi
+    if [ "$#" -gt 2 ];
+    then
+	LM_RATIO=$3
+    else
+	LM_RATIO=1.0
+    fi
     echo Eccentricity set to: $eccentricity
     echo H2 percept0 set to: $H2P0
-
+    echo LM ratio is set to: $LM_RATIO
     # Params 
     #                    H1GP, H1GH, H1W,  H2GP, H2GH, H2W 
     # eccentric loc =   (0.15, 2.0,  0.7,  1.0,  1.0,  0.4)
@@ -204,11 +210,11 @@ function main {
     fi
     ### save parameters to directory
     ./retina.sh params -model macaque -P $H1GP -H $H1GH -W $H1W \
-	-p $H2GP -h $H2GH -w $H2W -ran_s $RAN_S -t $H2P0 > \
+	-p $H2GP -h $H2GH -w $H2W -ran_s $RAN_S -t $H2P0 -lm_ratio $LM_RATIO > \
 	results/img/macaque/start_params
 
     verbose_plots
 }
 
 # run main function
-main $1 $2
+main $1 $2 $3

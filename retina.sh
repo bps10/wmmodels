@@ -48,6 +48,7 @@ while [ $i -lt $# ]; do
     FUND=$(check_arg -fund $FUND)
     SHAPE=$(check_arg -shape $SHAPE)
     RANDOM_S=$(check_arg -ran_s $RANDOM_S)
+    LM_RATIO=$(check_arg -lm_ratio $LM_RATIO)
     H1GP=$(check_arg -P $H1GP)
     H1GH=$(check_arg -H $H1GH)
     H1P0=$(check_arg -T $H1P0)

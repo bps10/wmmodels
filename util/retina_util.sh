@@ -284,6 +284,7 @@ function print_info {
 	echo -e "-fund\t FUND"
 	echo -e "-shape\t SHAPE"
 	echo -e "-ran_s\t RANDOM_S"
+	echo -e "-lm_ratio\t LM_RATIO"
 	echo -e "-P\t H1GP"
 	echo -e "-H\t H1GH"
 	echo -e "-T\t H1P0 (percent0)"
@@ -307,6 +308,7 @@ function print_info {
 	echo "fundamentals set to: $FUND"
 	echo "stim shape is set to: $SHAPE"
 	echo "random S is set to: $RANDOM_S"
+	echo "LM ratio is set to: $LM_RATIO"
 	echo "h1 gp is set to: $H1GP"
 	echo "h1 gh is set to: $H1GH"
 	echo "h1 percent0 is set to: $H1P0"
@@ -412,6 +414,7 @@ function run_wm {
 	retina0/h_mesh.${HVAR}/w_l ${H2L} \
 	retina0/bipolar_lm_wh1 ${H1W} \
 	retina0/bipolar_lm_wh2 ${H2W} \
+	retina0/cone_mosaic/lm_ratio ${LM_RATIO} \
 	retina0/cone_mosaic/regular_s ${REGULAR_S} \
 	retina0/stim_override ${STIM_OVERRIDE}\
         retina0/mesh_dump_type ${MESH_DUMP_TYPE} \
@@ -449,6 +452,7 @@ function run_mosaic {
 
     wm mod models/${MODEL}/run.moo stim/test_flash.stm \
 	response/retina.rsp  tn ${TN}  gui_flag ${GUI} \
+	retina0/cone_mosaic/lm_ratio ${LM_RATIO} \
 	retina0/cone_mosaic/regular_s ${REGULAR_S} \
 	retina0/mesh_dump_type mosaic_coord \
 	retina0/mesh_dump_file mosaics/model.mosaic
