@@ -247,6 +247,7 @@ function save_defaults {
     echo "SHAPE=$SHAPE" >> util/default_vars.sh
     echo "RANDOM_S=$RANDOM_S" >> util/default_vars.sh
     echo "TN=$TN" >> util/default_vars.sh
+    echo "LM_RATIO=$LM_RATIO" >> util/default_vars.sh
 
     # create new default model specific file with current values
     echo "#! /bin/bash" >> models/${MODEL}/default_vars.sh
