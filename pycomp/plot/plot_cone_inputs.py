@@ -22,36 +22,19 @@ def cone_inputs(d, model, mosaic_file, cell_type='bp', block_plots=True,
     '''
     '''
     celldat = np.genfromtxt('results/txt_files/' + model + '/nn_results.txt')
-    
-    fig = plt.figure(figsize=(6,6))
-    fig.set_tight_layout(True)
-    ax = fig.add_subplot(111)
-
-    # build diamond plot
-    pf.AxisFormat(markersize=8, fontsize=20)
-    pf.centerAxes(ax)
-    ax.spines['left'].set_smart_bounds(False)
-    ax.spines['bottom'].set_smart_bounds(False)
-    ax.axis('equal')
-
-    # Add in diamond boarders
-    ax.plot([-1, 0], [0, 1], 'k')
-    ax.plot([0, 1], [1, 0], 'k')
-    ax.plot([1, 0], [0, -1], 'k')
-    ax.plot([0, -1], [-1, 0], 'k')
 
     # get results
     celllist = get_cell_list(d)
 
     # get response
-    r = an.response(d, cell_type, 'cone_inputs', 
+    r = an.response(d, cell_type, 'cone_inputs',
                     cone_contrast=cone_contrast)
 
-    # get mosaic plot
-    mos, mos_fig = mosaic(model, FILE=mosaic_file, return_ax=True)
-    mos2, mos_fig2 = mosaic(model, FILE=mosaic_file, return_ax=True)
+    plot_cone_weights(r, celldat, celllist, model, mosaic_file)
 
+    # if model is a human subject make additional plots
     if model.lower() in ['wt', 'bps']:
+        # first get data
         cnaming = np.genfromtxt('mosaics/' + model + '_white_bkgd.csv', 
                                 delimiter=',', skip_header=1)
         newold = np.genfromtxt('mosaics/' + model + '_old_new.csv')
@@ -63,63 +46,33 @@ def cone_inputs(d, model, mosaic_file, cell_type='bp', block_plots=True,
         to_simmos = spat.KDTree(mosaiclist[:, :2])
         count = 0
 
-    for c in r: # for each cell type in results
-        output = np.zeros((len(r[c][:, 0]), 37))
-        for cone in range(0, len(r[c][:, 0])):
-            ind = np.where(celldat[:, 0] == float(celllist[cone]))[0]
-            type = round(celldat[ind, 1])
-            sym = find_shape_color(type, c)
-            loc = celldat[ind, 2:4][0]
+        for c in r: # for each cell type in results
+            output = np.zeros((len(r[c][:, 0]), 37))
+            for cone in range(0, len(r[c][:, 0])):
+                ind = np.where(celldat[:, 0] == float(celllist[cone]))[0]
+                loc = celldat[ind, 2:4][0]
 
-            # add data to diamond plot
-            ax.plot(r[c][cone, 2], r[c][cone, 1], sym)
-            ax.plot(-r[c][cone, 2], -r[c][cone, 1], sym, mec='k', mew=2,
-                     alpha=0.5)
+                # compute s weight for mosaic plot
+                s_weight = r[c][cone, 0] #compute_s_weight(r, c, cone)
 
-            # compute s weight for mosaic plot
-            s_weight = 1 - (abs(r[c][cone, 2]) + abs(r[c][cone, 1]))
-            if s_weight > 0.1:
-                mos.plot(loc[0], loc[1], 'ko', fillstyle='none', mew=2)
+                # compute cone weights (re-order to L, M, S)
+                cone_weights = [r[c][cone, 1], r[c][cone, 2], s_weight]
 
-            # plot cone weights on model mosaic
-            cone_weights = [r[c][cone, 1], r[c][cone, 2], s_weight]
-            mos2.plot(loc[0], loc[1], 'o', markersize=14, fillstyle='full',
-                      color=np.abs(cone_weights))
-
-            if model.lower() in ['wt', 'bps']:
+                # match up color names and modeled output
                 output, count = get_color_names(output, count,
                                                 to_newold, to_simmos, to_cnaming, 
                                                 mosaiclist, newold, cnaming, loc, 
                                                 cone_weights, celldat, r, c)
-                        
-    # remove zeros
-    if model.lower() in ['wt', 'bps']:
+
+        # cleanup output and remove zeros
         output = output[~np.all(output == 0, axis=1)]
         print count 
                 
         # save output
         np.savetxt('results/txt_files/' + model + '/cone_analysis.csv', output)
 
-        # if subject mosaic, plot color name plot
+        # plot color names
         plot_color_names(model, output)
-
-    # set come fig params
-    ax.set_xlim([-1.1, 1.1])
-    ax.set_ylim([-1.1, 1.1])
-
-    mos.set_xlim([35, 90])
-    mos.set_ylim([35, 90])
-
-    mos2.set_xlim([35, 90])
-    mos2.set_ylim([35, 90])
-
-    # save figs
-    f.make_dir('results/img/' + model)
-    fig.savefig('results/img/' + model + '/cone_inputs.svg', edgecolor='none')
-    mos_fig.savefig('results/img/' + model + '/cone_inputs_mosaic.svg', 
-                    edgecolor='none')
-    mos_fig2.savefig('results/img/' + model + '/cone_inputs_mosaic2.svg', 
-                     edgecolor='none')
 
     plt.show(block=block_plots)
 
@@ -149,7 +102,7 @@ def get_color_names(output, count, to_newold, to_simmos, to_cnaming,
                 j = 10
                 for i in range(1, 9): # 10 nearest neighbors
                     ind1 = np.where(celldat[:, 0] == moscoord[1][i])[0]
-                            #ind1 = np.random.randint(0, 400, 1)
+                    #ind1 = np.random.randint(0, 400, 1)
                     neighbor = r[c][ind1]
                     output[count, j:j + 3] = neighbor
                     j += 3
@@ -157,7 +110,79 @@ def get_color_names(output, count, to_newold, to_simmos, to_cnaming,
     return output, count
 
 
+def plot_cone_weights(r, celldat, celllist, model, mosaic_file,
+                      block_plots=True):
+    '''
+    '''
+    fig = plt.figure(figsize=(6,6))
+    fig.set_tight_layout(True)
+    ax = fig.add_subplot(111)
+
+    # build diamond plot
+    pf.AxisFormat(markersize=8, fontsize=20)
+    pf.centerAxes(ax)
+    ax.spines['left'].set_smart_bounds(False)
+    ax.spines['bottom'].set_smart_bounds(False)
+    ax.axis('equal')
+
+    # Add in diamond boarders
+    ax.plot([-1, 0], [0, 1], 'k')
+    ax.plot([0, 1], [1, 0], 'k')
+    ax.plot([1, 0], [0, -1], 'k')
+    ax.plot([0, -1], [-1, 0], 'k')
+
+    # set come fig params
+    ax.set_xlim([-1.1, 1.1])
+    ax.set_ylim([-1.1, 1.1])
+
+
+    # get mosaic plot
+    mos, mos_fig = mosaic(model, FILE=mosaic_file, return_ax=True)
+    mos2, mos_fig2 = mosaic(model, FILE=mosaic_file, return_ax=True)
+
+    for c in r: # for each cell type in results
+        output = np.zeros((len(r[c][:, 0]), 37))
+        for cone in range(0, len(r[c][:, 0])):
+            ind = np.where(celldat[:, 0] == float(celllist[cone]))[0]
+            type = round(celldat[ind, 1])
+            sym = find_shape_color(type, c)
+            loc = celldat[ind, 2:4][0]
+
+            # add data to diamond plot
+            ax.plot(r[c][cone, 2], r[c][cone, 1], sym)
+            ax.plot(-r[c][cone, 2], -r[c][cone, 1], sym, mec='k', mew=2,
+                     alpha=0.5)
+
+            # compute s weight for mosaic plot
+            s_weight = r[c][cone, 0] #compute_s_weight(r, c, cone)
+
+            # compute cone weights
+            cone_weights = [r[c][cone, 1], r[c][cone, 2], s_weight]
+
+            if s_weight > 0.1:
+                mos.plot(loc[0], loc[1], 'ko', fillstyle='none', mew=2)
+
+            mos2.plot(loc[0], loc[1], 'o', markersize=14, fillstyle='full',
+                      color=np.abs(cone_weights))
+
+    mos.set_xlim([35, 90])
+    mos.set_ylim([35, 90])
+
+    mos2.set_xlim([35, 90])
+    mos2.set_ylim([35, 90])
+
+    # save figs
+    f.make_dir('results/img/' + model)
+    fig.savefig('results/img/' + model + '/cone_inputs.svg', edgecolor='none')
+    mos_fig.savefig('results/img/' + model + '/cone_inputs_mosaic.svg', 
+                    edgecolor='none')
+    mos_fig2.savefig('results/img/' + model + '/cone_inputs_mosaic2.svg', 
+                     edgecolor='none')
+
+
 def plot_color_names(model, output):
+    '''
+    '''
     # --- plot color names on a diamond plot --- #
     fig1 = plt.figure(figsize=(6,6))
     fig1.set_tight_layout(True)
@@ -180,8 +205,8 @@ def plot_color_names(model, output):
     for i in range(len(output[:, 1])):
         maxind = output[i, 5:10].argmax()
         symbol = 'o'
-        # check if cone has a purity greater than 0.65
-        if output[i, 5 + maxind] / output[i, 5:10].sum() < 0.65:
+        # check if cone has a purity greater than 0.6
+        if output[i, 5 + maxind] / output[i, 5:10].sum() < 0.6:
             symbol = '^'
 
         rg[i] = (output[i, 6] - output[i, 7]) / output[i, 5:10].sum()
@@ -199,13 +224,15 @@ def plot_color_names(model, output):
                                 19, 20, 21, 22, 23, 24, 25, 26, 27]] 
     else:
         # organize in opponent fashion
-        N = 4 # center cone and nearest x
+        N = 2 # center cone and nearest x
         predictors = np.zeros((len(output[:, 0]), N + 1))
         _inds = [2, 10, 13, 16, 19, 22, 25, 28, 31]
         for i in range(N + 1):
-            predictors[:, i] = ((output[:, _inds[i]] + output[:, _inds[i] + 2]) -
-                                output[:, _inds[i] + 1])
-
+            predictors[:, i] = ((output[:, _inds[i]] +
+                                 output[:, _inds[i] + 2])
+                                - output[:, _inds[i] + 1])
+    # cone weights in L, M, S order
+    inds = [2, 10, 13]
     X = sm.add_constant(predictors, prepend=True)
     OLSmodel = sm.OLS(rg, X) #GLM(rg, X)
     res = OLSmodel.fit()
@@ -216,6 +243,7 @@ def plot_color_names(model, output):
     linear_reg = True
     ridge_reg = False
 
+    ## Linear regression on training data
     clfs = []
     if linear_reg:
         clfs.append(LinearRegression())
@@ -251,22 +279,30 @@ def plot_color_names(model, output):
     else:
         ax2.plot([0, 1], [0, 1], 'k-')
 
+    # checkout proximity to s cone and rg metric
     ax3, fig3 = pf.get_axes(1, 1, nticks=[3, 3], return_fig=True)
-    inds = output[:, 4] < 0.4
     ax3 = ax3[0]
+    inds = output[:, 4] < 0.4 # eliminate S-cone center cells
     ax3.plot(output[inds, 4], np.abs(rg[inds]), 'ko')
-    '''X = sm.add_constant(output[inds, 4], prepend=True)
+    
+    ax3.set_xlabel('S-cone weight')
+    ax3.set_ylabel('absolute value rg response')
+    
+    X = sm.add_constant(output[inds, 4], prepend=True)
     OLSmodel = sm.OLS(rg[inds], X) #GLM(rg, X)
     res = OLSmodel.fit()
     #print res.rsquared
     print '\n\n\n'
-    print (res.summary())'''
-
+    print res.rsquared
 
     fig1.savefig('results/img/' + model + '/cone_inputs_w_naming.svg',
                 edgecolor='none')
     fig2.savefig('results/img/' + model + '/cone_inputs_model_error.svg',
                 edgecolor='none')
+
+
+def compute_s_weight(r, c, cone):
+    return 1 - (np.abs(r[c][cone, 2]) + np.abs(r[c][cone, 1]))
 
 
 def find_shape_color(type, c):
