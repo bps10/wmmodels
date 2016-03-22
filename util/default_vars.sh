@@ -1,7 +1,7 @@
  
-MODEL=macaque
+MODEL=BPS
 FUND=true
-SHAPE=uniform
+SHAPE=full_field
 RANDOM_S=false
 TN=512
 LM_RATIO=1.0
