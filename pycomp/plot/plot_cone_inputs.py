@@ -68,8 +68,8 @@ def cone_inputs(d, mod_name, mosaic_file, cell_type='bp', block_plots=True,
 
                 # match up color names and modeled output
                 output, count = get_color_names(output, count,
-                                                to_newold, to_simmos, to_cnaming, 
-                                                mosaiclist, newold, cnaming, loc, 
+                                                to_newold, to_simmos, to_cnaming,
+                                                mosaiclist, newold, cnaming, loc,
                                                 cone_weights, celldat, r, c)
 
         # cleanup output and remove zeros
@@ -77,7 +77,8 @@ def cone_inputs(d, mod_name, mosaic_file, cell_type='bp', block_plots=True,
         print count 
                 
         # save output
-        np.savetxt('results/txt_files/' + mod_name + '/cone_analysis.csv', output)
+        np.savetxt('results/txt_files/' + mod_name + '/cone_analysis.csv', 
+                   output)
 
         # compute rg metric and find high purity indices
         rg, high_purity = get_rg_from_output(output, purity_thresh)
@@ -96,7 +97,7 @@ def cone_inputs(d, mod_name, mosaic_file, cell_type='bp', block_plots=True,
 
         # multidemensional scaling
         if 'mdscaling' in args:
-            mdscaling(output, mod_name, high_purity)
+            mdscaling(output, mod_name, rg, high_purity)
 
     plt.show(block=block_plots)
 
@@ -195,7 +196,7 @@ def plot_color_names(rg, purity_thresh, output, mod_name):
         maxind = output[i, 5:10].argmax()
         symbol = 'o'
         # check if cone has a purity greater threshold
-        if purity_thresh < 1:
+        if purity_thresh is not None and purity_thresh < 1:
             symbol = '^' # means low purity
 
         if rg[i] < 0:
@@ -210,28 +211,60 @@ def plot_color_names(rg, purity_thresh, output, mod_name):
                 edgecolor='none')
 
 
-def mdscaling(output, mod_name, high_purity=None):
+def mdscaling(output, mod_name, rg, high_purity=None):
+    '''
+    '''
+    # keep only high purity cones if a vector is passed
     if high_purity is not None:
         output = output[high_purity, :]
-    cols = [2, 3, 4] # 10:27 neighbors
+        rg = rg[high_purity]
+    
+    # organize based on rg
+    rg = rg.T[0]
+    sort_inds = np.argsort(rg)
+
+    # sort
+    output = output[sort_inds, :]
+    rg = rg[sort_inds]
+
+    cols = [2, 3, 4, 10, 12] # 10:27 neighbors
     predictors = output[:, cols]
 
     # first thing need to transform output into distance matrix
-    distance = spat.distance.pdist(predictors, 'euclidean')
+    # many to choose from including: euclidean, correlation, cosine, hamming,
+    # cityblock, minkowski, etc
+    distance = spat.distance.pdist(predictors, 'correlation')
     # convert distance (output in vector form) into square form
-    distance = spat. distance.squareform(distance)
+    distance = spat.distance.squareform(distance)
     # compute the classical multi-dimensional scaling
     config_mat, eigen = d.cmdscale(distance)
-    # for classification, find dominant color
-    max_color = np.argmax(output[:, 5:10], axis=1)
+
+    # plot dissimilarity matrix
+    imax, imgfig = pf.get_axes(1, 1, nticks=[4, 4], return_fig=True)
+    imax[0].imshow(distance, interpolation=None)
+    # need to plot axes so that 1, 0.5, 0, -0.5 and -1  are shown
 
     ax, fig = pf.get_axes(1, 1, nticks=[3, 3], return_fig=True)    
-    colors = ['k', 'r', 'g', 'b', 'y']
-    for i in range(0, len(max_color)):
+    #colors = np.concatenate([rg.clip(0), -1 * rg.clip(0)
+    for i in range(0, len(rg)):
         #ax[0].plot(predictors[i, 0], predictors[i, 1], 's',
         #color=colors[max_color[i]])
+        if rg[i] >= 0:
+            color = [rg[i], 0, 0]
+        else:
+            color = [0, -rg[i], 0]
+        
         ax[0].plot(config_mat[i, 0], config_mat[i, 1], 'o',
-                   color=colors[max_color[i]])
+                   color=color)
+    ax[0].set_xlabel('dimension 1')
+    ax[0].set_ylabel('dimension 2')
+
+    # save functions
+    fig.savefig('results/img/' + mod_name + '/mdscaling.svg',
+                edgecolor='none')    
+    imgfig.savefig('results/img/' + mod_name + '/mds_dissimilarity.svg',
+                edgecolor='none')    
+
 
 def s_cone_dist_analysis(rg, output, mod_name):
 
@@ -320,10 +353,13 @@ def fit_linear_model(rg, output, mod_name, opponent=True):
                 edgecolor='none')
 
 
-def get_rg_from_output(output, purity_thresh=0.6):
+def get_rg_from_output(output, purity_thresh=None):
     '''
     purity_thresh: find cones that have purities higher than this threshold.
     '''
+    if purity_thresh is None:
+        purity_thresh = 0
+
     high_purity = []
     rg = np.zeros((len(output[:, 1]), 1))
     for i in range(len(output[:, 1])):
