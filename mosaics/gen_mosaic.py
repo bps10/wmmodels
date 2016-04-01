@@ -210,6 +210,21 @@ def find_hc():
                fmt="%f %f %f %f %f %f %d %d %d %d %d %d")
 
 
+def gen_randomized_mosaic(mosaic_file):
+    '''Take a mosaic and shuffle the cone identities, but keep the 
+    x,y locations the same
+    '''
+    data = np.genfromtxt(mosaic_file, delimiter=' ')
+
+    cone_types = data[:, 2].astype('int')
+    np.random.shuffle(cone_types)
+    data[:, 2] = cone_types
+
+    # save the file in an ordered manner.
+    savename = mosaic_file[:-4] + '_randomized.txt'
+    np.savetxt(savename, data, delimiter='  ', fmt="%f %f %d")
+
+
 if __name__ == '__main__':
 
     gen_mosaic(mosaic_file='model.mosaic', # model mosaic file
@@ -218,3 +233,5 @@ if __name__ == '__main__':
                offset_factor=40 # offset subj mosaic to be centered WT=40
                )
     find_hc()
+
+    gen_randomized_mosaic('mosaics/BPS_mosaic.txt')

@@ -40,7 +40,7 @@ def response(d, cell_type, analysis_type,
 
     resp = {}
     for c in cells: # for each cell type
-        resp[c] = np.zeros((ncells * len(cells), d['ntrial']))
+        resp[c] = np.zeros((ncells * len(cells), int(d['ntrial'])))
 
         keys = get_cell_data(d, c) 
         
@@ -49,9 +49,9 @@ def response(d, cell_type, analysis_type,
 
                 # handle case where TF is changing
                 if analysis_type == 'tf':
-                    _tf = tf[t]
+                    _tf = int(tf[t])
                 else:
-                    _tf = tf
+                    _tf = int(tf)
 
                 cell = d['tr'][t]['r'][r][resp_ind]
 

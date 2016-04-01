@@ -1,4 +1,5 @@
 from __future__ import division
+
 import numpy as np
 import matplotlib.pylab as plt
 import scipy.spatial as spat
@@ -7,6 +8,11 @@ import statsmodels.api as sm
 from sklearn import cross_validation
 from sklearn.metrics import mean_absolute_error
 from sklearn.linear_model import LinearRegression, Ridge
+from sklearn.svm import SVC
+from sklearn.grid_search import GridSearchCV
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+from sklearn.cross_validation import train_test_split
 
 from base import plot as pf
 from base import files as f
@@ -23,7 +29,7 @@ def cone_inputs(d, mod_name, mosaic_file, cell_type='bp', block_plots=True,
     '''
     '''
     # some options; should go into function options
-    args = ['mdscaling']
+    args = ['cmdscaling']
     purity_thresh = 0.0
 
     celldat = np.genfromtxt('results/txt_files/' + mod_name + '/nn_results.txt')
@@ -74,14 +80,15 @@ def cone_inputs(d, mod_name, mosaic_file, cell_type='bp', block_plots=True,
 
         # cleanup output and remove zeros
         output = output[~np.all(output == 0, axis=1)]
-        print count 
+        print 'N cells: ', count 
                 
         # save output
         np.savetxt('results/txt_files/' + mod_name + '/cone_analysis.csv', 
                    output)
 
         # compute rg metric and find high purity indices
-        rg, high_purity = get_rg_from_output(output, purity_thresh)
+        if args is not []:
+            rg, high_purity = get_rg_from_output(output, purity_thresh)
 
         # plot color names
         if 'color_names' in args:
@@ -96,8 +103,12 @@ def cone_inputs(d, mod_name, mosaic_file, cell_type='bp', block_plots=True,
             s_cone_dist_analysis(rg, output, mod_name)
 
         # multidemensional scaling
-        if 'mdscaling' in args:
-            mdscaling(output, mod_name, rg, high_purity)
+        if 'cmdscaling' in args:
+            classic_mdscaling(output, mod_name, rg, high_purity)
+
+        # support vector machine
+        if 'svm' in args:
+            svm_classify(output, mod_name, rg, high_purity)
 
     plt.show(block=block_plots)
 
@@ -211,54 +222,143 @@ def plot_color_names(rg, purity_thresh, output, mod_name):
                 edgecolor='none')
 
 
-def mdscaling(output, mod_name, rg, high_purity=None):
+def classic_mdscaling(output, mod_name, rg, high_purity=None):
     '''
     '''
+    # ----- params ----- #
+    # Don't use if Nseeds > 1
+    display_verbose = False
+    # used in train_test_split
+    rand_seed = 23456 
+    # number of times to resample data set
+    Nseeds = 100
+    # proportion of data set to leave for test
+    test_size = 0.1
+    # dimensions to use from MDS in SVD (list)
+    dims = [0, 1, 2]
+    # threshold rg that separates red, white, green
+    rg_thresh = 0.5
+    # search grid params in svm
+    param_grid = {'C': [1e2, 1e3, 5e3, 1e4, 5e4, 1e5, 1e6, 1e7],
+                  'gamma': [0.001, 0.01, 0.05], }
+    # cols 2, 3, 4 = stimulated cones; 10:27 = neighbors
+    cols = [2, 3, 4, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    # ------------------- #
+
     # keep only high purity cones if a vector is passed
     if high_purity is not None:
         output = output[high_purity, :]
         rg = rg[high_purity]
     
-    # organize based on rg
-    rg = rg.T[0]
-    sort_inds = np.argsort(rg)
+    # break rg into three categories: red, green, white
+    red = rg < -rg_thresh
+    green = rg > rg_thresh
+    color_categories = red + green * 2
+    color_categories = color_categories.T[0]
 
-    # sort
-    output = output[sort_inds, :]
-    rg = rg[sort_inds]
-
-    cols = [2, 3, 4, 10, 12] # 10:27 neighbors
+    # select out the predictors
     predictors = output[:, cols]
 
-    # first thing need to transform output into distance matrix
-    # many to choose from including: euclidean, correlation, cosine, hamming,
-    # cityblock, minkowski, etc
-    distance = spat.distance.pdist(predictors, 'correlation')
-    # convert distance (output in vector form) into square form
-    distance = spat.distance.squareform(distance)
-    # compute the classical multi-dimensional scaling
-    config_mat, eigen = d.cmdscale(distance)
+    # set up random numbers
+    np.random.seed(rand_seed)
+    rand_seeds = np.round(np.random.rand(Nseeds, 1) * 10000)
+    
+    # set up data containers for results
+    total_y_true = []
+    total_y_pred = []
 
-    # plot dissimilarity matrix
+    for seed in rand_seeds:
+        # Split into a training set and a test set using a stratified k fold
+        X_train, X_test, y_train, y_test = train_test_split(
+            predictors, color_categories, test_size=test_size,
+            random_state=int(seed[0]))
+
+        # first thing need to transform output into distance matrix
+        # many to choose from including: euclidean, correlation, cosine, 
+        # cityblock, minkowski, hamming, etc
+        metric = 'correlation'
+        dist_train = spat.distance.pdist(X_train, metric)
+        dist_test = spat.distance.pdist(X_test, metric)
+
+        # convert distance (output in vector form) into square form
+        dist_train = spat.distance.squareform(dist_train)
+        dist_test = spat.distance.squareform(dist_test)
+
+        # compute the classical multi-dimensional scaling
+        config_mat, eigen = d.cmdscale(dist_train)
+        config_mat_test, eigen = d.cmdscale(dist_test)
+
+        # Classify with SVM
+        clf = GridSearchCV(SVC(kernel='rbf', class_weight='balanced'), 
+                           param_grid)
+        clf = clf.fit(config_mat[:, dims], y_train)
+
+        # predict test data with fit model
+        y_pred = clf.predict(config_mat_test[:, dims])
+
+        if display_verbose:
+            print("Best estimator found by grid search:")
+            print(clf.best_estimator_)    
+            # Quantitative evaluation of the model quality on the test set
+            print("Predicting color names on the test set")
+
+        # save output
+        total_y_true.append(y_test)
+        total_y_pred.append(y_pred)
+
+    # print the summary results
+    total_y_true = np.asarray(total_y_true).flatten()
+    total_y_pred = np.asarray(total_y_pred).flatten()
+    target_names = ['white', 'red', 'green']
+
+    print 'N simulations: ', Nseeds
+    print 'Dimensions used: ', dims 
+    print 'rg thresh: ', rg_thresh
+    print param_grid
+    print 'cols used: ', cols
+
+    n_classes = 3
+    print classification_report(total_y_true, total_y_pred,
+                                target_names=target_names)
+    print confusion_matrix(total_y_true, total_y_pred, labels=range(n_classes))
+
+    # ---------- Plot some results --------- #
+    # first sort predictors for plotting purposes
+    rg = rg.T[0]
+    sort_inds = np.argsort(rg)
+    predictors = predictors[sort_inds, :]
+    rg = rg[sort_inds]
+
+    # compute dissimilarity matrix
+    plot_dist_train = spat.distance.pdist(predictors, metric)
+    plot_dist_train = spat.distance.squareform(plot_dist_train)
+
+    # plot dissimilarity matrix for whole data set    
     imax, imgfig = pf.get_axes(1, 1, nticks=[4, 4], return_fig=True)
-    imax[0].imshow(distance, interpolation=None)
-    # need to plot axes so that 1, 0.5, 0, -0.5 and -1  are shown
+    imax[0].imshow(plot_dist_train, interpolation=None,
+                   cmap=plt.cm.viridis, 
+                   extent=[rg.min(), rg.max(), rg.max(), rg.min()])
+    ticks = [rg.min(), find_nearest(rg, -0.5), find_nearest(rg, 0),
+             find_nearest(rg, 0.5), rg.max()]
+    imax[0].set_xticks(ticks)
+    imax[0].set_yticks(ticks)
 
+    # plot projection of training data in mds space
     ax, fig = pf.get_axes(1, 1, nticks=[3, 3], return_fig=True)    
-    #colors = np.concatenate([rg.clip(0), -1 * rg.clip(0)
-    for i in range(0, len(rg)):
-        #ax[0].plot(predictors[i, 0], predictors[i, 1], 's',
-        #color=colors[max_color[i]])
-        if rg[i] >= 0:
-            color = [rg[i], 0, 0]
+    for i in range(0, len(y_train)):
+        if y_train[i] == 1:
+            color = [1, 0, 0]
+        elif y_train[i] == 2:
+            color = [0, 1, 0]
         else:
-            color = [0, -rg[i], 0]
+            color = [0, 0, 0]
         
-        ax[0].plot(config_mat[i, 0], config_mat[i, 1], 'o',
+        ax[0].plot(config_mat[i, dims[0]], config_mat[i, dims[1]], 'o',
                    color=color)
+
     ax[0].set_xlabel('dimension 1')
     ax[0].set_ylabel('dimension 2')
-
+    
     # save functions
     fig.savefig('results/img/' + mod_name + '/mdscaling.svg',
                 edgecolor='none')    
@@ -369,7 +469,7 @@ def get_rg_from_output(output, purity_thresh=None):
         if output[i, 5 + maxind] / output[i, 5:10].sum() > purity_thresh:
             high_purity.append(i)
 
-        rg[i] = (output[i, 6] - output[i, 7]) / output[i, 5:10].sum()
+        rg[i] = (output[i, 7] - output[i, 6]) / output[i, 5:10].sum()
 
     return rg, high_purity
 
@@ -424,4 +524,9 @@ def find_shape_color(type, c):
     else:
         sym = 'o'
     return sym + color
+
+
+def find_nearest(array,value):
+    idx = (np.abs(array-value)).argmin()
+    return array[idx]
 
