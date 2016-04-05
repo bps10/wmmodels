@@ -242,7 +242,7 @@ def classic_mdscaling(output, mod_name, rg, high_purity=None):
     param_grid = {'C': [1e2, 1e3, 5e3, 1e4, 5e4, 1e5, 1e6, 1e7],
                   'gamma': [0.001, 0.01, 0.05], }
     # cols 2, 3, 4 = stimulated cones; 10:27 = neighbors
-    cols = [2, 3, 4, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    cols = [2, 3, 4, 10, 11, 12, 13, 14, 15]#, 16, 17, 18, 19, 20]
     # ------------------- #
 
     # keep only high purity cones if a vector is passed

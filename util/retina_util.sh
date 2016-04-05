@@ -147,6 +147,11 @@ function change_parameters {
 	STIM_FILE=test_flash
 	RESP_FILE=retina_line
 
+    elif [[ $OPTS == "image" ]]
+    then
+	STIM_FILE=test_image
+	RESP_FILE=retina_line
+
     elif [[ $OPTS == "h_sf" || $OPTS == "bp_sf" || $OPTS == "rgc_sf" ]]
     then
 	STIM_FILE=sine_sf
@@ -161,7 +166,8 @@ function change_parameters {
     then
 
 	stim_gen siso ${SHAPE}
-	STIM_FILE=cone_iso_step
+	STIM_FILE=test_image
+	#STIM_FILE=cone_iso_step
     fi
 }
 

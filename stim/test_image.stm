@@ -1,0 +1,40 @@
+#------------------------------------------------------------------------------
+#
+#  test_image.stm
+#	
+#------------------------------------------------------------------------------
+
+#stim_type frameset # frameset
+#filename   vanHateren/imk00001.jpg
+
+stim_type image_set # image set
+set_dir stim/vanHateren
+
+stim_samp  1000.0    # Stimulus sampling rate (going too low = black frames)
+stim_form   3d       # Stimulus format, 3d, 3c, 3d_b
+#stim_smooth 0.025    # SD of Gaussian for blurring (deg)
+
+st0          0.100   # start time (s)
+stn	     5.00    # duration (s)
+cx           0       # center (deg)
+cy           0       # center (deg)
+size         1.0     # Stimulus aperture diameter (deg)
+aptype       0       # Aperture type (0-none, 1-circ)
+bgval        0.5     # background value [0..1]
+contrast     1.0     # Contrast
+maxlum       1.0     # Maximum luminance
+stim_nrpt    1       # Number of repeats
+grid_w	     50	     # number of boxes in width
+grid_h	     50      # number of boxes in hight
+box_w	     3       # pixels per box
+box_h	     3       # pixels per box
+dwell	     10	     # number of frames to dwell on each patch
+seed	     3245    # used for selecting patch?
+
+color0_r   0.0000    # Equiluminant values in absence of S-input
+color0_g   0.6087    # Total cone-contrast is .1088
+color0_b   0.5
+
+color1_r   1.0000
+color1_g   0.3913
+color1_b   0.5

@@ -1,0 +1,13 @@
+
+* Run van Hateren images using
+``test_image.stm''
+WM has a built in set of routines that looks for van Hateren images and constructs patches to display to the retina.
+
+* Convert natural images to jpg
+``python stim/vanHateren/processVanHateren.py''
+
+* van Hateren database
+http://bethgelab.org/datasets/vanhateren/
+
+* eye movement database on van Hateren images
+http://live.ece.utexas.edu/research/doves/
