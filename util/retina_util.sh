@@ -123,17 +123,23 @@ function change_parameters {
 	STIM_FILE=cone_iso_step
 	RESP_FILE=retina_line_${MODEL}
 
-    elif [ $OPTS == "cone_inputs" ]
+    elif [[ $OPTS == "cone_inputs" || $OPTS == "vanhat" ]]
     then
 	# has to be bp cells so that looks at output of h1, h2 vs cone
 	knn_resp ${SCONE} $N_CONES bp
 	mkdir -p results/txt_files/$MODEL
 	mv results/txt_files/nn_results.txt \
 	    results/txt_files/$MODEL/nn_results.txt
-        # sine wave would require change to analysis.py?
-	stim_gen coneiso ${SHAPE} #full_field
-	STIM_FILE=cone_iso_step
+
 	RESP_FILE=knn_resp
+	if [[ $OPTS == "vanhat" ]]
+	then
+	    STIM_FILE=img_vanhat
+	else
+          # sine wave would require change to analysis.py?
+	    stim_gen coneiso ${SHAPE} #full_field
+	    STIM_FILE=cone_iso_step
+	fi
 	
     elif [[ $OPTS == "knn" || $OPTS == "s_dist" ]]
     then
@@ -145,11 +151,6 @@ function change_parameters {
     elif [[ $OPTS == "step" ]]
     then
 	STIM_FILE=test_flash
-	RESP_FILE=retina_line
-
-    elif [[ $OPTS == "image" ]]
-    then
-	STIM_FILE=test_image
 	RESP_FILE=retina_line
 
     elif [[ $OPTS == "h_sf" || $OPTS == "bp_sf" || $OPTS == "rgc_sf" ]]
@@ -166,7 +167,7 @@ function change_parameters {
     then
 
 	stim_gen siso ${SHAPE}
-	STIM_FILE=test_image
+	STIM_FILE=img_vanhat
 	#STIM_FILE=cone_iso_step
     fi
 }

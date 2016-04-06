@@ -16,7 +16,7 @@ from sklearn.cross_validation import train_test_split
 
 from base import plot as pf
 from base import files as f
-from base import data as d
+from base import data as dat
 
 from util import get_cell_list
 from plot.plot_mosaic import mosaic
@@ -243,6 +243,8 @@ def classic_mdscaling(output, mod_name, rg, high_purity=None):
                   'gamma': [0.001, 0.01, 0.05], }
     # cols 2, 3, 4 = stimulated cones; 10:27 = neighbors
     cols = [2, 3, 4, 10, 11, 12, 13, 14, 15]#, 16, 17, 18, 19, 20]
+
+    metric = 'correlation'
     # ------------------- #
 
     # keep only high purity cones if a vector is passed
@@ -276,7 +278,6 @@ def classic_mdscaling(output, mod_name, rg, high_purity=None):
         # first thing need to transform output into distance matrix
         # many to choose from including: euclidean, correlation, cosine, 
         # cityblock, minkowski, hamming, etc
-        metric = 'correlation'
         dist_train = spat.distance.pdist(X_train, metric)
         dist_test = spat.distance.pdist(X_test, metric)
 
@@ -285,8 +286,8 @@ def classic_mdscaling(output, mod_name, rg, high_purity=None):
         dist_test = spat.distance.squareform(dist_test)
 
         # compute the classical multi-dimensional scaling
-        config_mat, eigen = d.cmdscale(dist_train)
-        config_mat_test, eigen = d.cmdscale(dist_test)
+        config_mat, eigen = dat.cmdscale(dist_train)
+        config_mat_test, eigen = dat.cmdscale(dist_test)
 
         # Classify with SVM
         clf = GridSearchCV(SVC(kernel='rbf', class_weight='balanced'), 

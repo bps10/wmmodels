@@ -26,14 +26,14 @@ analysis=(siso miso liso coneiso h1 h2 \
     h_time mosaic gui stack nd plot \
     verbose params knn h_sf bp_sf rgc_sf \
     h_tf bp_tf rgc_tf \
-    s_dist cone_inputs step image)
+    s_dist cone_inputs step vanhat)
 runmod=(h1 h2 siso miso liso coneiso h_time knn h_sf bp_sf rgc_sf \
     h_tf bp_tf rgc_tf \
-    cone_inputs gui step image)
+    cone_inputs gui step vanhat)
 plots=(h1 h2 siso miso liso coneiso stack h_time verbose knn h_sf \
-    bp_sf rgc_sf h_tf bp_tf rgc_tf s_dist cone_inputs step)
+    bp_sf rgc_sf h_tf bp_tf rgc_tf s_dist cone_inputs step vanhat)
 dump=(siso miso liso coneiso h_time knn h_sf bp_sf rgc_sf \
-    h_tf bp_tf rgc_tf cone_inputs step image)
+    h_tf bp_tf rgc_tf cone_inputs step vanhat)
 iso_cond=(siso miso liso coneiso)
 
 OPTS=()

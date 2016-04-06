@@ -27,6 +27,7 @@ def main():
     tuning = ['h_sf', 'bp_sf', 'rgc_sf', 'h_tf', 'bp_tf', 'rgc_tf']
     s_dist = ['s_dist']
     cone_inputs = ['cone_inputs']
+    nat_image = ['vanhat']
     single_cone = True
     block_plots = True
 
@@ -65,6 +66,10 @@ def main():
             plots.append('c_inputs')
             cell_type = 'bp'
 
+        if arg in nat_image:
+            plots.append('nat_image')
+            cell_type = 'bp'
+
     if 'spot' not in sys.argv: # stimulus shape
         # used in s_dist nearest neighbor assumption
         single_cone = False
@@ -73,7 +78,7 @@ def main():
         block_plots = False
 
     if ('stack' in plots or 'h_time' in plots or 'knn' in plots or
-        'tuning' in plots or 'c_inputs' in plots):
+        'tuning' in plots or 'c_inputs' in plots or 'nat_image' in plots):
         # read in the proper nd_file: model and analysis specific
         tmp = sys.argv[2].split('_')[-1]
         if tmp in ['sf', 'tf']:
@@ -114,6 +119,9 @@ def main():
         plot.cone_inputs(d, model, mosaic_file, cell_type, block_plots, 
                          [48.768, 22.265, 18.576])
 
+    if 'nat_image' in plots:
+        plot.nat_image_analysis(d, model, mosaic_file, cell_type,
+                                block_plots)
 
 if __name__ == '__main__':
 

@@ -1,0 +1,27 @@
+#------------------------------------------------------------------------------
+#
+#  img_vanhat.stm
+#	
+#------------------------------------------------------------------------------
+
+stim_type image_set # image set
+set_dir stim/vanHateren
+
+stim_samp  1000.0    # Stimulus sampling rate (going too low = black frames)
+stim_form   3d       # Stimulus format, 3d, 3c, 3d_b
+#stim_smooth 0.025    # SD of Gaussian for blurring (deg)
+
+st0          0.100   # start time (s)
+stn	     20.00    # duration (s)
+cx           0       # center (deg)
+cy           0       # center (deg)
+bgval        0.5     # background value [0..1]
+contrast     1.0     # Contrast
+maxlum       1.0     # Maximum luminance
+stim_nrpt    1       # Number of repeats
+grid_w	     70	     # number of boxes in width
+grid_h	     70      # number of boxes in hight
+box_w	     2       # pixels per box
+box_h	     2       # pixels per box
+dwell	     10	     # number of frames to dwell on each patch
+seed	     3245    # used for selecting patch?
