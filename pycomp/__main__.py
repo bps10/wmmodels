@@ -116,8 +116,10 @@ def main():
         plot.s_cone_hist(model, mosaic_file, SPECIES, single_cone, block_plots)
 
     if 'c_inputs' in plots:
-        plot.cone_inputs(d, model, mosaic_file, cell_type, block_plots, 
-                         [48.768, 22.265, 18.576])
+        '''plot.cone_inputs(d, model, mosaic_file, cell_type, block_plots, 
+                         [48.768, 22.265, 18.576])'''
+        plot.nat_image_analysis(d, model, mosaic_file, cell_type,
+                                block_plots)
 
     if 'nat_image' in plots:
         plot.nat_image_analysis(d, model, mosaic_file, cell_type,

@@ -73,8 +73,8 @@ def response(d, cell_type, analysis_type,
     return resp
 
 
-def classic_mdscaling(output, mod_name, rg):
-    '''
+def classic_mdscaling(dist_mat, categories, display_verbose=False,
+                      rand_seed=23453, Nseeds=100, test_size=0.1):
     '''
     # ----- params ----- #
     # Don't use if Nseeds > 1
@@ -85,31 +85,11 @@ def classic_mdscaling(output, mod_name, rg):
     Nseeds = 100
     # proportion of data set to leave for test
     test_size = 0.1
-    # dimensions to use from MDS in SVD (list)
-    dims = [0, 1, 2]
-    # threshold rg that separates red, white, green
-    rg_thresh = 0.5
     # search grid params in svm
-    param_grid = {'C': [1e2, 1e3, 5e3, 1e4, 5e4, 1e5, 1e6, 1e7],
-                  'gamma': [0.001, 0.01, 0.05], }
-    # cols 2, 3, 4 = stimulated cones; 10:27 = neighbors
-    cols = [2, 3, 4, 10, 11, 12, 13, 14, 15]#, 16, 17, 18, 19, 20]
+    param_grid = 
     # ------------------- #
 
-    # keep only high purity cones if a vector is passed
-    if high_purity is not None:
-        output = output[high_purity, :]
-        rg = rg[high_purity]
-    
-    # break rg into three categories: red, green, white
-    red = rg < -rg_thresh
-    green = rg > rg_thresh
-    color_categories = red + green * 2
-    color_categories = color_categories.T[0]
-
-    # select out the predictors
-    predictors = output[:, cols]
-
+    '''
     # set up random numbers
     np.random.seed(rand_seed)
     rand_seeds = np.round(np.random.rand(Nseeds, 1) * 10000)
@@ -121,19 +101,8 @@ def classic_mdscaling(output, mod_name, rg):
     for seed in rand_seeds:
         # Split into a training set and a test set using a stratified k fold
         X_train, X_test, y_train, y_test = train_test_split(
-            predictors, color_categories, test_size=test_size,
+            predictors, categories, test_size=test_size,
             random_state=int(seed[0]))
-
-        # first thing need to transform output into distance matrix
-        # many to choose from including: euclidean, correlation, cosine, 
-        # cityblock, minkowski, hamming, etc
-        metric = 'correlation'
-        dist_train = spat.distance.pdist(X_train, metric)
-        dist_test = spat.distance.pdist(X_test, metric)
-
-        # convert distance (output in vector form) into square form
-        dist_train = spat.distance.squareform(dist_train)
-        dist_test = spat.distance.squareform(dist_test)
 
         # compute the classical multi-dimensional scaling
         config_mat, eigen = d.cmdscale(dist_train)
@@ -180,35 +149,150 @@ def compute_corr_matrix(d, cell_type):
     '''
     # Get cell list from data keys
     celllist = get_cell_list(d)
+    ncells = len(celllist)
 
     # Load params from meta data
-    N = num(d['const']['MOO_tn']['val']) # time steps
-
-    time = get_time(d)
-    ncells = len(celllist)
-    time_bin = 15
+    nsteps = num(d['const']['MOO_tn']['val']) # time steps
+    ntrials = num(d['ntrial'])
 
     normalize = False    
-    cells = get_cell_type(cell_type)
+    #cells = get_cell_type(cell_type)
     if cell_type == 'rgc':
         resp_ind = 'p'
     else:
         resp_ind = 'x'
 
-    cellkey = get_cell_data(d, 'bp') 
+    cellkey = get_cell_data(d, cell_type) 
         
-    t = 0 # trial 0
-    r1 = cellkey['tr'][t]['r'][0]
-    data_mat = np.zeros((ncells, len(d['tr'][t]['r'][r1][resp_ind])))
-    for i, r in enumerate(cellkey['tr'][t]['r']):
-        data_mat[i, :] = d['tr'][t]['r'][r][resp_ind]
+    data_mat = np.zeros((ncells, nsteps * ntrials))
+    for t in range(ntrials):
+        for i, r in enumerate(cellkey['tr'][t]['r']):
+            data_mat[i, t * nsteps:(t + 1) * nsteps] = d['tr'][t]['r'][r][resp_ind]
     corrmat = 1 - np.corrcoef(data_mat)
 
-    '''metric = 'correlation'
-    distances = spat.distance.pdist(data_mat, metric)
-    corrmat = spat.distance.squareform(distances)'''
-
     return corrmat
+
+
+def compute_cone_weights():
+    for c in r: # for each cell type in results
+        output = np.zeros((len(r[c][:, 0]), 37))
+        for cone in range(0, len(r[c][:, 0])):
+            ind = np.where(celldat[:, 0] == float(celllist[cone]))[0]
+            loc = celldat[ind, 2:4][0]
+            
+            # compute s weight for mosaic plot
+            s_weight = r[c][cone, 0] #compute_s_weight(r, c, cone)
+            
+            # compute cone weights (re-order to L, M, S)
+            cone_weights = [r[c][cone, 1], r[c][cone, 2], s_weight]
+
+
+def get_cone_xy_lms(d, celldat, celllist):
+    '''Find the xy position and cone type (lms) of a population of cones.
+    '''    
+    ncells = len(celllist)
+    
+    xylms = np.zeros((ncells, 3))
+    t = 0 # only need to look at first trial
+    for cone in range(ncells): # for each cell
+        ind = np.where(celldat[:, 0] == float(celllist[cone]))[0]
+        loc = celldat[ind, 2:4][0]
+        lms = celldat[ind, 1]
+        xylms[cone, :] = np.concatenate([loc, lms])
+    return xylms
+
+
+def associate_cone_color_resp(r, celldat, celllist, mod_name, bkgd='white',
+                              randomize=False, cell_type='bp'):
+    '''
+    '''
+    # first get data
+    cnaming = np.genfromtxt('mosaics/' + mod_name + '_' + bkgd + '_bkgd.csv', 
+                            delimiter=',', skip_header=1)
+    newold = np.genfromtxt('mosaics/' + mod_name + '_old_new.csv')
+    mosaiclist = np.genfromtxt('mosaics/' + mod_name + '_mosaic.txt')
+    
+    # get the nearest neighbors to the specified cone
+    to_newold = spat.KDTree(newold[:, 2:])
+    to_cnaming = spat.KDTree(cnaming[:, :2])
+    to_simmos = spat.KDTree(mosaiclist[:, :2])
+
+    count = 0
+    c = cell_type
+    output = np.zeros((len(r[c][:, 0]), 39))
+    for cone in range(0, len(r[c][:, 0])):
+        ind = np.where(celldat[:, 0] == float(celllist[cone]))[0]
+        loc = celldat[ind, 2:4][0]
+
+        # compute s weight for mosaic plot
+        s_weight = r[c][cone, 0] #compute_s_weight(r, c, cone)
+
+        # compute cone weights (re-order to L, M, S)
+        cone_weights = [r[c][cone, 1], r[c][cone, 2], s_weight]
+
+        # --- match up color names and modeled output --- #
+        # associate cones in model and AO
+        oldcoord = to_newold.query(loc, 1)
+        moscoord = to_simmos.query(loc, 11)
+        if oldcoord[0] < 0.01:
+            cone_type = mosaiclist[oldcoord[1], 2]
+            newcoord = newold[oldcoord[1], :2]
+            cname_ind = to_cnaming.query(newcoord, 1)
+
+            if cname_ind[0] < 0.01:
+                cnames = cnaming[cname_ind[1], :]
+                total = cnames[6:].sum()
+
+                # make sure more than 8 seen trials and cone is not S
+                if total > 8 and cone_type > 0: 
+                    output[count, :2] = loc
+                    output[count, 37] = cone_type
+                    output[count, 38] = celldat[ind, 0]
+                    output[count, 5:10] = cnames[6:] # / total
+                
+                    # now need to associate mosaiclist w cone inputs
+                    j = 10
+                    for i in range(1, 9): # 10 nearest neighbors
+                        if randomize:
+                            ind1 = np.random.randint(0, 400, 1)
+                        else:
+                            ind1 = np.where(celldat[:, 0] == moscoord[1][i])[0]
+                            
+                        neighbor = r[c][ind1]
+                        output[count, j:j + 3] = neighbor
+                        j += 3
+                    count += 1
+    # cleanup output and remove zeros
+    output = output[~np.all(output == 0, axis=1)]
+
+    return output
+
+
+def get_rg_from_naming(naming, purity_thresh=None):
+    '''
+    purity_thresh: find cones that have purities higher than this threshold.
+    '''
+    if purity_thresh is None:
+        purity_thresh = 0
+
+    high_purity = []
+    rg = np.zeros((len(naming[:, 1]), 1))
+    for i in range(len(naming[:, 1])):
+        maxind = naming[i, :].argmax()
+
+        # check if cone has a purity greater than purity_threshold
+        if naming[i, maxind] / naming[i, :].sum() > purity_thresh:
+            high_purity.append(i)
+        
+        # green - red / total
+        rg[i] = (naming[i, 2] - naming[i, 1]) / naming[i, :].sum()
+
+    return rg, high_purity
+
+
+def compute_s_weight(r, c, cone):
+    # not currently being used
+    return 1 - (np.abs(r[c][cone, 2]) + np.abs(r[c][cone, 1]))
 
 
 def compute_psth(spike_times, time_ms, delta_t=16):

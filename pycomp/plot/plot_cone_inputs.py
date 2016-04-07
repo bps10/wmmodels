@@ -73,7 +73,7 @@ def cone_inputs(d, mod_name, mosaic_file, cell_type='bp', block_plots=True,
                 cone_weights = [r[c][cone, 1], r[c][cone, 2], s_weight]
 
                 # match up color names and modeled output
-                output, count = get_color_names(output, count,
+                output, count = an.get_color_names(output, count,
                                                 to_newold, to_simmos, to_cnaming,
                                                 mosaiclist, newold, cnaming, loc,
                                                 cone_weights, celldat, r, c)
@@ -88,7 +88,7 @@ def cone_inputs(d, mod_name, mosaic_file, cell_type='bp', block_plots=True,
 
         # compute rg metric and find high purity indices
         if args is not []:
-            rg, high_purity = get_rg_from_output(output, purity_thresh)
+            rg, high_purity = an.get_rg_from_naming(output[:, 5:10], purity_thresh)
 
         # plot color names
         if 'color_names' in args:
@@ -452,64 +452,6 @@ def fit_linear_model(rg, output, mod_name, opponent=True):
         ax.plot([0, 1], [0, 1], 'k-')
     fig.savefig('results/img/' + mod_name + '/cone_inputs_model_error.svg',
                 edgecolor='none')
-
-
-def get_rg_from_output(output, purity_thresh=None):
-    '''
-    purity_thresh: find cones that have purities higher than this threshold.
-    '''
-    if purity_thresh is None:
-        purity_thresh = 0
-
-    high_purity = []
-    rg = np.zeros((len(output[:, 1]), 1))
-    for i in range(len(output[:, 1])):
-        maxind = output[i, 5:10].argmax()
-
-        # check if cone has a purity greater than purity_threshold
-        if output[i, 5 + maxind] / output[i, 5:10].sum() > purity_thresh:
-            high_purity.append(i)
-
-        rg[i] = (output[i, 7] - output[i, 6]) / output[i, 5:10].sum()
-
-    return rg, high_purity
-
-
-def get_color_names(output, count, to_newold, to_simmos, to_cnaming, 
-                    mosaiclist, newold, cnaming, loc, cone_weights, 
-                    celldat, r, c):
-
-    # associate cones in model and AO
-    oldcoord = to_newold.query(loc, 1)
-    moscoord = to_simmos.query(loc, 11)
-    if oldcoord[0] < 0.01:
-        cone_type = mosaiclist[oldcoord[1], 2]
-        newcoord = newold[oldcoord[1], :2]
-        cname_ind = to_cnaming.query(newcoord, 1)
-        if cname_ind[0] < 0.01:
-            cnames = cnaming[cname_ind[1], :]
-            total = cnames[6:].sum()
-
-            # make sure more than 8 seen trials and cone is not S
-            if total > 8 and cone_type > 0: 
-                output[count, :2] = loc
-                output[count, 2:5] = cone_weights
-                output[count, 5:10] = cnames[6:] # / total
-                
-                # now need to associate mosaiclist w cone inputs
-                j = 10
-                for i in range(1, 9): # 10 nearest neighbors
-                    ind1 = np.where(celldat[:, 0] == moscoord[1][i])[0]
-                    #ind1 = np.random.randint(0, 400, 1)
-                    neighbor = r[c][ind1]
-                    output[count, j:j + 3] = neighbor
-                    j += 3
-                count += 1
-    return output, count
-
-
-def compute_s_weight(r, c, cone):
-    return 1 - (np.abs(r[c][cone, 2]) + np.abs(r[c][cone, 1]))
 
 
 def find_shape_color(type, c):
