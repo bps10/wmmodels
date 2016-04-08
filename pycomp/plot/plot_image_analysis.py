@@ -9,18 +9,31 @@ from base import data as dat
 import analysis as an
 import util
 
-def nat_image_analysis(d, model_name, mosaic_file, cell_type, block_plots, 
-                       purity_thresh=0.0):
-    '''
-    '''
-    color_cats = True
 
+def nat_image_analysis(d, model_name, mosaic_file, cell_type, block_plots, 
+                       color_cats = True, purity_thresh=0.0, nseeds=50):
+    '''
+    '''
+    # --- params --- #
+    rg_metric = False
+    background = 'white'
+    # MDScaling options
+    dims = [0, 1, 2]
+    test_size = 0.1
+    param_grid = {'C': [1e2, 1e3, 5e3, 1e4, 5e4, 1e5, 1e6, 1e7],
+                  'gamma': [0.001, 0.01, 0.05], }
+    # -------------- #
+
+    human_subjects = ['wt', 'bps']
     celldat = np.genfromtxt('results/txt_files/' + model_name + '/nn_results.txt')
     celllist = util.get_cell_list(d)
     ncells = len(celllist)
     
+    # put responses into a matrix for easy processing
+    data_matrix = an.get_data_matrix(d, cell_type)
+
     # get correlation matrix
-    corrmat = an.compute_corr_matrix(d, cell_type)
+    corrmat = an.compute_corr_matrix(data_matrix)
 
     # compute the classical multi-dimensional scaling
     config_mat, eigen = dat.cmdscale(corrmat)
@@ -28,25 +41,45 @@ def nat_image_analysis(d, model_name, mosaic_file, cell_type, block_plots,
     # get the location and cone type of each cone
     xy_lms = an.get_cone_xy_lms(d, celldat, celllist)
 
-    # get response
-    cone_contrast=[48.768, 22.265, 18.576]
-    r = an.response(d, cell_type, 'cone_inputs',
-                    cone_contrast=cone_contrast)
-    output = an.associate_cone_color_resp(r, celldat, celllist, model_name, 
-                                       bkgd='white', randomize=False)
-    stim_cone_ids = output[:, -1]
-    stim_cone_inds = np.zeros((1, len(stim_cone_ids)), dtype='int')
-    for cone in range(len(stim_cone_ids)):
-        stim_cone_inds[0, cone] = np.where(celldat[:, 0] == stim_cone_ids[cone])[0]
-
-    # break rg into three categories: red, green, white
-    rg, high_purity = an.get_rg_from_naming(output[:, 5:10], purity_thresh)
     # threshold rg that separates red, white, green
-    rg_thresh = 0.5 
-    red = rg < -rg_thresh
-    green = rg > rg_thresh
-    color_categories = red * 2 + green
-    color_categories = color_categories.T[0]
+    if color_cats:
+        # get response
+        cone_contrast=[48.768, 22.265, 18.576]
+        r = an.response(d, cell_type, 'cone_inputs',
+                        cone_contrast=cone_contrast)
+        output = an.associate_cone_color_resp(r, celldat, celllist, model_name, 
+                                              bkgd=background, randomize=False)
+        stim_cone_ids = output[:, -1]
+        stim_cone_inds = np.zeros((1, len(stim_cone_ids)), dtype='int')
+        for cone in range(len(stim_cone_ids)):
+            stim_cone_inds[0, cone] = np.where(celldat[:, 0] == stim_cone_ids[cone])[0]
+
+        if rg_metric:
+            # break rg into three categories: red, green, white
+            rg, high_purity = an.get_rg_from_naming(output[:, 5:10], purity_thresh)
+            rg_thresh = 0.5
+            red = rg < -rg_thresh
+            green = rg > rg_thresh
+        else: # use dom response category
+            max_cat = np.argmax(output[:, 5:10], axis=1)
+            red = max_cat == 1
+            green = max_cat == 2
+            blue = max_cat == 3
+            yellow = max_cat == 4
+
+        color_categories = (yellow * 4 + blue * 3 + red * 2 + green).T
+        class_cats = color_categories.copy()
+        config_mat = config_mat[stim_cone_inds, :][0]
+        data_matrix = data_matrix[stim_cone_inds, :][0]
+        ncells = len(class_cats)
+    else:
+        class_cats = xy_lms[:, 2]
+
+    # MD Scaling
+    an.classic_mdscaling(data_matrix, class_cats, param_grid, dims=dims,
+                         display_verbose=False, rand_seed=23453, 
+                         Nseeds=nseeds, test_size=test_size)
+    # --------------------------------------------------- #
 
     # plot correlation matrix
     ax, fig = pf.get_axes(1, 1, nticks=[3, 3], return_fig=True)    
@@ -56,15 +89,8 @@ def nat_image_analysis(d, model_name, mosaic_file, cell_type, block_plots,
     ax, fig = pf.get_axes(1, 2, nticks=[3, 3], return_fig=True)
     fig3d = plt.figure()
     ax3d = fig3d.add_subplot(111, projection='3d')
-
-    if color_cats:
-        class_cats = color_categories
-        config_mat = config_mat[stim_cone_inds, :][0]
-        ncells = len(color_categories)
-    else:
-        class_cats = xy_lms[:, 2]
     for cone in range(ncells):
-        if class_cats[cone] == 0 and color_cats is False:
+        if class_cats[cone] == 0 and color_cats is False or class_cats[cone] == 3:
             color = [0, 0, 1]
         elif class_cats[cone] == 0 and color_cats is True:  
             color = [0.7, 0.7, 0.7]
@@ -72,8 +98,10 @@ def nat_image_analysis(d, model_name, mosaic_file, cell_type, block_plots,
             color = [0, 1, 0]
         elif class_cats[cone] == 2:
             color = [1, 0, 0]
+        elif class_cats[cone] == 4:
+            color = [0.8, 0.8, 0] # yellow
         else:
-            raise TypeError('lms type must be 0, 1, 2')
+            raise TypeError('category type must be int [0, 4]')
 
         ax[0].plot(config_mat[cone, 0], config_mat[cone, 1], 'o', markersize=8,
                    alpha=0.8, color=color, markeredgecolor='k')
@@ -87,29 +115,3 @@ def nat_image_analysis(d, model_name, mosaic_file, cell_type, block_plots,
     
 
     plt.show()
-
-
-'''
-    # threshold rg that separates red, white, green
-    rg_thresh = 0.5
-    # dimensions to use from MDS in SVD (list)
-    dims = [0, 1, 2]
-    # cols 2, 3, 4 = stimulated cones; 10:27 = neighbors
-    cols = [2, 3, 4, 10, 11, 12, 13, 14, 15]#, 16, 17, 18, 19, 20]
-    param_grid = {'C': [1e2, 1e3, 5e3, 1e4, 5e4, 1e5, 1e6, 1e7],
-                  'gamma': [0.001, 0.01, 0.05], }
-
-    # keep only high purity cones if a vector is passed
-    if high_purity is not None:
-        output = output[high_purity, :]
-        rg = rg[high_purity]
-    
-    # break rg into three categories: red, green, white
-    red = rg < -rg_thresh
-    green = rg > rg_thresh
-    color_categories = red + green * 2
-    color_categories = color_categories.T[0]
-
-    # select out the predictors
-    predictors = output[:, cols]
-'''

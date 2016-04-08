@@ -119,11 +119,11 @@ def main():
         '''plot.cone_inputs(d, model, mosaic_file, cell_type, block_plots, 
                          [48.768, 22.265, 18.576])'''
         plot.nat_image_analysis(d, model, mosaic_file, cell_type,
-                                block_plots)
+                                block_plots, color_cats=True)
 
     if 'nat_image' in plots:
         plot.nat_image_analysis(d, model, mosaic_file, cell_type,
-                                block_plots)
+                                block_plots, color_cats=False)
 
 if __name__ == '__main__':
 

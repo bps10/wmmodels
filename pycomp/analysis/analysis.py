@@ -1,6 +1,14 @@
 from __future__ import division
 import numpy as np
 import scipy.spatial as spat
+from sklearn.svm import SVC
+from sklearn.grid_search import GridSearchCV
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+from sklearn.cross_validation import train_test_split
+
+from base import data as dat
+
 from util import get_time, get_cell_data, get_cell_list, get_cell_type, num
 
 
@@ -73,8 +81,9 @@ def response(d, cell_type, analysis_type,
     return resp
 
 
-def classic_mdscaling(dist_mat, categories, display_verbose=False,
-                      rand_seed=23453, Nseeds=100, test_size=0.1):
+def classic_mdscaling(data_matrix, categories, param_grid, dims=[0, 1, 2],
+                      display_verbose=False, rand_seed=23453, 
+                      Nseeds=100, test_size=0.1):
     '''
     # ----- params ----- #
     # Don't use if Nseeds > 1
@@ -90,6 +99,22 @@ def classic_mdscaling(dist_mat, categories, display_verbose=False,
     # ------------------- #
 
     '''
+    target_names = ['white']
+    if np.sum(categories == 1) > 1:
+        target_names.append('green')
+    if np.sum(categories == 2) > 1:
+        target_names.append('red')
+    if np.sum(categories == 3) > 1:
+        target_names.append('blue')
+    if np.sum(categories == 4) > 1:
+        target_names.append('yellow')
+
+    # in the case of white, red, blue responses, shift blue down to 
+    # 2 for SVM purposes
+    unique_resp = np.unique(categories)
+    if len(unique_resp) == 3 and categories.max() == 3:
+        categories[categories > 0] -= 1
+
     # set up random numbers
     np.random.seed(rand_seed)
     rand_seeds = np.round(np.random.rand(Nseeds, 1) * 10000)
@@ -97,16 +122,22 @@ def classic_mdscaling(dist_mat, categories, display_verbose=False,
     # set up data containers for results
     total_y_true = []
     total_y_pred = []
-
+    ncells = len(data_matrix[:, 0])
     for seed in rand_seeds:
         # Split into a training set and a test set using a stratified k fold
         X_train, X_test, y_train, y_test = train_test_split(
-            predictors, categories, test_size=test_size,
-            random_state=int(seed[0]))
+            np.arange(ncells), categories, test_size=test_size,
+            random_state=int(seed[0]))       
+        X_train = data_matrix[X_train, :]
+        X_test = data_matrix[X_test, :]
+
+        # compute distance matrix
+        dist_train = compute_corr_matrix(X_train)
+        dist_test = compute_corr_matrix(X_test)
 
         # compute the classical multi-dimensional scaling
-        config_mat, eigen = d.cmdscale(dist_train)
-        config_mat_test, eigen = d.cmdscale(dist_test)
+        config_mat, eigen = dat.cmdscale(dist_train)
+        config_mat_test, eigen = dat.cmdscale(dist_test)
 
         # Classify with SVM
         clf = GridSearchCV(SVC(kernel='rbf', class_weight='balanced'), 
@@ -129,77 +160,15 @@ def classic_mdscaling(dist_mat, categories, display_verbose=False,
     # print the summary results
     total_y_true = np.asarray(total_y_true).flatten()
     total_y_pred = np.asarray(total_y_pred).flatten()
-    target_names = ['white', 'red', 'green']
 
     print 'N simulations: ', Nseeds
     print 'Dimensions used: ', dims 
-    print 'rg thresh: ', rg_thresh
     print param_grid
-    print 'cols used: ', cols
 
     n_classes = 3
     print classification_report(total_y_true, total_y_pred,
                                 target_names=target_names)
     print confusion_matrix(total_y_true, total_y_pred, labels=range(n_classes))
-
-
-
-def compute_corr_matrix(d, cell_type):
-    '''
-    '''
-    # Get cell list from data keys
-    celllist = get_cell_list(d)
-    ncells = len(celllist)
-
-    # Load params from meta data
-    nsteps = num(d['const']['MOO_tn']['val']) # time steps
-    ntrials = num(d['ntrial'])
-
-    normalize = False    
-    #cells = get_cell_type(cell_type)
-    if cell_type == 'rgc':
-        resp_ind = 'p'
-    else:
-        resp_ind = 'x'
-
-    cellkey = get_cell_data(d, cell_type) 
-        
-    data_mat = np.zeros((ncells, nsteps * ntrials))
-    for t in range(ntrials):
-        for i, r in enumerate(cellkey['tr'][t]['r']):
-            data_mat[i, t * nsteps:(t + 1) * nsteps] = d['tr'][t]['r'][r][resp_ind]
-    corrmat = 1 - np.corrcoef(data_mat)
-
-    return corrmat
-
-
-def compute_cone_weights():
-    for c in r: # for each cell type in results
-        output = np.zeros((len(r[c][:, 0]), 37))
-        for cone in range(0, len(r[c][:, 0])):
-            ind = np.where(celldat[:, 0] == float(celllist[cone]))[0]
-            loc = celldat[ind, 2:4][0]
-            
-            # compute s weight for mosaic plot
-            s_weight = r[c][cone, 0] #compute_s_weight(r, c, cone)
-            
-            # compute cone weights (re-order to L, M, S)
-            cone_weights = [r[c][cone, 1], r[c][cone, 2], s_weight]
-
-
-def get_cone_xy_lms(d, celldat, celllist):
-    '''Find the xy position and cone type (lms) of a population of cones.
-    '''    
-    ncells = len(celllist)
-    
-    xylms = np.zeros((ncells, 3))
-    t = 0 # only need to look at first trial
-    for cone in range(ncells): # for each cell
-        ind = np.where(celldat[:, 0] == float(celllist[cone]))[0]
-        loc = celldat[ind, 2:4][0]
-        lms = celldat[ind, 1]
-        xylms[cone, :] = np.concatenate([loc, lms])
-    return xylms
 
 
 def associate_cone_color_resp(r, celldat, celllist, mod_name, bkgd='white',
@@ -209,6 +178,9 @@ def associate_cone_color_resp(r, celldat, celllist, mod_name, bkgd='white',
     # first get data
     cnaming = np.genfromtxt('mosaics/' + mod_name + '_' + bkgd + '_bkgd.csv', 
                             delimiter=',', skip_header=1)
+    # old_new refers to the coordinates of the classified cones in the old (AO defined)
+    # coord space and those same cones in the WM defined space. These files are 
+    # generated in mosaic/gen_mosaic.py and do not include LMS cone types
     newold = np.genfromtxt('mosaics/' + mod_name + '_old_new.csv')
     mosaiclist = np.genfromtxt('mosaics/' + mod_name + '_mosaic.txt')
     
@@ -288,6 +260,67 @@ def get_rg_from_naming(naming, purity_thresh=None):
         rg[i] = (naming[i, 2] - naming[i, 1]) / naming[i, :].sum()
 
     return rg, high_purity
+
+
+def compute_corr_matrix(data_mat):
+    '''
+    '''
+    return 1 - np.corrcoef(data_mat)
+
+
+def get_data_matrix(d, cell_type):
+    # Get cell list from data keys
+    celllist = get_cell_list(d)
+    ncells = len(celllist)
+
+    # Load params from meta data
+    nsteps = num(d['const']['MOO_tn']['val']) # time steps
+    ntrials = num(d['ntrial'])
+
+    normalize = False    
+    #cells = get_cell_type(cell_type)
+    if cell_type == 'rgc':
+        resp_ind = 'p'
+    else:
+        resp_ind = 'x'
+
+    cellkey = get_cell_data(d, cell_type) 
+        
+    data_mat = np.zeros((ncells, nsteps * ntrials))
+    for t in range(ntrials):
+        for i, r in enumerate(cellkey['tr'][t]['r']):
+            data_mat[i, t * nsteps:(t + 1) * nsteps] = d['tr'][t]['r'][r][resp_ind]
+
+    return data_mat
+
+
+def compute_cone_weights():
+    for c in r: # for each cell type in results
+        output = np.zeros((len(r[c][:, 0]), 37))
+        for cone in range(0, len(r[c][:, 0])):
+            ind = np.where(celldat[:, 0] == float(celllist[cone]))[0]
+            loc = celldat[ind, 2:4][0]
+            
+            # compute s weight for mosaic plot
+            s_weight = r[c][cone, 0] #compute_s_weight(r, c, cone)
+            
+            # compute cone weights (re-order to L, M, S)
+            cone_weights = [r[c][cone, 1], r[c][cone, 2], s_weight]
+
+
+def get_cone_xy_lms(d, celldat, celllist):
+    '''Find the xy position and cone type (lms) of a population of cones.
+    '''    
+    ncells = len(celllist)
+    
+    xylms = np.zeros((ncells, 3))
+    t = 0 # only need to look at first trial
+    for cone in range(ncells): # for each cell
+        ind = np.where(celldat[:, 0] == float(celllist[cone]))[0]
+        loc = celldat[ind, 2:4][0]
+        lms = celldat[ind, 1]
+        xylms[cone, :] = np.concatenate([loc, lms])
+    return xylms
 
 
 def compute_s_weight(r, c, cone):

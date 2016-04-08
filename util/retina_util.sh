@@ -123,7 +123,8 @@ function change_parameters {
 	STIM_FILE=cone_iso_step
 	RESP_FILE=retina_line_${MODEL}
 
-    elif [[ $OPTS == "cone_inputs" || $OPTS == "vanhat" ]]
+    elif [[ $OPTS == "cone_inputs" || $OPTS == "vanhat" || \
+	${OPTS[1]} == "cone_inputs" || ${OPTS[1]} == "vanhat" ]]
     then
 	# has to be bp cells so that looks at output of h1, h2 vs cone
 	knn_resp ${SCONE} $N_CONES bp
