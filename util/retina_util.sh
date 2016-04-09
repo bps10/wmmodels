@@ -73,7 +73,13 @@ function change_parameters {
     then
 	DUMP_CID=3039 # L cone to left of center S cone
 	SCONE=3049
-	MOSAIC_FILE=WT.mosaic
+	if [[ $RANDOM_CONE ]]; then
+	    MOSAIC_FILE=WT_randomized.mosaic
+	    MOSAIC_TXT_FILE=WT_mosaic_randomized.txt
+	else
+	    MOSAIC_FILE=WT.mosaic
+	    MOSAIC_TXT_FILE=WT_mosaic.txt
+	fi
 	N_CONES=600 # number of cones used in cone_inputs
 
     elif [ $MODEL == "BPS" ]
@@ -81,7 +87,13 @@ function change_parameters {
 	#DUMP_CID=3153 # L cone to left of bottom left 5 S cone patch
 	DUMP_CID=3990 # L cone to upper right of dark cone
 	SCONE=2914 # the dark cone
-	MOSAIC_FILE=BPS.mosaic
+	if [[ $RANDOM_CONE ]]; then
+	    MOSAIC_FILE=BPS_randomized.mosaic
+	    MOSAIC_TXT_FILE=BPS_mosaic_randomized.txt
+	else
+	    MOSAIC_FILE=BPS.mosaic
+	    MOSAIC_TXT_FILE=BPS_mosaic.txt
+	fi
 	N_CONES=600 # number of cones used in cone_inputs
     fi
 
@@ -123,8 +135,8 @@ function change_parameters {
 	STIM_FILE=cone_iso_step
 	RESP_FILE=retina_line_${MODEL}
 
-    elif [[ $OPTS == "cone_inputs" || $OPTS == "vanhat" || \
-	${OPTS[1]} == "cone_inputs" || ${OPTS[1]} == "vanhat" ]]
+    elif [[ $(exists_in ${OPTS[0]} "${knn_cond[*]}") == true || \
+	$(exists_in ${OPTS[1]} "${knn_cond[*]}") == true ]]
     then
 	# has to be bp cells so that looks at output of h1, h2 vs cone
 	knn_resp ${SCONE} $N_CONES bp
@@ -133,11 +145,12 @@ function change_parameters {
 	    results/txt_files/$MODEL/nn_results.txt
 
 	RESP_FILE=knn_resp
+	# decide which response file to use
 	if [[ $OPTS == "vanhat" ]]
 	then
 	    STIM_FILE=img_vanhat
 	else
-          # sine wave would require change to analysis.py?
+            # sine wave would require change to analysis.py?
 	    stim_gen coneiso ${SHAPE} #full_field
 	    STIM_FILE=cone_iso_step
 	fi
@@ -254,6 +267,7 @@ function save_defaults {
     echo "FUND=$FUND" >> util/default_vars.sh
     echo "SHAPE=$SHAPE" >> util/default_vars.sh
     echo "RANDOM_S=$RANDOM_S" >> util/default_vars.sh
+    echo "RANDOM_CONE=$RANDOM_CONE" >> util/default_vars.sh
     echo "TN=$TN" >> util/default_vars.sh
     echo "LM_RATIO=$LM_RATIO" >> util/default_vars.sh
 
@@ -293,6 +307,7 @@ function print_info {
 	echo -e "-fund\t FUND"
 	echo -e "-shape\t SHAPE"
 	echo -e "-ran_s\t RANDOM_S"
+	echo -e "-ran_cone\t RANDOM_CONE"
 	echo -e "-lm_ratio\t LM_RATIO"
 	echo -e "-P\t H1GP"
 	echo -e "-H\t H1GH"
@@ -317,6 +332,7 @@ function print_info {
 	echo "fundamentals set to: $FUND"
 	echo "stim shape is set to: $SHAPE"
 	echo "random S is set to: $RANDOM_S"
+	echo "random cone is set to: $RANDOM_CONE"
 	echo "LM ratio is set to: $LM_RATIO"
 	echo "h1 gp is set to: $H1GP"
 	echo "h1 gh is set to: $H1GH"
@@ -425,6 +441,7 @@ function run_wm {
 	retina0/bipolar_lm_wh2 ${H2W} \
 	retina0/cone_mosaic/lm_ratio ${LM_RATIO} \
 	retina0/cone_mosaic/regular_s ${REGULAR_S} \
+	retina0/cone_mosaic/file mosaics/${MOSAIC_TXT_FILE} \
 	retina0/stim_override ${STIM_OVERRIDE}\
         retina0/mesh_dump_type ${MESH_DUMP_TYPE} \
 	retina0/mesh_dump_cid ${MESH_DUMP_CID} \
@@ -448,7 +465,7 @@ function run_wm {
 	    mv results/nd_files/zz.nd results/nd_files/${MODEL}/tf.nd
 	else
 	    mkdir -p results/nd_files/${MODEL}
-	    mv results/nd_files/zz.nd results/nd_files/${MODEL}/${OPTS}.nd
+	    mv results/nd_files/zz.nd results/nd_files/${MODEL}/${name}.nd
 	fi
     fi
 

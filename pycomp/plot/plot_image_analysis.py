@@ -9,14 +9,16 @@ from base import data as dat
 import analysis as an
 import util
 
-
-def nat_image_analysis(d, model_name, mosaic_file, cell_type, block_plots, 
-                       color_cats = True, purity_thresh=0.0, nseeds=50):
+# change the name of this function
+def nat_image_analysis(d, model_name, mosaic_file, cell_type, 
+                       randomized, block_plots=True, color_cats=True,
+                       purity_thresh=0.0, nseeds=1):
     '''
     '''
     # --- params --- #
     rg_metric = False
     background = 'white'
+
     # MDScaling options
     dims = [0, 1, 2]
     test_size = 0.1
@@ -48,7 +50,7 @@ def nat_image_analysis(d, model_name, mosaic_file, cell_type, block_plots,
         r = an.response(d, cell_type, 'cone_inputs',
                         cone_contrast=cone_contrast)
         output = an.associate_cone_color_resp(r, celldat, celllist, model_name, 
-                                              bkgd=background, randomize=False)
+                                              bkgd=background, randomized=randomized)
         stim_cone_ids = output[:, -1]
         stim_cone_inds = np.zeros((1, len(stim_cone_ids)), dtype='int')
         for cone in range(len(stim_cone_ids)):
@@ -76,8 +78,9 @@ def nat_image_analysis(d, model_name, mosaic_file, cell_type, block_plots,
         class_cats = xy_lms[:, 2]
 
     # MD Scaling
-    an.classic_mdscaling(data_matrix, class_cats, param_grid, dims=dims,
-                         display_verbose=False, rand_seed=23453, 
+    target_names, class_cats = get_target_names_categories(color_cats, class_cats)
+    an.classic_mdscaling(data_matrix, class_cats, param_grid, target_names,
+                         dims=dims, display_verbose=False, rand_seed=23453, 
                          Nseeds=nseeds, test_size=test_size)
     # --------------------------------------------------- #
 
@@ -115,3 +118,26 @@ def nat_image_analysis(d, model_name, mosaic_file, cell_type, block_plots,
     
 
     plt.show()
+
+
+def get_target_names_categories(color_cats, categories):
+    if color_cats:
+        target_names = ['white']
+        if np.sum(categories == 1) > 1:
+            target_names.append('green')
+        if np.sum(categories == 2) > 1:
+            target_names.append('red')
+        if np.sum(categories == 3) > 1:
+            target_names.append('blue')
+        if np.sum(categories == 4) > 1:
+            target_names.append('yellow')
+
+            # in the case of white, red, blue responses, shift blue down to 
+            # 2 for SVM purposes
+            unique_resp = np.unique(categories)
+            if len(unique_resp) == 3 and categories.max() == 3:
+                categories[categories > 0] -= 1
+    else:
+        target_names = ['S', 'M', 'L']
+
+    return target_names, categories

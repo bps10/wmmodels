@@ -26,15 +26,17 @@ analysis=(siso miso liso coneiso h1 h2 \
     h_time mosaic gui stack nd plot \
     verbose params knn h_sf bp_sf rgc_sf \
     h_tf bp_tf rgc_tf \
-    s_dist cone_inputs step vanhat)
+    s_dist cone_inputs step vanhat iso_classify)
 runmod=(h1 h2 siso miso liso coneiso h_time knn h_sf bp_sf rgc_sf \
     h_tf bp_tf rgc_tf \
-    cone_inputs gui step vanhat)
+    cone_inputs gui step vanhat iso_classify)
 plots=(h1 h2 siso miso liso coneiso stack h_time verbose knn h_sf \
-    bp_sf rgc_sf h_tf bp_tf rgc_tf s_dist cone_inputs step vanhat)
+    bp_sf rgc_sf h_tf bp_tf rgc_tf s_dist cone_inputs step vanhat \
+    iso_classify)
 dump=(siso miso liso coneiso h_time knn h_sf bp_sf rgc_sf \
-    h_tf bp_tf rgc_tf cone_inputs step vanhat)
+    h_tf bp_tf rgc_tf cone_inputs step vanhat iso_classify)
 iso_cond=(siso miso liso coneiso)
+knn_cond=(cone_inputs vanhat iso_classify)
 
 OPTS=()
 i=0
@@ -48,6 +50,7 @@ while [ $i -lt $# ]; do
     FUND=$(check_arg -fund $FUND)
     SHAPE=$(check_arg -shape $SHAPE)
     RANDOM_S=$(check_arg -ran_s $RANDOM_S)
+    RANDOM_CONE=$(check_arg -ran_cone $RANDOM_CONE)
     LM_RATIO=$(check_arg -lm_ratio $LM_RATIO)
     H1GP=$(check_arg -P $H1GP)
     H1GH=$(check_arg -H $H1GH)
@@ -82,6 +85,22 @@ change_sys_matrix
 #-- 6. Delete old output files
 delete_old_file
 
+# name for saving and passing to plot
+if [[ $RANDOM_CONE == true ]]
+then
+    if [[ ${OPTS[0]} == plot ]]; then
+	name=${OPTS[1]}-H1W${H1W}_H2W${H2W}_randomized
+    else
+	name=${OPTS[0]}-H1W${H1W}_H2W${H2W}_randomized
+    fi
+else
+    if [[ ${OPTS[0]} == plot ]]; then
+	name=${OPTS[1]}-H1W${H1W}_H2W${H2W}
+    else
+	name=${OPTS[0]}-H1W${H1W}_H2W${H2W}
+    fi
+fi
+
 #-- 7. Perform the simulation(s)
 if [ $OPTS == "mosaic" ]
 then
@@ -92,11 +111,10 @@ then
     run_s_dist_analysis
 
 else
-
     if [ $(exists_in ${OPTS} "${runmod[*]}") == true ]
     then
 	run_wm ${MODEL} ${STIM_FILE}
-	
+
 	if [ $GUI == 0 ] # make sure model was truly run
 	then
 	#-- save current variables as new defaults
@@ -107,12 +125,10 @@ else
 fi
 
 #-- 8. Plotting routines
-if [[ $(exists_in ${OPTS[0]} "${plots[*]}") == true && $GUI == 0 ]]
+if [[ $(exists_in ${OPTS[0]} "${plots[*]}") == true || \
+    $(exists_in ${OPTS[1]} "${plots[*]}") == true && $GUI == 0 ]]
 then
-    python pycomp ${MOSAIC_FILE} ${OPTS} ${MODEL} ${SHAPE} ${BLOCK_PLOTS}
-elif [[ $(exists_in ${OPTS[1]} "${plots[*]}") == true  && $GUI == 0 ]]
-then
-    python pycomp ${MOSAIC_FILE} ${OPTS[1]} ${MODEL} ${SHAPE} ${BLOCK_PLOTS}
+    python pycomp ${MOSAIC_FILE} ${name} ${MODEL} ${SHAPE} ${BLOCK_PLOTS}
 fi
 
 #-- 9. Start nd viewer when appropriate

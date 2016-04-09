@@ -225,13 +225,34 @@ def gen_randomized_mosaic(mosaic_file):
     np.savetxt(savename, data, delimiter='  ', fmt="%f %f %d")
 
 
-if __name__ == '__main__':
+def save_WM_mosaic_file(mosaic_file):
+    '''
+    '''
+    data = np.genfromtxt(mosaic_file, delimiter=' ')
 
-    gen_mosaic(mosaic_file='model.mosaic', # model mosaic file
+    if mosaic_file.split('_')[-1][:-4] == 'randomized':
+        fname = mosaic_file.split('_')[0] + '_randomized.mosaic'
+    else:
+        fname = mosaic_file.split('_')[0] + '.mosaic'
+    fhandle = open(fname, 'w')
+
+    for i in range(len(data[:, 2])):
+        # count, lms type, x, y
+        fhandle.write(str(i) + '\t' + 
+                      str(int(data[i, 2])) + '\t' + 
+                      str(data[i, 0]) + '\t' +
+                      str(data[i, 1]) + '\n')
+    fhandle.close()
+
+
+if __name__ == '__main__':
+    '''gen_mosaic(mosaic_file='model.mosaic', # model mosaic file
                subj_file='20076_BPS.csv', # subj mosaic file
                scale_factor=4.6, # scale subj mosaic to fit density WT=4.6
                offset_factor=40 # offset subj mosaic to be centered WT=40
                )
     find_hc()
 
-    gen_randomized_mosaic('mosaics/BPS_mosaic.txt')
+    gen_randomized_mosaic('mosaics/BPS_mosaic.txt')'''
+
+    save_WM_mosaic_file('mosaics/WT_mosaic.txt')

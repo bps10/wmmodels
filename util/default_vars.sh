@@ -3,5 +3,6 @@ MODEL=WT
 FUND=true
 SHAPE=full_field
 RANDOM_S=false
+RANDOM_CONE=true
 TN=512
 LM_RATIO=1.0

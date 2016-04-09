@@ -81,8 +81,8 @@ def response(d, cell_type, analysis_type,
     return resp
 
 
-def classic_mdscaling(data_matrix, categories, param_grid, dims=[0, 1, 2],
-                      display_verbose=False, rand_seed=23453, 
+def classic_mdscaling(data_matrix, categories, param_grid, target_names,
+                      dims=[0, 1, 2], display_verbose=False, rand_seed=23453, 
                       Nseeds=100, test_size=0.1):
     '''
     # ----- params ----- #
@@ -99,22 +99,6 @@ def classic_mdscaling(data_matrix, categories, param_grid, dims=[0, 1, 2],
     # ------------------- #
 
     '''
-    target_names = ['white']
-    if np.sum(categories == 1) > 1:
-        target_names.append('green')
-    if np.sum(categories == 2) > 1:
-        target_names.append('red')
-    if np.sum(categories == 3) > 1:
-        target_names.append('blue')
-    if np.sum(categories == 4) > 1:
-        target_names.append('yellow')
-
-    # in the case of white, red, blue responses, shift blue down to 
-    # 2 for SVM purposes
-    unique_resp = np.unique(categories)
-    if len(unique_resp) == 3 and categories.max() == 3:
-        categories[categories > 0] -= 1
-
     # set up random numbers
     np.random.seed(rand_seed)
     rand_seeds = np.round(np.random.rand(Nseeds, 1) * 10000)
@@ -161,18 +145,21 @@ def classic_mdscaling(data_matrix, categories, param_grid, dims=[0, 1, 2],
     total_y_true = np.asarray(total_y_true).flatten()
     total_y_pred = np.asarray(total_y_pred).flatten()
 
+    print 'Classification report'
+    print '======================'
     print 'N simulations: ', Nseeds
     print 'Dimensions used: ', dims 
     print param_grid
+    print '\n'
 
-    n_classes = 3
+    n_classes = len(target_names)
     print classification_report(total_y_true, total_y_pred,
                                 target_names=target_names)
     print confusion_matrix(total_y_true, total_y_pred, labels=range(n_classes))
 
 
 def associate_cone_color_resp(r, celldat, celllist, mod_name, bkgd='white',
-                              randomize=False, cell_type='bp'):
+                              randomized=False, cell_type='bp'):
     '''
     '''
     # first get data
@@ -182,6 +169,8 @@ def associate_cone_color_resp(r, celldat, celllist, mod_name, bkgd='white',
     # coord space and those same cones in the WM defined space. These files are 
     # generated in mosaic/gen_mosaic.py and do not include LMS cone types
     newold = np.genfromtxt('mosaics/' + mod_name + '_old_new.csv')
+    if randomized:
+        mod_name += '_randomized'
     mosaiclist = np.genfromtxt('mosaics/' + mod_name + '_mosaic.txt')
     
     # get the nearest neighbors to the specified cone
@@ -225,10 +214,10 @@ def associate_cone_color_resp(r, celldat, celllist, mod_name, bkgd='white',
                     # now need to associate mosaiclist w cone inputs
                     j = 10
                     for i in range(1, 9): # 10 nearest neighbors
-                        if randomize:
-                            ind1 = np.random.randint(0, 400, 1)
-                        else:
-                            ind1 = np.where(celldat[:, 0] == moscoord[1][i])[0]
+                        #if randomized: # this randomized neighbors
+                        #    ind1 = np.random.randint(0, 400, 1)
+                        #else:
+                        ind1 = np.where(celldat[:, 0] == moscoord[1][i])[0]
                             
                         neighbor = r[c][ind1]
                         output[count, j:j + 3] = neighbor
