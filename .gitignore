@@ -23,3 +23,4 @@ results/*
 test.sh
 *.bak
 response/knn_resp.rsp
+pycomp/test.py

@@ -19,13 +19,18 @@ def main():
     # parse plotting options
     arg2 = sys.argv[2].split('-')
     option = arg2[0]
+    if option.split('_')[-1] == 'lms':
+        option = option[:-4]
+        color_cats_switch = False
+    else:
+        color_cats_switch = True
 
     # parse flags
     flags = arg2[1].split('_')
     H1W = float(parse_flags(flags, 'H1W')[0][3:])
     H2W = float(parse_flags(flags, 'H2W')[0][3:])
-    randomized = parse_flags(flags, 'randomized')[0]
-    color_cats_switch = False
+    randomized = parse_flags(flags, 'randomized')
+    if randomized != []: randomized = randomized[0]
     print 'H1W=', H1W, 'H2W=', H2W, 'Random_Cones=', randomized, '\n'
 
     # parse model name
@@ -85,13 +90,15 @@ def main():
         d = nd_read(ndfilename)
 
     if option in h1:
-        data['h1'] = np.genfromtxt('results/pl_files/' + model + 
-                                   '/h1.dist.pl', skip_header=2)
+        filename = 'results/pl_files/' + model + '/h1.dist.pl'
+        print 'reading pl file: ' + filename
+        data['h1'] = np.genfromtxt(filename, skip_header=2)
         plot.dist(data, model, SPECIES, block_plots)
 
     if option in h2:
-        data['h2'] = np.genfromtxt('results/pl_files/' + model + 
-                                   '/h2.dist.pl', skip_header=2)
+        filename = 'results/pl_files/' + model + '/h2.dist.pl'
+        print 'reading pl file: ' + filename
+        data['h2'] = np.genfromtxt(filename, skip_header=2)
         plot.dist(data, model, SPECIES, block_plots)
 
     if option in stack:
@@ -120,6 +127,7 @@ def main():
 
     if option in classify:
         cell_type = 'bp'
+        print 'Analyze color categories (false=LMS): ', color_cats_switch
         plot.nat_image_analysis(d, model, mosaic_file, cell_type, randomized,
                                 block_plots, color_cats=color_cats_switch)
 

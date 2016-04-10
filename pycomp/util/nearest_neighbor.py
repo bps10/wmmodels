@@ -9,8 +9,8 @@ def find_neighbors(FILE='mosaics/model.mosaic', cone=4065, K=10,
     '''
     '''
     # get all cone locations
-    mosaic = np.genfromtxt(FILE)
-    
+    mosaic = np.genfromtxt(FILE, delimiter='\t')
+
     # get the index of the specified cone
     c_ind = mosaic[cone, 2:]
 
@@ -75,6 +75,7 @@ def find_nearest_S(cone_locations, FILE='mosaics/model.mosaic'):
     nn = tree.query(cone_locations, 1) # find closest S-cone
     return nn
 
+
 if __name__ == '__main__':
 
     cone = int(sys.argv[1])
@@ -85,4 +86,5 @@ if __name__ == '__main__':
     except IndexError:
         pass
     file = 'mosaics/' + sys.argv[4]
+
     find_neighbors(FILE=file, cone=cone, K=K, cell_type=cell_type)

@@ -2,6 +2,7 @@ from __future__ import division
 import numpy as np
 import matplotlib.pylab as plt
 from mpl_toolkits.mplot3d import Axes3D
+from sklearn.decomposition import PCA
 
 from base import plot as pf
 from base import data as dat
@@ -12,12 +13,13 @@ import util
 # change the name of this function
 def nat_image_analysis(d, model_name, mosaic_file, cell_type, 
                        randomized, block_plots=True, color_cats=True,
-                       purity_thresh=0.0, nseeds=1):
+                       purity_thresh=0.0, nseeds=50):
     '''
     '''
     # --- params --- #
-    rg_metric = False
+    rg_metric = True
     background = 'white'
+    cmdscaling = False
 
     # MDScaling options
     dims = [0, 1, 2]
@@ -25,23 +27,34 @@ def nat_image_analysis(d, model_name, mosaic_file, cell_type,
     param_grid = {'C': [1e2, 1e3, 5e3, 1e4, 5e4, 1e5, 1e6, 1e7],
                   'gamma': [0.001, 0.01, 0.05], }
     # -------------- #
-
     human_subjects = ['wt', 'bps']
-    celldat = np.genfromtxt('results/txt_files/' + model_name + '/nn_results.txt')
+    if model_name.lower() not in human_subjects:
+        raise('Model must be a human subject with psychopysics data')
+
+    # no need to run a bunch of times since lms is easy to classify    
+    if color_cats=False:
+        nseeds = 1 
+
+    # get some info about the cones
+    nn_dat = util.get_nn_dat(model_name)
     celllist = util.get_cell_list(d)
     ncells = len(celllist)
     
     # put responses into a matrix for easy processing
     data_matrix = an.get_data_matrix(d, cell_type)
 
-    # get correlation matrix
+    # compute distance matrix
     corrmat = an.compute_corr_matrix(data_matrix)
 
-    # compute the classical multi-dimensional scaling
-    config_mat, eigen = dat.cmdscale(corrmat)
+    if cmdscaling:
+        # compute the classical multi-dimensional scaling
+        config_mat, eigen = dat.cmdscale(corrmat)
+    else:
+        pca = PCA(n_components=len(dims)).fit(data_matrix)
+        config_mat = pca.transform(data_matrix)
 
     # get the location and cone type of each cone
-    xy_lms = an.get_cone_xy_lms(d, celldat, celllist)
+    xy_lms = an.get_cone_xy_lms(d, nn_dat, celllist)
 
     # threshold rg that separates red, white, green
     if color_cats:
@@ -49,27 +62,31 @@ def nat_image_analysis(d, model_name, mosaic_file, cell_type,
         cone_contrast=[48.768, 22.265, 18.576]
         r = an.response(d, cell_type, 'cone_inputs',
                         cone_contrast=cone_contrast)
-        output = an.associate_cone_color_resp(r, celldat, celllist, model_name, 
+        output = an.associate_cone_color_resp(r, nn_dat, celllist, model_name, 
                                               bkgd=background, randomized=randomized)
         stim_cone_ids = output[:, -1]
         stim_cone_inds = np.zeros((1, len(stim_cone_ids)), dtype='int')
         for cone in range(len(stim_cone_ids)):
-            stim_cone_inds[0, cone] = np.where(celldat[:, 0] == stim_cone_ids[cone])[0]
+            stim_cone_inds[0, cone] = np.where(nn_dat[:, 0] == stim_cone_ids[cone])[0]
 
         if rg_metric:
             # break rg into three categories: red, green, white
-            rg, high_purity = an.get_rg_from_naming(output[:, 5:10], purity_thresh)
-            rg_thresh = 0.5
-            red = rg < -rg_thresh
-            green = rg > rg_thresh
+            rg, by, high_purity = an.get_rgby_from_naming(output[:, 5:10], purity_thresh)
+            rgby_thresh = 0.5
+            red = rg < -rgby_thresh
+            green = rg > rgby_thresh
+            blue = by < -rgby_thresh
+            yellow = by > rgby_thresh
+            color_categories = (yellow * 4 + blue * 3 + red * 2 + green).T[0]
+
         else: # use dom response category
             max_cat = np.argmax(output[:, 5:10], axis=1)
             red = max_cat == 1
             green = max_cat == 2
             blue = max_cat == 3
             yellow = max_cat == 4
+            color_categories = (yellow * 4 + blue * 3 + red * 2 + green).T
 
-        color_categories = (yellow * 4 + blue * 3 + red * 2 + green).T
         class_cats = color_categories.copy()
         config_mat = config_mat[stim_cone_inds, :][0]
         data_matrix = data_matrix[stim_cone_inds, :][0]
@@ -77,19 +94,25 @@ def nat_image_analysis(d, model_name, mosaic_file, cell_type,
     else:
         class_cats = xy_lms[:, 2]
 
-    # MD Scaling
+    # SVM Classify
+    print 'running SVM'
+    print '\tCMDScaling=' + str(cmdscaling)
+    print '\tRGmetric=' + str(rg_metric)
+    print '\tbackground=' + background
+
     target_names, class_cats = get_target_names_categories(color_cats, class_cats)
-    an.classic_mdscaling(data_matrix, class_cats, param_grid, target_names,
+    an.svm_classify(data_matrix, class_cats, param_grid, target_names, cmdscaling,
                          dims=dims, display_verbose=False, rand_seed=23453, 
                          Nseeds=nseeds, test_size=test_size)
     # --------------------------------------------------- #
+    print 'plotting results from SVM'
 
     # plot correlation matrix
     ax, fig = pf.get_axes(1, 1, nticks=[3, 3], return_fig=True)    
     ax[0].imshow(corrmat)
 
     # plot MDS configuration matrix in 2 and 3dim
-    ax, fig = pf.get_axes(1, 2, nticks=[3, 3], return_fig=True)
+    ax, fig = pf.get_axes(1, 2, nticks=[3, 3], figsize=(10,7), return_fig=True)
     fig3d = plt.figure()
     ax3d = fig3d.add_subplot(111, projection='3d')
     for cone in range(ncells):
@@ -113,10 +136,10 @@ def nat_image_analysis(d, model_name, mosaic_file, cell_type,
         ax3d.scatter(config_mat[cone, 0], config_mat[cone, 1], config_mat[cone, 2],
                      'o', c=color)
 
-    ax, fig = pf.get_axes(1, 1, nticks=[3, 3], return_fig=True)
-    ax[0].plot(eigen, 'ko')
-    
-
+    if cmdscaling:
+        ax, fig = pf.get_axes(1, 1, nticks=[3, 3], return_fig=True)
+        ax[0].plot(eigen, 'ko')
+  
     plt.show()
 
 

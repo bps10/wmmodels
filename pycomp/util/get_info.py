@@ -75,6 +75,12 @@ def get_cell_data(d, cell_type):
     return cells
 
 
+def get_nn_dat(model_name):
+    filename = 'results/txt_files/' + model_name + '/nn_results.txt'
+    print 'read nearest neighbors from: ' + filename
+
+    return np.genfromtxt(filename)
+
 def get_time(d):
     '''Return an array of time values using params from
     data dictionary

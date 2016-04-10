@@ -26,17 +26,17 @@ analysis=(siso miso liso coneiso h1 h2 \
     h_time mosaic gui stack nd plot \
     verbose params knn h_sf bp_sf rgc_sf \
     h_tf bp_tf rgc_tf \
-    s_dist cone_inputs step vanhat iso_classify)
+    s_dist cone_inputs step vanhat iso_classify iso_classify_lms)
 runmod=(h1 h2 siso miso liso coneiso h_time knn h_sf bp_sf rgc_sf \
     h_tf bp_tf rgc_tf \
-    cone_inputs gui step vanhat iso_classify)
+    cone_inputs gui step vanhat iso_classify iso_classify)
 plots=(h1 h2 siso miso liso coneiso stack h_time verbose knn h_sf \
     bp_sf rgc_sf h_tf bp_tf rgc_tf s_dist cone_inputs step vanhat \
-    iso_classify)
+    iso_classify iso_classify_lms)
 dump=(siso miso liso coneiso h_time knn h_sf bp_sf rgc_sf \
     h_tf bp_tf rgc_tf cone_inputs step vanhat iso_classify)
 iso_cond=(siso miso liso coneiso)
-knn_cond=(cone_inputs vanhat iso_classify)
+knn_cond=(cone_inputs vanhat iso_classify iso_classify_lms)
 
 OPTS=()
 i=0
@@ -86,38 +86,29 @@ change_sys_matrix
 delete_old_file
 
 # name for saving and passing to plot
-if [[ $RANDOM_CONE == true ]]
-then
-    if [[ ${OPTS[0]} == plot ]]; then
-	name=${OPTS[1]}-H1W${H1W}_H2W${H2W}_randomized
-    else
-	name=${OPTS[0]}-H1W${H1W}_H2W${H2W}_randomized
-    fi
-else
-    if [[ ${OPTS[0]} == plot ]]; then
-	name=${OPTS[1]}-H1W${H1W}_H2W${H2W}
-    else
-	name=${OPTS[0]}-H1W${H1W}_H2W${H2W}
-    fi
-fi
+get_save_name
 
 #-- 7. Perform the simulation(s)
 if [ $OPTS == "mosaic" ]
 then
+    echo "generating mosaic"
     run_mosaic
 
 elif [ $OPTS == "s_dist" ]
 then
+    echo "running s cone distance analysis"
     run_s_dist_analysis
 
 else
     if [ $(exists_in ${OPTS} "${runmod[*]}") == true ]
     then
+	echo "running wm simulation"
 	run_wm ${MODEL} ${STIM_FILE}
 
 	if [ $GUI == 0 ] # make sure model was truly run
 	then
 	#-- save current variables as new defaults
+	    echo "saving new default parameters" 
 	    save_defaults
 	fi
     fi
@@ -128,6 +119,7 @@ fi
 if [[ $(exists_in ${OPTS[0]} "${plots[*]}") == true || \
     $(exists_in ${OPTS[1]} "${plots[*]}") == true && $GUI == 0 ]]
 then
+    echo "plotting results" 
     python pycomp ${MOSAIC_FILE} ${name} ${MODEL} ${SHAPE} ${BLOCK_PLOTS}
 fi
 

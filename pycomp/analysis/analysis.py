@@ -2,6 +2,7 @@ from __future__ import division
 import numpy as np
 import scipy.spatial as spat
 from sklearn.svm import SVC
+from sklearn.decomposition import PCA
 from sklearn.grid_search import GridSearchCV
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
@@ -10,7 +11,7 @@ from sklearn.cross_validation import train_test_split
 from base import data as dat
 
 from util import get_time, get_cell_data, get_cell_list, get_cell_type, num
-
+import plot as pl
 
 def response(d, cell_type, analysis_type,
              cone_contrast=[49, 22, 19]):
@@ -81,7 +82,7 @@ def response(d, cell_type, analysis_type,
     return resp
 
 
-def classic_mdscaling(data_matrix, categories, param_grid, target_names,
+def svm_classify(data_matrix, categories, param_grid, target_names, cmdscaling,
                       dims=[0, 1, 2], display_verbose=False, rand_seed=23453, 
                       Nseeds=100, test_size=0.1):
     '''
@@ -102,34 +103,36 @@ def classic_mdscaling(data_matrix, categories, param_grid, target_names,
     # set up random numbers
     np.random.seed(rand_seed)
     rand_seeds = np.round(np.random.rand(Nseeds, 1) * 10000)
-    
+
     # set up data containers for results
     total_y_true = []
     total_y_pred = []
     ncells = len(data_matrix[:, 0])
+
+    if cmdscaling:
+        # compute distance matrix
+        corrmat = compute_corr_matrix(data_matrix)
+        # compute the classical multi-dimensional scaling
+        config_mat, eigen = dat.cmdscale(corrmat)
+    else:
+        pca = PCA(n_components=len(dims)).fit(data_matrix)
+        config_mat = pca.transform(data_matrix)
+
     for seed in rand_seeds:
         # Split into a training set and a test set using a stratified k fold
         X_train, X_test, y_train, y_test = train_test_split(
             np.arange(ncells), categories, test_size=test_size,
             random_state=int(seed[0]))       
-        X_train = data_matrix[X_train, :]
-        X_test = data_matrix[X_test, :]
-
-        # compute distance matrix
-        dist_train = compute_corr_matrix(X_train)
-        dist_test = compute_corr_matrix(X_test)
-
-        # compute the classical multi-dimensional scaling
-        config_mat, eigen = dat.cmdscale(dist_train)
-        config_mat_test, eigen = dat.cmdscale(dist_test)
+        X_train = config_mat[X_train, :]
+        X_test = config_mat[X_test, :]
 
         # Classify with SVM
         clf = GridSearchCV(SVC(kernel='rbf', class_weight='balanced'), 
                            param_grid)
-        clf = clf.fit(config_mat[:, dims], y_train)
+        clf = clf.fit(X_train[:, dims], y_train)
 
         # predict test data with fit model
-        y_pred = clf.predict(config_mat_test[:, dims])
+        y_pred = clf.predict(X_test[:, dims])
 
         if display_verbose:
             print("Best estimator found by grid search:")
@@ -141,6 +144,7 @@ def classic_mdscaling(data_matrix, categories, param_grid, target_names,
         total_y_true.append(y_test)
         total_y_pred.append(y_pred)
 
+    
     # print the summary results
     total_y_true = np.asarray(total_y_true).flatten()
     total_y_pred = np.asarray(total_y_pred).flatten()
@@ -158,7 +162,7 @@ def classic_mdscaling(data_matrix, categories, param_grid, target_names,
     print confusion_matrix(total_y_true, total_y_pred, labels=range(n_classes))
 
 
-def associate_cone_color_resp(r, celldat, celllist, mod_name, bkgd='white',
+def associate_cone_color_resp(r, nn_dat, celllist, mod_name, bkgd='white',
                               randomized=False, cell_type='bp'):
     '''
     '''
@@ -170,8 +174,10 @@ def associate_cone_color_resp(r, celldat, celllist, mod_name, bkgd='white',
     # generated in mosaic/gen_mosaic.py and do not include LMS cone types
     newold = np.genfromtxt('mosaics/' + mod_name + '_old_new.csv')
     if randomized:
-        mod_name += '_randomized'
-    mosaiclist = np.genfromtxt('mosaics/' + mod_name + '_mosaic.txt')
+        mod_name += '_mosaic_randomized'
+    else:
+        mod_name += '_mosaic'
+    mosaiclist = np.genfromtxt('mosaics/' + mod_name + '.txt')
     
     # get the nearest neighbors to the specified cone
     to_newold = spat.KDTree(newold[:, 2:])
@@ -182,8 +188,8 @@ def associate_cone_color_resp(r, celldat, celllist, mod_name, bkgd='white',
     c = cell_type
     output = np.zeros((len(r[c][:, 0]), 39))
     for cone in range(0, len(r[c][:, 0])):
-        ind = np.where(celldat[:, 0] == float(celllist[cone]))[0]
-        loc = celldat[ind, 2:4][0]
+        ind = np.where(nn_dat[:, 0] == float(celllist[cone]))[0]
+        loc = nn_dat[ind, 2:4][0]
 
         # compute s weight for mosaic plot
         s_weight = r[c][cone, 0] #compute_s_weight(r, c, cone)
@@ -208,7 +214,7 @@ def associate_cone_color_resp(r, celldat, celllist, mod_name, bkgd='white',
                 if total > 8 and cone_type > 0: 
                     output[count, :2] = loc
                     output[count, 37] = cone_type
-                    output[count, 38] = celldat[ind, 0]
+                    output[count, 38] = nn_dat[ind, 0]
                     output[count, 5:10] = cnames[6:] # / total
                 
                     # now need to associate mosaiclist w cone inputs
@@ -217,7 +223,7 @@ def associate_cone_color_resp(r, celldat, celllist, mod_name, bkgd='white',
                         #if randomized: # this randomized neighbors
                         #    ind1 = np.random.randint(0, 400, 1)
                         #else:
-                        ind1 = np.where(celldat[:, 0] == moscoord[1][i])[0]
+                        ind1 = np.where(nn_dat[:, 0] == moscoord[1][i])[0]
                             
                         neighbor = r[c][ind1]
                         output[count, j:j + 3] = neighbor
@@ -229,7 +235,7 @@ def associate_cone_color_resp(r, celldat, celllist, mod_name, bkgd='white',
     return output
 
 
-def get_rg_from_naming(naming, purity_thresh=None):
+def get_rgby_from_naming(naming, purity_thresh=None):
     '''
     purity_thresh: find cones that have purities higher than this threshold.
     '''
@@ -238,6 +244,7 @@ def get_rg_from_naming(naming, purity_thresh=None):
 
     high_purity = []
     rg = np.zeros((len(naming[:, 1]), 1))
+    by = np.zeros((len(naming[:, 1]), 1))
     for i in range(len(naming[:, 1])):
         maxind = naming[i, :].argmax()
 
@@ -248,7 +255,10 @@ def get_rg_from_naming(naming, purity_thresh=None):
         # green - red / total
         rg[i] = (naming[i, 2] - naming[i, 1]) / naming[i, :].sum()
 
-    return rg, high_purity
+        # yellow - blue / total
+        by[i] = (naming[i, 4] - naming[i, 3]) / naming[i, :].sum()
+
+    return rg, by, high_purity
 
 
 def compute_corr_matrix(data_mat):
@@ -283,12 +293,12 @@ def get_data_matrix(d, cell_type):
     return data_mat
 
 
-def compute_cone_weights():
+def compute_cone_weights(r, nn_dat, celllist):
     for c in r: # for each cell type in results
         output = np.zeros((len(r[c][:, 0]), 37))
         for cone in range(0, len(r[c][:, 0])):
-            ind = np.where(celldat[:, 0] == float(celllist[cone]))[0]
-            loc = celldat[ind, 2:4][0]
+            ind = np.where(nn_dat[:, 0] == float(celllist[cone]))[0]
+            loc = nn_dat[ind, 2:4][0]
             
             # compute s weight for mosaic plot
             s_weight = r[c][cone, 0] #compute_s_weight(r, c, cone)
@@ -297,7 +307,7 @@ def compute_cone_weights():
             cone_weights = [r[c][cone, 1], r[c][cone, 2], s_weight]
 
 
-def get_cone_xy_lms(d, celldat, celllist):
+def get_cone_xy_lms(d, nn_dat, celllist):
     '''Find the xy position and cone type (lms) of a population of cones.
     '''    
     ncells = len(celllist)
@@ -305,9 +315,9 @@ def get_cone_xy_lms(d, celldat, celllist):
     xylms = np.zeros((ncells, 3))
     t = 0 # only need to look at first trial
     for cone in range(ncells): # for each cell
-        ind = np.where(celldat[:, 0] == float(celllist[cone]))[0]
-        loc = celldat[ind, 2:4][0]
-        lms = celldat[ind, 1]
+        ind = np.where(nn_dat[:, 0] == float(celllist[cone]))[0]
+        loc = nn_dat[ind, 2:4][0]
+        lms = nn_dat[ind, 1]
         xylms[cone, :] = np.concatenate([loc, lms])
     return xylms
 

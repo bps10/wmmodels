@@ -73,7 +73,7 @@ function change_parameters {
     then
 	DUMP_CID=3039 # L cone to left of center S cone
 	SCONE=3049
-	if [[ $RANDOM_CONE ]]; then
+	if [[ $RANDOM_CONE == true ]]; then
 	    MOSAIC_FILE=WT_randomized.mosaic
 	    MOSAIC_TXT_FILE=WT_mosaic_randomized.txt
 	else
@@ -87,7 +87,7 @@ function change_parameters {
 	#DUMP_CID=3153 # L cone to left of bottom left 5 S cone patch
 	DUMP_CID=3990 # L cone to upper right of dark cone
 	SCONE=2914 # the dark cone
-	if [[ $RANDOM_CONE ]]; then
+	if [[ $RANDOM_CONE == true ]]; then
 	    MOSAIC_FILE=BPS_randomized.mosaic
 	    MOSAIC_TXT_FILE=BPS_mosaic_randomized.txt
 	else
@@ -188,7 +188,8 @@ function change_parameters {
 
 
 function stim_gen {
-    
+    echo 'generating stimulus file'
+
     # Decide which file to start with
     local fname=iso_step # uniform full field case
     if [ $2 == spot ]
@@ -249,9 +250,29 @@ function knn_resp {
     cat response/header.rsp > response/knn_resp.rsp
 
     # Paste the second part of the stimulus file
+    echo "creating rsp file and computing nearest neighbors"
+    echo "mosaic file: $MOSAIC_FILE"
     python pycomp/util/nearest_neighbor.py ${coneID} ${Ncones} ${cell_type} \
 	${MOSAIC_FILE} >> response/knn_resp.rsp 
 
+}
+
+
+function get_save_name {
+    if [[ $RANDOM_CONE == true ]]
+    then
+	if [[ ${OPTS[0]} == plot ]]; then
+	    name=${OPTS[1]}-H1W${H1W}_H2W${H2W}_randomized
+	else
+	    name=${OPTS[0]}-H1W${H1W}_H2W${H2W}_randomized
+	fi
+    else
+	if [[ ${OPTS[0]} == plot ]]; then
+	    name=${OPTS[1]}-H1W${H1W}_H2W${H2W}
+	else
+	    name=${OPTS[0]}-H1W${H1W}_H2W${H2W}
+	fi
+    fi
 }
 
 
@@ -375,6 +396,7 @@ function run_s_dist_analysis {
     if [ ! -d "results/nd_files/$MODEL/s_dist" ]
     then
 	mkdir "results/nd_files/$MODEL/s_dist"
+	echo "made dir results/nd_files/$MODEL/s_dist"
     fi
     
     # cp nn_results.txt into s_dist folder
@@ -450,6 +472,7 @@ function run_wm {
 
     if [ $GUI == 0 ]
     then
+	echo "saving output files"
 	if [[ $OPTS == "h2" || $OPTS == "h1" ]]
 	then
 	    mkdir -p results/pl_files/${MODEL}
