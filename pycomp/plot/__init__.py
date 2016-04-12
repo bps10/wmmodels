@@ -4,4 +4,4 @@ from plot_mosaic import *
 from plot_stack import *
 from plot_knn_analysis import *
 from plot_cone_inputs import *
-from plot_image_analysis import *
+from plot_classify_analysis import *

@@ -104,11 +104,6 @@ def svm_classify(data_matrix, categories, param_grid, target_names, cmdscaling,
     np.random.seed(rand_seed)
     rand_seeds = np.round(np.random.rand(Nseeds, 1) * 10000)
 
-    # set up data containers for results
-    total_y_true = []
-    total_y_pred = []
-    ncells = len(data_matrix[:, 0])
-
     if cmdscaling:
         # compute distance matrix
         corrmat = compute_corr_matrix(data_matrix)
@@ -118,21 +113,26 @@ def svm_classify(data_matrix, categories, param_grid, target_names, cmdscaling,
         pca = PCA(n_components=len(dims)).fit(data_matrix)
         config_mat = pca.transform(data_matrix)
 
+    # set up data containers for results
+    total_y_true = np.array([])
+    total_y_pred = np.array([])
+    ncells = len(data_matrix[:, 0])
     for seed in rand_seeds:
         # Split into a training set and a test set using a stratified k fold
         X_train, X_test, y_train, y_test = train_test_split(
             np.arange(ncells), categories, test_size=test_size,
-            random_state=int(seed[0]))       
-        X_train = config_mat[X_train, :]
-        X_test = config_mat[X_test, :]
+            random_state=int(seed[0]))
+
+        X_train = config_mat[X_train, :][:, dims]
+        X_test = config_mat[X_test, :][:, dims]
 
         # Classify with SVM
         clf = GridSearchCV(SVC(kernel='rbf', class_weight='balanced'), 
                            param_grid)
-        clf = clf.fit(X_train[:, dims], y_train)
+        clf = clf.fit(X_train, y_train)
 
         # predict test data with fit model
-        y_pred = clf.predict(X_test[:, dims])
+        y_pred = clf.predict(X_test)
 
         if display_verbose:
             print("Best estimator found by grid search:")
@@ -141,14 +141,10 @@ def svm_classify(data_matrix, categories, param_grid, target_names, cmdscaling,
             print("Predicting color names on the test set")
 
         # save output
-        total_y_true.append(y_test)
-        total_y_pred.append(y_pred)
+        total_y_true = np.append(total_y_true, y_test)
+        total_y_pred = np.append(total_y_pred, y_pred)
 
-    
     # print the summary results
-    total_y_true = np.asarray(total_y_true).flatten()
-    total_y_pred = np.asarray(total_y_pred).flatten()
-
     print 'Classification report'
     print '======================'
     print 'N simulations: ', Nseeds

@@ -25,13 +25,15 @@ def main():
     else:
         color_cats_switch = True
 
-    # parse flags
+    # parse flags: put this into a function
     flags = arg2[1].split('_')
     H1W = float(parse_flags(flags, 'H1W')[0][3:])
     H2W = float(parse_flags(flags, 'H2W')[0][3:])
     randomized = parse_flags(flags, 'randomized')
     if randomized != []: randomized = randomized[0]
-    print 'H1W=', H1W, 'H2W=', H2W, 'Random_Cones=', randomized, '\n'
+    params = {'H1W': H1W, 'H2W': H2W, 'Random_Cones': randomized, }
+    for key in params.keys():
+        print key + '=' + str(params[key]) + '\t'
 
     # parse model name
     model = sys.argv[3] #mosaic_file.split('/')[1].split('.')[0]
@@ -128,7 +130,7 @@ def main():
     if option in classify:
         cell_type = 'bp'
         print 'Analyze color categories (false=LMS): ', color_cats_switch
-        plot.nat_image_analysis(d, model, mosaic_file, cell_type, randomized,
+        plot.classify_analysis(d, model, mosaic_file, cell_type, params,
                                 block_plots, color_cats=color_cats_switch)
 
     # decide what to plot

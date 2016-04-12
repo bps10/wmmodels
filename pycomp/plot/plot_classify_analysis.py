@@ -9,21 +9,22 @@ from base import data as dat
 
 import analysis as an
 import util
+from base import files as fil
 
 # change the name of this function
-def nat_image_analysis(d, model_name, mosaic_file, cell_type, 
-                       randomized, block_plots=True, color_cats=True,
-                       purity_thresh=0.0, nseeds=50):
+def classify_analysis(d, model_name, mosaic_file, cell_type, 
+                      params, block_plots=True, color_cats=True,
+                      purity_thresh=0.0, nseeds=10):
     '''
     '''
     # --- params --- #
     rg_metric = True
-    background = 'white'
-    cmdscaling = False
+    background = 'blue'
+    cmdscaling = True
 
     # MDScaling options
     dims = [0, 1, 2]
-    test_size = 0.1
+    test_size = 0.3
     param_grid = {'C': [1e2, 1e3, 5e3, 1e4, 5e4, 1e5, 1e6, 1e7],
                   'gamma': [0.001, 0.01, 0.05], }
     # -------------- #
@@ -32,7 +33,7 @@ def nat_image_analysis(d, model_name, mosaic_file, cell_type,
         raise('Model must be a human subject with psychopysics data')
 
     # no need to run a bunch of times since lms is easy to classify    
-    if color_cats=False:
+    if not color_cats:
         nseeds = 1 
 
     # get some info about the cones
@@ -63,7 +64,8 @@ def nat_image_analysis(d, model_name, mosaic_file, cell_type,
         r = an.response(d, cell_type, 'cone_inputs',
                         cone_contrast=cone_contrast)
         output = an.associate_cone_color_resp(r, nn_dat, celllist, model_name, 
-                                              bkgd=background, randomized=randomized)
+                                              bkgd=background, 
+                                              randomized=params['Random_Cones'])
         stim_cone_ids = output[:, -1]
         stim_cone_inds = np.zeros((1, len(stim_cone_ids)), dtype='int')
         for cone in range(len(stim_cone_ids)):
@@ -102,19 +104,23 @@ def nat_image_analysis(d, model_name, mosaic_file, cell_type,
 
     target_names, class_cats = get_target_names_categories(color_cats, class_cats)
     an.svm_classify(data_matrix, class_cats, param_grid, target_names, cmdscaling,
-                         dims=dims, display_verbose=False, rand_seed=23453, 
+                         dims=dims, display_verbose=False, rand_seed=2264235,
                          Nseeds=nseeds, test_size=test_size)
     # --------------------------------------------------- #
     print 'plotting results from SVM'
 
+    # undo category shift of plotting 
+    if background == 'blue' and color_cats:
+        class_cats[class_cats > 0] += 1
+
     # plot correlation matrix
-    ax, fig = pf.get_axes(1, 1, nticks=[3, 3], return_fig=True)    
+    ax, fig1 = pf.get_axes(1, 1, nticks=[3, 3], return_fig=True)    
     ax[0].imshow(corrmat)
 
     # plot MDS configuration matrix in 2 and 3dim
-    ax, fig = pf.get_axes(1, 2, nticks=[3, 3], figsize=(10,7), return_fig=True)
-    fig3d = plt.figure()
-    ax3d = fig3d.add_subplot(111, projection='3d')
+    ax, fig2 = pf.get_axes(1, 2, nticks=[3, 3], figsize=(7,11), return_fig=True)
+    fig3 = plt.figure()
+    ax3d = fig3.add_subplot(111, projection='3d')
     for cone in range(ncells):
         if class_cats[cone] == 0 and color_cats is False or class_cats[cone] == 3:
             color = [0, 0, 1]
@@ -136,10 +142,22 @@ def nat_image_analysis(d, model_name, mosaic_file, cell_type,
         ax3d.scatter(config_mat[cone, 0], config_mat[cone, 1], config_mat[cone, 2],
                      'o', c=color)
 
+    # save figs
+    fil.make_dir('results/img/' + model_name)
+    savename = 'results/img/' + model_name + '/'
+    savename += 'H1W' + str(params['H1W']) + '_'
+    savename += 'H2W' + str(params['H2W']) + '_'
+    if params['Random_Cones']:
+        savename += '_randomized'
+    fig1.savefig(savename + '_corr_matrix.eps', edgecolor='none')
+    fig2.savefig(savename + '_low_dim_rep.eps', edgecolor='none')
+    fig3.savefig(savename + '_3dplot.eps', edgecolor='none')
+
     if cmdscaling:
-        ax, fig = pf.get_axes(1, 1, nticks=[3, 3], return_fig=True)
+        ax, fig4 = pf.get_axes(1, 1, nticks=[3, 3], return_fig=True)
         ax[0].plot(eigen, 'ko')
-  
+        fig4.savefig(savename + '_eigenvals.eps', edgecolor='none')
+
     plt.show()
 
 
@@ -157,9 +175,9 @@ def get_target_names_categories(color_cats, categories):
 
             # in the case of white, red, blue responses, shift blue down to 
             # 2 for SVM purposes
-            unique_resp = np.unique(categories)
-            if len(unique_resp) == 3 and categories.max() == 3:
-                categories[categories > 0] -= 1
+        unique_resp = np.unique(categories)
+        if len(unique_resp) == 3 and categories.max() == 3:
+            categories[categories > 0] -= 1
     else:
         target_names = ['S', 'M', 'L']
 
