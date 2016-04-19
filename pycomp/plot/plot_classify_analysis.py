@@ -18,15 +18,18 @@ def classify_analysis(d, model_name, mosaic_file, cell_type,
     '''
     '''
     # --- params --- #
-    rg_metric = True
-    background = 'blue'
+    rg_metric = False
+    background = 'white'
     cmdscaling = True
+    # kernel options=linear, rbf, poly
+    kernel = 'linear'
 
     # MDScaling options
-    dims = [0, 1, 2]
-    test_size = 0.3
-    param_grid = {'C': [1e2, 1e3, 5e3, 1e4, 5e4, 1e5, 1e6, 1e7],
-                  'gamma': [0.001, 0.01, 0.05], }
+    dims = [0, 1]
+    test_size = 0.15
+    # if kernel is set to linear only first entry of 'C' is used, gamma ignored
+    param_grid = {'C': [1e9],
+                  'gamma': [0.0001, 0.001], }
     # -------------- #
     human_subjects = ['wt', 'bps']
     if model_name.lower() not in human_subjects:
@@ -69,11 +72,13 @@ def classify_analysis(d, model_name, mosaic_file, cell_type,
         stim_cone_ids = output[:, -1]
         stim_cone_inds = np.zeros((1, len(stim_cone_ids)), dtype='int')
         for cone in range(len(stim_cone_ids)):
-            stim_cone_inds[0, cone] = np.where(nn_dat[:, 0] == stim_cone_ids[cone])[0]
+            stim_cone_inds[0, cone] = np.where(nn_dat[:, 0] == 
+                                               stim_cone_ids[cone])[0]
 
         if rg_metric:
             # break rg into three categories: red, green, white
-            rg, by, high_purity = an.get_rgby_from_naming(output[:, 5:10], purity_thresh)
+            rg, by, high_purity = an.get_rgby_from_naming(output[:, 5:10], 
+                                                          purity_thresh)
             rgby_thresh = 0.5
             red = rg < -rgby_thresh
             green = rg > rgby_thresh
@@ -99,13 +104,15 @@ def classify_analysis(d, model_name, mosaic_file, cell_type,
     # SVM Classify
     print 'running SVM'
     print '\tCMDScaling=' + str(cmdscaling)
+    print '\tkernel=' + str(kernel)
     print '\tRGmetric=' + str(rg_metric)
     print '\tbackground=' + background
 
     target_names, class_cats = get_target_names_categories(color_cats, class_cats)
-    an.svm_classify(data_matrix, class_cats, param_grid, target_names, cmdscaling,
-                         dims=dims, display_verbose=False, rand_seed=2264235,
-                         Nseeds=nseeds, test_size=test_size)
+    clf = an.svm_classify(data_matrix, class_cats, param_grid, target_names, 
+                          cmdscaling, dims=dims, display_verbose=True, 
+                          rand_seed=2264235, Nseeds=nseeds, test_size=test_size,
+                          kernel=kernel)
     # --------------------------------------------------- #
     print 'plotting results from SVM'
 
@@ -113,14 +120,25 @@ def classify_analysis(d, model_name, mosaic_file, cell_type,
     if background == 'blue' and color_cats:
         class_cats[class_cats > 0] += 1
 
+    # need to order corrmat based on color category
+    sort_inds = np.argsort(class_cats)
+    sort_data_matrix = data_matrix[sort_inds, :]
+    sort_corrmat = an.compute_corr_matrix(sort_data_matrix)
     # plot correlation matrix
     ax, fig1 = pf.get_axes(1, 1, nticks=[3, 3], return_fig=True)    
-    ax[0].imshow(corrmat)
+    ax[0].imshow(sort_corrmat)
+    # change axes to indicate location of category boundaries
 
     # plot MDS configuration matrix in 2 and 3dim
-    ax, fig2 = pf.get_axes(1, 2, nticks=[3, 3], figsize=(7,11), return_fig=True)
-    fig3 = plt.figure()
-    ax3d = fig3.add_subplot(111, projection='3d')
+    ax, fig2 = pf.get_axes(1, 1, nticks=[3, 3], return_fig=True)
+    # add decision function
+    xx, yy = np.meshgrid(np.linspace(-1.5, 1.5, 200), np.linspace(-1.5, 1.5, 200))
+    Z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
+    Z = Z.reshape(xx.shape)
+    ax[0].contourf(xx, yy, -Z, cmap=plt.cm.Paired, alpha=0.8)
+                         
+    '''fig3 = plt.figure()
+    ax3d = fig3.add_subplot(111, projection='3d')'''
     for cone in range(ncells):
         if class_cats[cone] == 0 and color_cats is False or class_cats[cone] == 3:
             color = [0, 0, 1]
@@ -137,10 +155,10 @@ def classify_analysis(d, model_name, mosaic_file, cell_type,
 
         ax[0].plot(config_mat[cone, 0], config_mat[cone, 1], 'o', markersize=8,
                    alpha=0.8, color=color, markeredgecolor='k')
-        ax[1].plot(config_mat[cone, 0], config_mat[cone, 2], 'o', markersize=8,
+        '''ax[1].plot(config_mat[cone, 0], config_mat[cone, 2], 'o', markersize=8,
                    alpha=0.8, color=color, markeredgecolor='k')
         ax3d.scatter(config_mat[cone, 0], config_mat[cone, 1], config_mat[cone, 2],
-                     'o', c=color)
+                     'o', c=color)'''
 
     # save figs
     fil.make_dir('results/img/' + model_name)
@@ -149,16 +167,16 @@ def classify_analysis(d, model_name, mosaic_file, cell_type,
     savename += 'H2W' + str(params['H2W']) + '_'
     if params['Random_Cones']:
         savename += '_randomized'
-    fig1.savefig(savename + '_corr_matrix.eps', edgecolor='none')
+    #fig1.savefig(savename + '_corr_matrix.eps', edgecolor='none')
     fig2.savefig(savename + '_low_dim_rep.eps', edgecolor='none')
-    fig3.savefig(savename + '_3dplot.eps', edgecolor='none')
+    #fig3.savefig(savename + '_3dplot.eps', edgecolor='none')
 
     if cmdscaling:
         ax, fig4 = pf.get_axes(1, 1, nticks=[3, 3], return_fig=True)
         ax[0].plot(eigen, 'ko')
         fig4.savefig(savename + '_eigenvals.eps', edgecolor='none')
 
-    plt.show()
+    plt.show(block=block_plots)
 
 
 def get_target_names_categories(color_cats, categories):

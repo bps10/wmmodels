@@ -84,7 +84,7 @@ def response(d, cell_type, analysis_type,
 
 def svm_classify(data_matrix, categories, param_grid, target_names, cmdscaling,
                       dims=[0, 1, 2], display_verbose=False, rand_seed=23453, 
-                      Nseeds=100, test_size=0.1):
+                      Nseeds=100, test_size=0.1, kernel='linear'):
     '''
     # ----- params ----- #
     # Don't use if Nseeds > 1
@@ -127,20 +127,25 @@ def svm_classify(data_matrix, categories, param_grid, target_names, cmdscaling,
         X_test = config_mat[X_test, :][:, dims]
 
         # Classify with SVM
-        clf = GridSearchCV(SVC(kernel='rbf', class_weight='balanced'), 
-                           param_grid)
+        if kernel == 'linear':
+            clf = SVC(C=param_grid['C'][0], kernel='linear',
+                      class_weight={0: 0.1, 1: 0.45, 2: 0.45})#,
+            # change class_weight = balanced so less arbitrary? No
+            #class_weight='balanced')
+        else:
+            clf = GridSearchCV(SVC(kernel=kernel, class_weight='balanced'),
+                               param_grid)
+
         clf = clf.fit(X_train, y_train)
 
         # predict test data with fit model
         y_pred = clf.predict(X_test)
 
-        if display_verbose:
+        if display_verbose and kernel != 'linear':
             print("Best estimator found by grid search:")
             print(clf.best_estimator_)    
-            # Quantitative evaluation of the model quality on the test set
-            print("Predicting color names on the test set")
-
-        # save output
+            
+        # Quantitative evaluation of the model quality on the test set
         total_y_true = np.append(total_y_true, y_test)
         total_y_pred = np.append(total_y_pred, y_pred)
 
@@ -156,6 +161,8 @@ def svm_classify(data_matrix, categories, param_grid, target_names, cmdscaling,
     print classification_report(total_y_true, total_y_pred,
                                 target_names=target_names)
     print confusion_matrix(total_y_true, total_y_pred, labels=range(n_classes))
+
+    return clf
 
 
 def associate_cone_color_resp(r, nn_dat, celllist, mod_name, bkgd='white',

@@ -131,7 +131,7 @@ def main():
         cell_type = 'bp'
         print 'Analyze color categories (false=LMS): ', color_cats_switch
         plot.classify_analysis(d, model, mosaic_file, cell_type, params,
-                                block_plots, color_cats=color_cats_switch)
+                               block_plots, color_cats=color_cats_switch)
 
     # decide what to plot
     if 'mosaic' in option:
