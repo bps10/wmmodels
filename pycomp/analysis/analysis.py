@@ -172,7 +172,8 @@ def associate_cone_color_resp(r, nn_dat, celllist, mod_name, bkgd='white',
     # first get data
     cnaming = np.genfromtxt('mosaics/' + mod_name + '_' + bkgd + '_bkgd.csv', 
                             delimiter=',', skip_header=1)
-    # old_new refers to the coordinates of the classified cones in the old (AO defined)
+    # old_new refers to the coordinates of the classified cones in the old 
+    # (AO defined)
     # coord space and those same cones in the WM defined space. These files are 
     # generated in mosaic/gen_mosaic.py and do not include LMS cone types
     newold = np.genfromtxt('mosaics/' + mod_name + '_old_new.csv')
