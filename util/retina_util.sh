@@ -259,19 +259,19 @@ function knn_resp {
 
 
 function get_save_name {
+    random_opt=
     if [[ $RANDOM_CONE == true ]]
     then
+	random_opt="_randomized"
+    fi
+    if [ -z "$1" ]; then
 	if [[ ${OPTS[0]} == plot ]]; then
-	    name=${OPTS[1]}-H1W${H1W}_H2W${H2W}_randomized
+	    name=${OPTS[1]}-H1W${H1W}_H2W${H2W}${random_opt}
 	else
-	    name=${OPTS[0]}-H1W${H1W}_H2W${H2W}_randomized
-	fi
-    else
-	if [[ ${OPTS[0]} == plot ]]; then
-	    name=${OPTS[1]}-H1W${H1W}_H2W${H2W}
-	else
-	    name=${OPTS[0]}-H1W${H1W}_H2W${H2W}
-	fi
+	    name=${OPTS[0]}-H1W${H1W}_H2W${H2W}${random_opt}
+	fi	
+    elif [ "$1" == "iso" ]; then
+	echo sml_iso-H1W${H1W}_H2W${H2W}${random_opt}
     fi
 }
 
@@ -486,6 +486,11 @@ function run_wm {
 	then
 	    mkdir -p results/nd_files/${MODEL}
 	    mv results/nd_files/zz.nd results/nd_files/${MODEL}/tf.nd
+	elif [[ $OPTS == "iso_classify" || $OPTS == "cone_inputs" ]]
+	then
+	    mkdir -p results/nd_files/${MODEL}
+	    savename=$(get_save_name iso)
+	    mv results/nd_files/zz.nd results/nd_files/${MODEL}/${savename}.nd
 	else
 	    mkdir -p results/nd_files/${MODEL}
 	    mv results/nd_files/zz.nd results/nd_files/${MODEL}/${name}.nd

@@ -77,6 +77,10 @@ def main():
             opt = 'h_time'
         else:
             opt = option
+            # these two share the same nd files
+            if opt == 'cone_inputs' or opt == 'iso_classify':
+                opt = 'sml_iso'
+
             # handle randomized flag (passed in classify routines)
             if randomized == 'randomized':
                 opt += '-H1W' + str(H1W) + '_H2W' + str(H2W) + '_randomized'

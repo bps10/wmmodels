@@ -18,102 +18,81 @@ from base import plot as pf
 from base import files as f
 from base import data as dat
 
-from util import get_cell_list
+import util
 from plot.plot_mosaic import mosaic
 import analysis as an
 
 
 # need to add make color naming an option, not default. Won't work for models
-def cone_inputs(d, mod_name, mosaic_file, cell_type='bp', block_plots=True,
+def cone_inputs(d, model_name, mosaic_file, cell_type='bp', block_plots=True,
                 cone_contrast=[48.768, 22.265, 18.576]):
     '''
     '''
     # some options; should go into function options
-    args = ['cmdscaling']
+    args = ['cone_weights', 's_cone_weights']
     purity_thresh = 0.0
 
-    celldat = np.genfromtxt('results/txt_files/' + mod_name + '/nn_results.txt')
+    celldat = np.genfromtxt('results/txt_files/' + model_name + '/nn_results.txt')
 
-    # get results
-    celllist = get_cell_list(d)
+    # get some info about the cones
+    nn_dat = util.get_nn_dat(model_name)
+    celllist = util.get_cell_list(d)
 
     # get response
     r = an.response(d, cell_type, 'cone_inputs',
                     cone_contrast=cone_contrast)
 
     if 'cone_weights' in args:
-        plot_cone_weights(r, celldat, celllist, mod_name, mosaic_file)
+        plot_cone_weights(r, celldat, celllist, model_name, mosaic_file)
+
+
+    if 's_cone_weights' in args:
+        s_cone_weights(d, cone_contrast, celllist, celldat, model_name,
+                       mosaic_file)
 
     # -------------------------------------------------
     # if model is a human subject make additional plots
     # -------------------------------------------------
-    if mod_name.lower() in ['wt', 'bps']:
-        # first get data
-        cnaming = np.genfromtxt('mosaics/' + mod_name + '_white_bkgd.csv', 
-                                delimiter=',', skip_header=1)
-        newold = np.genfromtxt('mosaics/' + mod_name + '_old_new.csv')
-        mosaiclist = np.genfromtxt('mosaics/' + mod_name + '_mosaic.txt')
+    if model_name.lower() in ['wt', 'bps'] and ('linear_model' in args or
+                                                's_cone_dist' in args or
+                                                'color_names' in args):
 
-        # get the nearest neighbors to the specified cone
-        to_newold = spat.KDTree(newold[:, 2:])
-        to_cnaming = spat.KDTree(cnaming[:, :2])
-        to_simmos = spat.KDTree(mosaiclist[:, :2])
-        count = 0
+        # match up color names and modeled results
+        results = an.associate_cone_color_resp(r, nn_dat, celllist, 
+                                              model_name, bkgd='white',
+                                              randomized=False,
+                                              cell_type='bp')
 
-        for c in r: # for each cell type in results
-            output = np.zeros((len(r[c][:, 0]), 37))
-            for cone in range(0, len(r[c][:, 0])):
-                ind = np.where(celldat[:, 0] == float(celllist[cone]))[0]
-                loc = celldat[ind, 2:4][0]
-
-                # compute s weight for mosaic plot
-                s_weight = r[c][cone, 0] #compute_s_weight(r, c, cone)
-
-                # compute cone weights (re-order to L, M, S)
-                cone_weights = [r[c][cone, 1], r[c][cone, 2], s_weight]
-
-                # match up color names and modeled output
-                output, count = an.get_color_names(output, count,
-                                                to_newold, to_simmos, to_cnaming,
-                                                mosaiclist, newold, cnaming, loc,
-                                                cone_weights, celldat, r, c)
-
-        # cleanup output and remove zeros
-        output = output[~np.all(output == 0, axis=1)]
-        print 'N cells: ', count 
+        # cleanup results and remove zeros
+        results = results[~np.all(results == 0, axis=1)]
+        print 'N cells: ', len(results[:, 0])
                 
-        # save output
-        np.savetxt('results/txt_files/' + mod_name + '/cone_analysis.csv', 
-                   output)
+        # save results
+        np.savetxt('results/txt_files/' + model_name + '/cone_analysis.csv', 
+                   results)
 
         # compute rg metric and find high purity indices
         if args is not []:
-            rg, high_purity = an.get_rg_from_naming(output[:, 5:10], purity_thresh)
+            # break rg into three categories: red, green, white
+            rg, by, high_purity = an.get_rgby_from_naming(results[:, 5:10], 
+                                                          purity_thresh)
 
         # plot color names
         if 'color_names' in args:
-            plot_color_names(rg, high_purity, output, mod_name)
+            plot_color_names(rg, high_purity, results, model_name)
 
         # linear model
         if 'linear_model' in args:
-            fit_linear_model(rg, output, mod_name, opponent=True)
+            fit_linear_model(rg, results, model_name, opponent=True)
 
         # S-cone distance analysis and plot
         if 's_cone_dist' in args:
-            s_cone_dist_analysis(rg, output, mod_name)
-
-        # multidemensional scaling
-        if 'cmdscaling' in args:
-            classic_mdscaling(output, mod_name, rg, high_purity)
-
-        # support vector machine
-        if 'svm' in args:
-            svm_classify(output, mod_name, rg, high_purity)
+            s_cone_dist_analysis(rg, results, model_name)
 
     plt.show(block=block_plots)
 
 
-def plot_cone_weights(r, celldat, celllist, mod_name, mosaic_file,
+def plot_cone_weights(r, celldat, celllist, model_name, mosaic_file,
                       block_plots=True):
     '''
     '''
@@ -139,11 +118,10 @@ def plot_cone_weights(r, celldat, celllist, mod_name, mosaic_file,
     ax.set_ylim([-1.1, 1.1])
 
     # get mosaic plot
-    mos, mos_fig = mosaic(mod_name, FILE=mosaic_file, return_ax=True)
-    mos2, mos_fig2 = mosaic(mod_name, FILE=mosaic_file, return_ax=True)
+    mos, mos_fig = mosaic(model_name, FILE=mosaic_file, return_ax=True)
+    mos2, mos_fig2 = mosaic(model_name, FILE=mosaic_file, return_ax=True)
 
     for c in r: # for each cell type in results
-        output = np.zeros((len(r[c][:, 0]), 37))
         for cone in range(0, len(r[c][:, 0])):
             ind = np.where(celldat[:, 0] == float(celllist[cone]))[0]
             type = round(celldat[ind, 1])
@@ -174,15 +152,15 @@ def plot_cone_weights(r, celldat, celllist, mod_name, mosaic_file,
     mos2.set_ylim([35, 90])
 
     # save figs
-    f.make_dir('results/img/' + mod_name)
-    fig.savefig('results/img/' + mod_name + '/cone_inputs.svg', edgecolor='none')
-    mos_fig.savefig('results/img/' + mod_name + '/cone_inputs_mosaic.svg', 
+    f.make_dir('results/img/' + model_name)
+    fig.savefig('results/img/' + model_name + '/cone_inputs.svg', edgecolor='none')
+    mos_fig.savefig('results/img/' + model_name + '/cone_inputs_mosaic.svg', 
                     edgecolor='none')
-    mos_fig2.savefig('results/img/' + mod_name + '/cone_inputs_mosaic2.svg', 
+    mos_fig2.savefig('results/img/' + model_name + '/cone_inputs_mosaic2.svg', 
                      edgecolor='none')
 
 
-def plot_color_names(rg, purity_thresh, output, mod_name):
+def plot_color_names(rg, purity_thresh, results, model_name):
     '''
     '''
     # --- plot color names on a diamond plot --- #
@@ -204,7 +182,7 @@ def plot_color_names(rg, purity_thresh, output, mod_name):
     ax.plot([0, -1], [-1, 0], 'k')
 
     for i in range(len(rg)):
-        maxind = output[i, 5:10].argmax()
+        maxind = results[i, 5:10].argmax()
         symbol = 'o'
         # check if cone has a purity greater threshold
         if purity_thresh is not None and purity_thresh < 1:
@@ -215,14 +193,14 @@ def plot_color_names(rg, purity_thresh, output, mod_name):
         else:
             color = [np.abs(rg[i]), 0, 0]
 
-        ax.plot(output[i, 3], output[i, 2], symbol, color=color,
+        ax.plot(results[i, 3], results[i, 2], symbol, color=color,
                  markeredgewidth=2, markeredgecolor='k', alpha=0.5)
 
-    fig1.savefig('results/img/' + mod_name + '/cone_inputs_w_naming.svg',
+    fig1.savefig('results/img/' + model_name + '/cone_inputs_w_naming.svg',
                 edgecolor='none')
 
 
-def classic_mdscaling(output, mod_name, rg, high_purity=None):
+def classic_mdscaling(results, model_name, rg, high_purity=None):
     '''
     '''
     # ----- params ----- #
@@ -249,7 +227,7 @@ def classic_mdscaling(output, mod_name, rg, high_purity=None):
 
     # keep only high purity cones if a vector is passed
     if high_purity is not None:
-        output = output[high_purity, :]
+        results = results[high_purity, :]
         rg = rg[high_purity]
     
     # break rg into three categories: red, green, white
@@ -259,7 +237,7 @@ def classic_mdscaling(output, mod_name, rg, high_purity=None):
     color_categories = color_categories.T[0]
 
     # select out the predictors
-    predictors = output[:, cols]
+    predictors = results[:, cols]
 
     # set up random numbers
     np.random.seed(rand_seed)
@@ -275,13 +253,13 @@ def classic_mdscaling(output, mod_name, rg, high_purity=None):
             predictors, color_categories, test_size=test_size,
             random_state=int(seed[0]))
 
-        # first thing need to transform output into distance matrix
+        # first thing need to transform results into distance matrix
         # many to choose from including: euclidean, correlation, cosine, 
         # cityblock, minkowski, hamming, etc
         dist_train = spat.distance.pdist(X_train, metric)
         dist_test = spat.distance.pdist(X_test, metric)
 
-        # convert distance (output in vector form) into square form
+        # convert distance (results in vector form) into square form
         dist_train = spat.distance.squareform(dist_train)
         dist_test = spat.distance.squareform(dist_test)
 
@@ -361,48 +339,85 @@ def classic_mdscaling(output, mod_name, rg, high_purity=None):
     ax[0].set_ylabel('dimension 2')
     
     # save functions
-    fig.savefig('results/img/' + mod_name + '/mdscaling.svg',
+    fig.savefig('results/img/' + model_name + '/mdscaling.svg',
                 edgecolor='none')    
-    imgfig.savefig('results/img/' + mod_name + '/mds_dissimilarity.svg',
+    imgfig.savefig('results/img/' + model_name + '/mds_dissimilarity.svg',
                 edgecolor='none')    
 
 
-def s_cone_dist_analysis(rg, output, mod_name):
+def s_cone_weights(d, cone_contrast, celllist, celldat, model_name, 
+                   mosaic_file):
+    '''
+    '''
 
+    lm_midgets = an.compute_s_dist_cone_weight(d, celldat, celllist, 
+                                               mosaic_file, cone_contrast,
+                                               species='human')
+    # plotting routines    
+    ax, fig1 = pf.get_axes(1, 1, nticks=[4, 5], return_fig=True)
+    ax[0].plot(lm_midgets[:, 0], lm_midgets[:, 1], 'ko')
+
+    ax[0].set_xlabel('distance from S-cone (arcmin)')
+    ax[0].set_ylabel('S / (L+M+S)')
+
+    # histogram of same data
+    ax2, fig2 = pf.get_axes(1, 1, nticks=[4, 5], return_fig=True)
+    ax2[0].spines['bottom'].set_smart_bounds(False)
+
+    count, bins = np.histogram(lm_midgets[:, 1], bins=15)
+    count = count / count.sum() * 100
+    bins, count = pf.histOutline(count, bins)
+    ax2[0].plot(bins, count, 'k-')
+
+    ax2[0].set_xlim([0, 1])
+    ax2[0].set_ylabel('% of cells')
+    ax2[0].set_xlabel('S / (L+M+S)')
+
+    # Save plots
+    f.make_dir('results/img/' + model_name)
+    fig1.savefig('results/img/' + model_name + '/s_weight_scatter.eps', 
+                 edgecolor='none')
+    fig2.savefig('results/img/' + model_name + '/s_weight_hist.eps', 
+                 edgecolor='none')
+
+
+def s_cone_dist_analysis(rg, results, model_name):
+    '''
+    '''
     # checkout proximity to s cone and rg metric
     ax, fig = pf.get_axes(1, 1, nticks=[3, 3], return_fig=True)
     ax = ax[0]
-    inds = output[:, 4] < 0.4 # eliminate S-cone center cells
-    ax.plot(output[inds, 4], np.abs(rg[inds]), 'ko')
+    inds = results[:, 4] < 0.4 # eliminate S-cone center cells
+    ax.plot(results[inds, 4], np.abs(rg[inds]), 'ko')
     
     ax.set_xlabel('S-cone weight')
     ax.set_ylabel('absolute value rg response')
 
     # See if there is a relationship between color names and distance to S-cone
-    X = sm.add_constant(output[inds, 4], prepend=True)
+    X = sm.add_constant(results[inds, 4], prepend=True)
     OLSmodel = sm.OLS(rg[inds], X)
     res = OLSmodel.fit()
     print '\n\n\n'
     print res.rsquared
 
-    fig.savefig('results/img/' + mod_name + '/s_cone_distance.svg',
+    fig.savefig('results/img/' + model_name + '/s_cone_distance.svg',
                 edgecolor='none')    
 
 
-def fit_linear_model(rg, output, mod_name, opponent=True):
+def fit_linear_model(rg, results, model_name, opponent=True):
     # Switch depending upon opponent option
     if not opponent:
-        predictors = output[:, [2, 3, 4, 10, 11, 12, 13, 14, 15, 16, 17, 18, 
+        predictors = results[:, [2, 3, 4, 10, 11, 12, 13, 14, 15, 16, 17, 18, 
                                 19, 20, 21, 22, 23, 24, 25, 26, 27]] 
     else:
         # organize in opponent fashion
         N = 2 # center cone and nearest x
-        predictors = np.zeros((len(output[:, 0]), N + 1))
+        predictors = np.zeros((len(results[:, 0]), N + 1))
         _inds = [2, 10, 13, 16, 19, 22, 25, 28, 31]
         for i in range(N + 1):
-            predictors[:, i] = ((output[:, _inds[i]] +
-                                 output[:, _inds[i] + 2])
-                                - output[:, _inds[i] + 1])
+            predictors[:, i] = ((results[:, _inds[i]] +
+                                 results[:, _inds[i] + 2])
+                                - results[:, _inds[i] + 1])
     # cone weights in L, M, S order
     inds = [2, 10, 13]
     X = sm.add_constant(predictors, prepend=True)
@@ -450,7 +465,7 @@ def fit_linear_model(rg, output, mod_name, opponent=True):
         ax.set_xlim([-1, 1])
     else:
         ax.plot([0, 1], [0, 1], 'k-')
-    fig.savefig('results/img/' + mod_name + '/cone_inputs_model_error.svg',
+    fig.savefig('results/img/' + model_name + '/cone_inputs_model_error.svg',
                 edgecolor='none')
 
 

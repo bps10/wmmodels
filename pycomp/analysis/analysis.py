@@ -10,7 +10,8 @@ from sklearn.cross_validation import train_test_split
 
 from base import data as dat
 
-from util import get_time, get_cell_data, get_cell_list, get_cell_type, num
+import util
+from util import nearest_neighbor as nn
 import plot as pl
 
 def response(d, cell_type, analysis_type,
@@ -18,12 +19,12 @@ def response(d, cell_type, analysis_type,
     '''
     '''
     # Get cell list from data keys
-    celllist = get_cell_list(d)
+    celllist = util.get_cell_list(d)
 
     # Load params from meta data
-    N = num(d['const']['MOO_tn']['val']) # time steps
+    N = util.num(d['const']['MOO_tn']['val']) # time steps
 
-    time = get_time(d)
+    time = util.get_time(d)
     ncells = len(celllist)
     time_bin = 15
 
@@ -31,17 +32,17 @@ def response(d, cell_type, analysis_type,
     # analysis specific parameters
     if analysis_type == 'cone_inputs':
         normalize = True
-        tf = num(d['const']['tf']['val']) # temporal frequency (Hz)
+        tf = util.num(d['const']['tf']['val']) # temporal frequency (Hz)
     elif analysis_type == 'tf':
-        sf = num(d['const']['sf']['val']) # spatial freq (cpd)
-        tf = num(d['const']['VAR_tf']['val']) # temporal frequency (Hz)
+        sf = util.num(d['const']['sf']['val']) # spatial freq (cpd)
+        tf = util.num(d['const']['VAR_tf']['val']) # temporal frequency (Hz)
     elif analysis_type == 'sf':
-        sf = num(d['const']['VAR_sf']['val']) # spatial freq (cpd)
-        tf = num(d['const']['tf']['val']) # temporal frequency (Hz)
+        sf = util.num(d['const']['VAR_sf']['val']) # spatial freq (cpd)
+        tf = util.num(d['const']['tf']['val']) # temporal frequency (Hz)
     else:
         raise InputError('analysis type not supported (cone_input, sf, tf)')
     
-    cells = get_cell_type(cell_type)
+    cells = util.get_cell_type(cell_type)
     if cell_type == 'rgc':
         resp_ind = 'p'
     else:
@@ -51,7 +52,7 @@ def response(d, cell_type, analysis_type,
     for c in cells: # for each cell type
         resp[c] = np.zeros((ncells * len(cells), int(d['ntrial'])))
 
-        keys = get_cell_data(d, c) 
+        keys = util.get_cell_data(d, c) 
         
         for t in range(d['ntrial']): # for each trial
             for i, r in enumerate(keys['tr'][t]['r']): # for each cell
@@ -190,7 +191,7 @@ def associate_cone_color_resp(r, nn_dat, celllist, mod_name, bkgd='white',
 
     count = 0
     c = cell_type
-    output = np.zeros((len(r[c][:, 0]), 39))
+    output = np.zeros((len(r[c][:, 0]), 36))
     for cone in range(0, len(r[c][:, 0])):
         ind = np.where(nn_dat[:, 0] == float(celllist[cone]))[0]
         loc = nn_dat[ind, 2:4][0]
@@ -217,8 +218,9 @@ def associate_cone_color_resp(r, nn_dat, celllist, mod_name, bkgd='white',
                 # make sure more than 8 seen trials and cone is not S
                 if total > 8 and cone_type > 0: 
                     output[count, :2] = loc
-                    output[count, 37] = cone_type
-                    output[count, 38] = nn_dat[ind, 0]
+                    output[count, 2:5] = cone_weights
+                    output[count, 34] = cone_type
+                    output[count, 35] = nn_dat[ind, 0]
                     output[count, 5:10] = cnames[6:] # / total
                 
                     # now need to associate mosaiclist w cone inputs
@@ -233,6 +235,7 @@ def associate_cone_color_resp(r, nn_dat, celllist, mod_name, bkgd='white',
                         output[count, j:j + 3] = neighbor
                         j += 3
                     count += 1
+
     # cleanup output and remove zeros
     output = output[~np.all(output == 0, axis=1)]
 
@@ -273,21 +276,21 @@ def compute_corr_matrix(data_mat):
 
 def get_data_matrix(d, cell_type):
     # Get cell list from data keys
-    celllist = get_cell_list(d)
+    celllist = util.get_cell_list(d)
     ncells = len(celllist)
 
     # Load params from meta data
-    nsteps = num(d['const']['MOO_tn']['val']) # time steps
-    ntrials = num(d['ntrial'])
+    nsteps = util.num(d['const']['MOO_tn']['val']) # time steps
+    ntrials = util.num(d['ntrial'])
 
     normalize = False    
-    #cells = get_cell_type(cell_type)
+    #cells = util.get_cell_type(cell_type)
     if cell_type == 'rgc':
         resp_ind = 'p'
     else:
         resp_ind = 'x'
 
-    cellkey = get_cell_data(d, cell_type) 
+    cellkey = util.get_cell_data(d, cell_type) 
         
     data_mat = np.zeros((ncells, nsteps * ntrials))
     for t in range(ntrials):
@@ -295,6 +298,51 @@ def get_data_matrix(d, cell_type):
             data_mat[i, t * nsteps:(t + 1) * nsteps] = d['tr'][t]['r'][r][resp_ind]
 
     return data_mat
+
+
+def compute_s_dist_cone_weight(d, celldat, celllist, mosaic_file, cone_contrast,
+                               species='human'):
+    '''
+    '''
+    deg_per_pix, mm_per_deg = util.conversion_factors(species)
+
+    cellIDs = celldat[:, 0]
+
+    # convert pixels into arcmin
+    dist2S =  nn.find_nearest_S(celldat[:, 2:4], mosaic_file)[0]
+    dist2S *= deg_per_pix * 60
+
+    N = util.num(d['const']['MOO_tn']['val']) # time steps
+    tf = util.num(d['const']['tf']['val']) # temporal frequency (Hz)
+
+    lm_midgets = np.zeros((len(celllist), 2))
+    keys = util.get_cell_data(d['tr'][0], 'bp')
+    for i, r in enumerate(keys):
+        # find distance to S
+        cellID = int(celllist[i])
+        ind = np.where(cellIDs == cellID)[0]
+        distance = dist2S[ind]
+
+        # Compute SML cone weights
+        # Trials: 1. S iso; 2. M iso; 3. L iso
+        sml_weights = np.zeros((3, 1))
+        for t in [0, 1, 2]:             
+            # find amplitude of signal
+            cell = d['tr'][t]['r'][r]['x']
+            fft = np.fft.fft(cell)
+            amp  = np.abs(fft[int(tf)]) * 2 / N
+            sml_weights[t] = amp / cone_contrast[t] 
+
+        # skip S cones
+        if celldat[ind, 1] != 0:
+            lm_midgets[i, 0] = distance
+            sml = sml_weights / sml_weights.sum()
+            lm_midgets[i, 1] = sml[0] # s-cone weight
+
+    # remove zero rows (where S cones were)
+    lm_midgets = lm_midgets[~np.all(lm_midgets == 0, axis=1)]
+
+    return lm_midgets
 
 
 def compute_cone_weights(r, nn_dat, celllist):
