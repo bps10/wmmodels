@@ -266,12 +266,12 @@ function get_save_name {
     fi
     if [ -z "$1" ]; then
 	if [[ ${OPTS[0]} == plot ]]; then
-	    name=${OPTS[1]}-H1W${H1W}_H2W${H2W}${random_opt}
+	    name=${OPTS[1]}-H1W${H1W}_H2W${H2W}_H2t${H2P0}${random_opt}
 	else
-	    name=${OPTS[0]}-H1W${H1W}_H2W${H2W}${random_opt}
+	    name=${OPTS[0]}-H1W${H1W}_H2W${H2W}_H2t${H2P0}${random_opt}
 	fi	
     elif [ "$1" == "iso" ]; then
-	echo sml_iso-H1W${H1W}_H2W${H2W}${random_opt}
+	echo sml_iso-H1W${H1W}_H2W${H2W}_H2t${H2P0}${random_opt}
     fi
 }
 

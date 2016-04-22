@@ -9,9 +9,8 @@ from base import data as dat
 
 import analysis as an
 import util
-from base import files as fil
 
-# change the name of this function
+
 def classify_analysis(d, model_name, mosaic_file, cell_type, 
                       params, block_plots=True, color_cats=True,
                       purity_thresh=0.0, nseeds=10):
@@ -161,20 +160,17 @@ def classify_analysis(d, model_name, mosaic_file, cell_type,
                      'o', c=color)'''
 
     # save figs
-    fil.make_dir('results/img/' + model_name)
-    savename = 'results/img/' + model_name + '/' + 'classification/'
-    savename += 'H1W' + str(params['H1W']) + '_'
-    savename += 'H2W' + str(params['H2W']) + '_'
+    savedir = util.get_save_dirname(params, model_name)
     if params['Random_Cones']:
-        savename += 'randomized'
+        savedir += 'randomized_'
     #fig1.savefig(savename + '_corr_matrix.eps', edgecolor='none')
-    fig2.savefig(savename + '_low_dim_rep.eps', edgecolor='none')
+    fig2.savefig(savedir + 'low_dim_rep.eps', edgecolor='none')
     #fig3.savefig(savename + '_3dplot.eps', edgecolor='none')
 
     if cmdscaling:
         ax, fig4 = pf.get_axes(1, 1, nticks=[3, 3], return_fig=True)
         ax[0].plot(eigen, 'ko')
-        fig4.savefig(savename + '_eigenvals.eps', edgecolor='none')
+        fig4.savefig(savedir + 'eigenvals.eps', edgecolor='none')
 
     plt.show(block=block_plots)
 

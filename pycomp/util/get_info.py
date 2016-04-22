@@ -2,7 +2,7 @@ from __future__ import division
 import numpy as np
 
 from format import num
-
+from base import files as f
 
 def get_cell_type(cell_type):
     '''
@@ -18,6 +18,16 @@ def get_cell_type(cell_type):
         raise InputError('cell_type must equal horiz or rgc')
 
     return cells
+
+
+def get_save_dirname(params, model_name, makedir=True):
+    savedir = 'results/img/' + model_name + '/'
+    savedir += 'H1W' + str(params['H1W']) + 'H2W' + str(params['H2W'])
+    savedir += 'H2t' + str(params['H2t']) + '/'
+    if makedir:
+        f.make_dir(savedir)
+    return savedir
+
 
 def get_cell_list(d):
     '''Return a list of cell names in data dictionary
@@ -80,6 +90,7 @@ def get_nn_dat(model_name):
     print 'read nearest neighbors from: ' + filename
 
     return np.genfromtxt(filename)
+
 
 def get_time(d):
     '''Return an array of time values using params from

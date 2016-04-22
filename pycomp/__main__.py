@@ -29,9 +29,11 @@ def main():
     flags = arg2[1].split('_')
     H1W = float(parse_flags(flags, 'H1W')[0][3:])
     H2W = float(parse_flags(flags, 'H2W')[0][3:])
+    H2t = float(parse_flags(flags, 'H2t')[0][3:])
     randomized = parse_flags(flags, 'randomized')
     if randomized != []: randomized = randomized[0]
-    params = {'H1W': H1W, 'H2W': H2W, 'Random_Cones': randomized, }
+    params = {'H1W': H1W, 'H2W': H2W, 'H2t': H2t,
+              'Random_Cones': randomized, }
     for key in params.keys():
         print key + '=' + str(params[key]) + '\t'
 
@@ -83,17 +85,23 @@ def main():
 
             # handle randomized flag (passed in classify routines)
             if randomized == 'randomized':
-                opt += '-H1W' + str(H1W) + '_H2W' + str(H2W) + '_randomized'
+                opt += '-H1W' + str(H1W) + '_H2W' + str(H2W) 
+                opt += '_H2t' + str(H2t) + '_randomized'
                 randomized = True
             elif randomized == []:
-                opt += '-H1W' + str(H1W) + '_H2W' + str(H2W)
+                opt += '-H1W' + str(H1W) + '_H2W' + str(H2W) 
+                opt += '_H2t' + str(H2t)
                 randomized = False
             else:
                 raise('Randomized option' + randomized + ' not understood')
 
         ndfilename = 'results/nd_files/' + model + '/' + opt + '.nd'
-        print 'reading nd file: ' + ndfilename
-        d = nd_read(ndfilename)
+        # check if file exists:
+        if os.path.isfile(ndfilename):
+            print 'reading nd file: ' + ndfilename
+            d = nd_read(ndfilename)
+        else:
+            raise(ndfilename + 'does not exist. Try running simulation.')
 
     if option in h1:
         filename = 'results/pl_files/' + model + '/h1.dist.pl'
@@ -128,7 +136,7 @@ def main():
         
     if option in cone_inputs:
         cell_type = 'bp'
-        plot.cone_inputs(d, model, mosaic_file, cell_type, block_plots, 
+        plot.cone_inputs(d, model, mosaic_file, params, cell_type, block_plots, 
                          [48.768, 22.265, 18.576])
 
     if option in classify:

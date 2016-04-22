@@ -15,7 +15,6 @@ from sklearn.metrics import confusion_matrix
 from sklearn.cross_validation import train_test_split
 
 from base import plot as pf
-from base import files as f
 from base import data as dat
 
 import util
@@ -24,8 +23,8 @@ import analysis as an
 
 
 # need to add make color naming an option, not default. Won't work for models
-def cone_inputs(d, model_name, mosaic_file, cell_type='bp', block_plots=True,
-                cone_contrast=[48.768, 22.265, 18.576]):
+def cone_inputs(d, model_name, mosaic_file, params, cell_type='bp', 
+                block_plots=True, cone_contrast=[48.768, 22.265, 18.576]):
     '''
     '''
     # some options; should go into function options
@@ -43,12 +42,12 @@ def cone_inputs(d, model_name, mosaic_file, cell_type='bp', block_plots=True,
                     cone_contrast=cone_contrast)
 
     if 'cone_weights' in args:
-        plot_cone_weights(r, celldat, celllist, model_name, mosaic_file)
+        plot_cone_weights(r, celldat, celllist, model_name, mosaic_file, params)
 
 
     if 's_cone_weights' in args:
         s_cone_weights(d, cone_contrast, celllist, celldat, model_name,
-                       mosaic_file)
+                       mosaic_file, params)
 
     # -------------------------------------------------
     # if model is a human subject make additional plots
@@ -92,8 +91,7 @@ def cone_inputs(d, model_name, mosaic_file, cell_type='bp', block_plots=True,
     plt.show(block=block_plots)
 
 
-def plot_cone_weights(r, celldat, celllist, model_name, mosaic_file,
-                      block_plots=True):
+def plot_cone_weights(r, celldat, celllist, model_name, mosaic_file, params):
     '''
     '''
     fig = plt.figure(figsize=(6,6))
@@ -152,12 +150,67 @@ def plot_cone_weights(r, celldat, celllist, model_name, mosaic_file,
     mos2.set_ylim([35, 90])
 
     # save figs
-    f.make_dir('results/img/' + model_name)
-    fig.savefig('results/img/' + model_name + '/cone_inputs.svg', edgecolor='none')
-    mos_fig.savefig('results/img/' + model_name + '/cone_inputs_mosaic.svg', 
-                    edgecolor='none')
-    mos_fig2.savefig('results/img/' + model_name + '/cone_inputs_mosaic2.svg', 
-                     edgecolor='none')
+    savedir = util.get_save_dirname(params, model_name)
+    fig.savefig(savedir + 'cone_inputs.svg', edgecolor='none')
+    mos_fig.savefig(savedir + 'cone_inputs_mosaic.eps', edgecolor='none')
+    mos_fig2.savefig(savedir + 'cone_inputs_mosaic2.svg', edgecolor='none')
+
+
+def s_cone_weights(d, cone_contrast, celllist, celldat, model_name, 
+                   mosaic_file, params):
+    '''
+    '''
+
+    lm_midgets = an.compute_s_dist_cone_weight(d, celldat, celllist, 
+                                               mosaic_file, cone_contrast,
+                                               species='human')
+    # plotting routines    
+    ax, fig1 = pf.get_axes(1, 1, nticks=[4, 5], return_fig=True)
+    ax[0].plot(lm_midgets[:, 0], lm_midgets[:, 1], 'ko')
+
+    ax[0].set_xlabel('distance from S-cone (arcmin)')
+    ax[0].set_ylabel('S / (L+M+S)')
+
+    # histogram of same data
+    ax2, fig2 = pf.get_axes(1, 1, nticks=[4, 5], return_fig=True)
+    ax2[0].spines['bottom'].set_smart_bounds(False)
+
+    count, bins = np.histogram(lm_midgets[:, 1], bins=15)
+    count = count / count.sum() * 100
+    bins, count = pf.histOutline(count, bins)
+    ax2[0].plot(bins, count, 'k-')
+
+    ax2[0].set_xlim([0, 1])
+    ax2[0].set_ylabel('% of cells')
+    ax2[0].set_xlabel('S / (L+M+S)')
+
+    # Save plots
+    savedir = util.get_save_dirname(params, model_name)
+    fig1.savefig(savedir + 's_weight_scatter.eps', edgecolor='none')
+    fig2.savefig(savedir + 's_weight_hist.eps', edgecolor='none')
+
+
+def s_cone_dist_analysis(rg, results, model_name):
+    '''
+    '''
+    # checkout proximity to s cone and rg metric
+    ax, fig = pf.get_axes(1, 1, nticks=[3, 3], return_fig=True)
+    ax = ax[0]
+    inds = results[:, 4] < 0.4 # eliminate S-cone center cells
+    ax.plot(results[inds, 4], np.abs(rg[inds]), 'ko')
+    
+    ax.set_xlabel('S-cone weight')
+    ax.set_ylabel('absolute value rg response')
+
+    # See if there is a relationship between color names and distance to S-cone
+    X = sm.add_constant(results[inds, 4], prepend=True)
+    OLSmodel = sm.OLS(rg[inds], X)
+    res = OLSmodel.fit()
+    print '\n\n\n'
+    print res.rsquared
+
+    fig.savefig('results/img/' + model_name + '/s_cone_distance.svg',
+                edgecolor='none')    
 
 
 def plot_color_names(rg, purity_thresh, results, model_name):
@@ -198,210 +251,6 @@ def plot_color_names(rg, purity_thresh, results, model_name):
 
     fig1.savefig('results/img/' + model_name + '/cone_inputs_w_naming.svg',
                 edgecolor='none')
-
-
-def classic_mdscaling(results, model_name, rg, high_purity=None):
-    '''
-    '''
-    # ----- params ----- #
-    # Don't use if Nseeds > 1
-    display_verbose = False
-    # used in train_test_split
-    rand_seed = 23456 
-    # number of times to resample data set
-    Nseeds = 100
-    # proportion of data set to leave for test
-    test_size = 0.1
-    # dimensions to use from MDS in SVD (list)
-    dims = [0, 1, 2]
-    # threshold rg that separates red, white, green
-    rg_thresh = 0.5
-    # search grid params in svm
-    param_grid = {'C': [1e2, 1e3, 5e3, 1e4, 5e4, 1e5, 1e6, 1e7],
-                  'gamma': [0.001, 0.01, 0.05], }
-    # cols 2, 3, 4 = stimulated cones; 10:27 = neighbors
-    cols = [2, 3, 4, 10, 11, 12, 13, 14, 15]#, 16, 17, 18, 19, 20]
-
-    metric = 'correlation'
-    # ------------------- #
-
-    # keep only high purity cones if a vector is passed
-    if high_purity is not None:
-        results = results[high_purity, :]
-        rg = rg[high_purity]
-    
-    # break rg into three categories: red, green, white
-    red = rg < -rg_thresh
-    green = rg > rg_thresh
-    color_categories = red + green * 2
-    color_categories = color_categories.T[0]
-
-    # select out the predictors
-    predictors = results[:, cols]
-
-    # set up random numbers
-    np.random.seed(rand_seed)
-    rand_seeds = np.round(np.random.rand(Nseeds, 1) * 10000)
-    
-    # set up data containers for results
-    total_y_true = []
-    total_y_pred = []
-
-    for seed in rand_seeds:
-        # Split into a training set and a test set using a stratified k fold
-        X_train, X_test, y_train, y_test = train_test_split(
-            predictors, color_categories, test_size=test_size,
-            random_state=int(seed[0]))
-
-        # first thing need to transform results into distance matrix
-        # many to choose from including: euclidean, correlation, cosine, 
-        # cityblock, minkowski, hamming, etc
-        dist_train = spat.distance.pdist(X_train, metric)
-        dist_test = spat.distance.pdist(X_test, metric)
-
-        # convert distance (results in vector form) into square form
-        dist_train = spat.distance.squareform(dist_train)
-        dist_test = spat.distance.squareform(dist_test)
-
-        # compute the classical multi-dimensional scaling
-        config_mat, eigen = dat.cmdscale(dist_train)
-        config_mat_test, eigen = dat.cmdscale(dist_test)
-
-        # Classify with SVM
-        clf = GridSearchCV(SVC(kernel='rbf', class_weight='balanced'), 
-                           param_grid)
-        clf = clf.fit(config_mat[:, dims], y_train)
-
-        # predict test data with fit model
-        y_pred = clf.predict(config_mat_test[:, dims])
-
-        if display_verbose:
-            print("Best estimator found by grid search:")
-            print(clf.best_estimator_)    
-            # Quantitative evaluation of the model quality on the test set
-            print("Predicting color names on the test set")
-
-        # save output
-        total_y_true.append(y_test)
-        total_y_pred.append(y_pred)
-
-    # print the summary results
-    total_y_true = np.asarray(total_y_true).flatten()
-    total_y_pred = np.asarray(total_y_pred).flatten()
-    target_names = ['white', 'red', 'green']
-
-    print 'N simulations: ', Nseeds
-    print 'Dimensions used: ', dims 
-    print 'rg thresh: ', rg_thresh
-    print param_grid
-    print 'cols used: ', cols
-
-    n_classes = 3
-    print classification_report(total_y_true, total_y_pred,
-                                target_names=target_names)
-    print confusion_matrix(total_y_true, total_y_pred, labels=range(n_classes))
-
-    # ---------- Plot some results --------- #
-    # first sort predictors for plotting purposes
-    rg = rg.T[0]
-    sort_inds = np.argsort(rg)
-    predictors = predictors[sort_inds, :]
-    rg = rg[sort_inds]
-
-    # compute dissimilarity matrix
-    plot_dist_train = spat.distance.pdist(predictors, metric)
-    plot_dist_train = spat.distance.squareform(plot_dist_train)
-
-    # plot dissimilarity matrix for whole data set    
-    imax, imgfig = pf.get_axes(1, 1, nticks=[4, 4], return_fig=True)
-    imax[0].imshow(plot_dist_train, interpolation=None,
-                   cmap=plt.cm.viridis, 
-                   extent=[rg.min(), rg.max(), rg.max(), rg.min()])
-    ticks = [rg.min(), find_nearest(rg, -0.5), find_nearest(rg, 0),
-             find_nearest(rg, 0.5), rg.max()]
-    imax[0].set_xticks(ticks)
-    imax[0].set_yticks(ticks)
-
-    # plot projection of training data in mds space
-    ax, fig = pf.get_axes(1, 1, nticks=[3, 3], return_fig=True)    
-    for i in range(0, len(y_train)):
-        if y_train[i] == 1:
-            color = [1, 0, 0]
-        elif y_train[i] == 2:
-            color = [0, 1, 0]
-        else:
-            color = [0, 0, 0]
-        
-        ax[0].plot(config_mat[i, dims[0]], config_mat[i, dims[1]], 'o',
-                   color=color)
-
-    ax[0].set_xlabel('dimension 1')
-    ax[0].set_ylabel('dimension 2')
-    
-    # save functions
-    fig.savefig('results/img/' + model_name + '/mdscaling.svg',
-                edgecolor='none')    
-    imgfig.savefig('results/img/' + model_name + '/mds_dissimilarity.svg',
-                edgecolor='none')    
-
-
-def s_cone_weights(d, cone_contrast, celllist, celldat, model_name, 
-                   mosaic_file):
-    '''
-    '''
-
-    lm_midgets = an.compute_s_dist_cone_weight(d, celldat, celllist, 
-                                               mosaic_file, cone_contrast,
-                                               species='human')
-    # plotting routines    
-    ax, fig1 = pf.get_axes(1, 1, nticks=[4, 5], return_fig=True)
-    ax[0].plot(lm_midgets[:, 0], lm_midgets[:, 1], 'ko')
-
-    ax[0].set_xlabel('distance from S-cone (arcmin)')
-    ax[0].set_ylabel('S / (L+M+S)')
-
-    # histogram of same data
-    ax2, fig2 = pf.get_axes(1, 1, nticks=[4, 5], return_fig=True)
-    ax2[0].spines['bottom'].set_smart_bounds(False)
-
-    count, bins = np.histogram(lm_midgets[:, 1], bins=15)
-    count = count / count.sum() * 100
-    bins, count = pf.histOutline(count, bins)
-    ax2[0].plot(bins, count, 'k-')
-
-    ax2[0].set_xlim([0, 1])
-    ax2[0].set_ylabel('% of cells')
-    ax2[0].set_xlabel('S / (L+M+S)')
-
-    # Save plots
-    f.make_dir('results/img/' + model_name)
-    fig1.savefig('results/img/' + model_name + '/s_weight_scatter.eps', 
-                 edgecolor='none')
-    fig2.savefig('results/img/' + model_name + '/s_weight_hist.eps', 
-                 edgecolor='none')
-
-
-def s_cone_dist_analysis(rg, results, model_name):
-    '''
-    '''
-    # checkout proximity to s cone and rg metric
-    ax, fig = pf.get_axes(1, 1, nticks=[3, 3], return_fig=True)
-    ax = ax[0]
-    inds = results[:, 4] < 0.4 # eliminate S-cone center cells
-    ax.plot(results[inds, 4], np.abs(rg[inds]), 'ko')
-    
-    ax.set_xlabel('S-cone weight')
-    ax.set_ylabel('absolute value rg response')
-
-    # See if there is a relationship between color names and distance to S-cone
-    X = sm.add_constant(results[inds, 4], prepend=True)
-    OLSmodel = sm.OLS(rg[inds], X)
-    res = OLSmodel.fit()
-    print '\n\n\n'
-    print res.rsquared
-
-    fig.savefig('results/img/' + model_name + '/s_cone_distance.svg',
-                edgecolor='none')    
 
 
 def fit_linear_model(rg, results, model_name, opponent=True):
