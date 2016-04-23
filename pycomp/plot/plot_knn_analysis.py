@@ -10,7 +10,7 @@ from util import get_cell_list, get_cell_data, num, conversion_factors
 from util.nd_read import nd_read
 
 
-def knn(d, model, block_plots=True):
+def knn(d, params):
     '''
     TO DO:
 
@@ -48,6 +48,6 @@ def knn(d, model, block_plots=True):
         if celldat[ind, 1] == 2:
             ax.plot(distance, amp, 'ro')
 
-    f.make_dir('results/img/' + model)
-    fig.savefig('results/img/' + model + '/knn.svg', edgecolor='none')
-    plt.show(block=block_plots)
+    savedir = util.get_save_dirname(params, check_randomized=True)
+    fig.savefig(savedir + 'knn.svg', edgecolor='none')
+    plt.show(block=params['block_plots'])

@@ -8,10 +8,6 @@ import statsmodels.api as sm
 from sklearn import cross_validation
 from sklearn.metrics import mean_absolute_error
 from sklearn.linear_model import LinearRegression, Ridge
-from sklearn.svm import SVC
-from sklearn.grid_search import GridSearchCV
-from sklearn.metrics import classification_report
-from sklearn.metrics import confusion_matrix
 from sklearn.cross_validation import train_test_split
 
 from base import plot as pf
@@ -23,18 +19,19 @@ import analysis as an
 
 
 # need to add make color naming an option, not default. Won't work for models
-def cone_inputs(d, model_name, mosaic_file, params, cell_type='bp', 
-                block_plots=True, cone_contrast=[48.768, 22.265, 18.576]):
+def cone_inputs(d, params, cell_type='bp', 
+                cone_contrast=[48.768, 22.265, 18.576]):
     '''
     '''
     # some options; should go into function options
     args = ['cone_weights', 's_cone_weights']
     purity_thresh = 0.0
 
-    celldat = np.genfromtxt('results/txt_files/' + model_name + '/nn_results.txt')
+    celldat = np.genfromtxt('results/txt_files/' + params['model_name'] + 
+                            '/nn_results.txt')
 
     # get some info about the cones
-    nn_dat = util.get_nn_dat(model_name)
+    nn_dat = util.get_nn_dat(params['model_name'])
     celllist = util.get_cell_list(d)
 
     # get response
@@ -42,23 +39,24 @@ def cone_inputs(d, model_name, mosaic_file, params, cell_type='bp',
                     cone_contrast=cone_contrast)
 
     if 'cone_weights' in args:
-        plot_cone_weights(r, celldat, celllist, model_name, mosaic_file, params)
+        plot_cone_weights(r, celldat, celllist, params)
 
 
     if 's_cone_weights' in args:
-        s_cone_weights(d, cone_contrast, celllist, celldat, model_name,
-                       mosaic_file, params)
+        s_cone_weights(d, cone_contrast, celllist, celldat, params)
 
     # -------------------------------------------------
     # if model is a human subject make additional plots
+    #  * these routines have been largely superseded by 
+    #  * plot_classify
     # -------------------------------------------------
-    if model_name.lower() in ['wt', 'bps'] and ('linear_model' in args or
+    if params['model_name'].lower() in ['wt', 'bps'] and ('linear_model' in args or
                                                 's_cone_dist' in args or
                                                 'color_names' in args):
 
         # match up color names and modeled results
         results = an.associate_cone_color_resp(r, nn_dat, celllist, 
-                                              model_name, bkgd='white',
+                                              params['model_name'], bkgd='white',
                                               randomized=False,
                                               cell_type='bp')
 
@@ -67,7 +65,7 @@ def cone_inputs(d, model_name, mosaic_file, params, cell_type='bp',
         print 'N cells: ', len(results[:, 0])
                 
         # save results
-        np.savetxt('results/txt_files/' + model_name + '/cone_analysis.csv', 
+        np.savetxt('results/txt_files/' + params['model_name'] + '/cone_analysis.csv', 
                    results)
 
         # compute rg metric and find high purity indices
@@ -78,20 +76,20 @@ def cone_inputs(d, model_name, mosaic_file, params, cell_type='bp',
 
         # plot color names
         if 'color_names' in args:
-            plot_color_names(rg, high_purity, results, model_name)
+            plot_color_names(rg, high_purity, results, params)
 
         # linear model
         if 'linear_model' in args:
-            fit_linear_model(rg, results, model_name, opponent=True)
+            fit_linear_model(rg, results, params, opponent=True)
 
         # S-cone distance analysis and plot
         if 's_cone_dist' in args:
-            s_cone_dist_analysis(rg, results, model_name)
+            s_cone_dist_analysis(rg, results, params)
 
-    plt.show(block=block_plots)
+    plt.show(block=params['block_plots'])
 
 
-def plot_cone_weights(r, celldat, celllist, model_name, mosaic_file, params):
+def plot_cone_weights(r, celldat, celllist, params):
     '''
     '''
     fig = plt.figure(figsize=(6,6))
@@ -116,8 +114,8 @@ def plot_cone_weights(r, celldat, celllist, model_name, mosaic_file, params):
     ax.set_ylim([-1.1, 1.1])
 
     # get mosaic plot
-    mos, mos_fig = mosaic(model_name, FILE=mosaic_file, return_ax=True)
-    mos2, mos_fig2 = mosaic(model_name, FILE=mosaic_file, return_ax=True)
+    mos, mos_fig = mosaic(params['model_name'], FILE=params['mosaic_file'], 
+                          return_ax=True)
 
     for c in r: # for each cell type in results
         for cone in range(0, len(r[c][:, 0])):
@@ -133,36 +131,27 @@ def plot_cone_weights(r, celldat, celllist, model_name, mosaic_file, params):
 
             # compute s weight for mosaic plot
             s_weight = r[c][cone, 0] #compute_s_weight(r, c, cone)
-
-            # compute cone weights
-            cone_weights = [r[c][cone, 1], r[c][cone, 2], s_weight]
-
-            if s_weight > 0.1:
-                mos.plot(loc[0], loc[1], 'ko', fillstyle='none', mew=2)
-
-            mos2.plot(loc[0], loc[1], 'o', markersize=14, fillstyle='full',
-                      color=np.abs(cone_weights))
+            
+            s_rgb = 1 - np.abs(s_weight)
+            mos.plot(loc[0], loc[1], 'o', fillstyle='none', mew=4,
+                     mec=[s_rgb, s_rgb, s_rgb])
 
     mos.set_xlim([35, 90])
     mos.set_ylim([35, 90])
 
-    mos2.set_xlim([35, 90])
-    mos2.set_ylim([35, 90])
-
     # save figs
-    savedir = util.get_save_dirname(params, model_name)
+    savedir = util.get_save_dirname(params, check_randomized=True)
     fig.savefig(savedir + 'cone_inputs.svg', edgecolor='none')
     mos_fig.savefig(savedir + 'cone_inputs_mosaic.eps', edgecolor='none')
-    mos_fig2.savefig(savedir + 'cone_inputs_mosaic2.svg', edgecolor='none')
 
 
-def s_cone_weights(d, cone_contrast, celllist, celldat, model_name, 
-                   mosaic_file, params):
+def s_cone_weights(d, cone_contrast, celllist, celldat, params):
     '''
     '''
 
     lm_midgets = an.compute_s_dist_cone_weight(d, celldat, celllist, 
-                                               mosaic_file, cone_contrast,
+                                               params['mosaic_file'], 
+                                               cone_contrast,
                                                species='human')
     # plotting routines    
     ax, fig1 = pf.get_axes(1, 1, nticks=[4, 5], return_fig=True)
@@ -185,7 +174,7 @@ def s_cone_weights(d, cone_contrast, celllist, celldat, model_name,
     ax2[0].set_xlabel('S / (L+M+S)')
 
     # Save plots
-    savedir = util.get_save_dirname(params, model_name)
+    savedir = util.get_save_dirname(params, check_randomized=True)
     fig1.savefig(savedir + 's_weight_scatter.eps', edgecolor='none')
     fig2.savefig(savedir + 's_weight_hist.eps', edgecolor='none')
 
@@ -209,11 +198,11 @@ def s_cone_dist_analysis(rg, results, model_name):
     print '\n\n\n'
     print res.rsquared
 
-    fig.savefig('results/img/' + model_name + '/s_cone_distance.svg',
-                edgecolor='none')    
+    savedir = util.get_save_dirname(params, check_randomized=True)
+    fig.savefig(savedir + 's_cone_distance.svg', edgecolor='none')    
 
 
-def plot_color_names(rg, purity_thresh, results, model_name):
+def plot_color_names(rg, purity_thresh, results, params):
     '''
     '''
     # --- plot color names on a diamond plot --- #
@@ -249,11 +238,12 @@ def plot_color_names(rg, purity_thresh, results, model_name):
         ax.plot(results[i, 3], results[i, 2], symbol, color=color,
                  markeredgewidth=2, markeredgecolor='k', alpha=0.5)
 
-    fig1.savefig('results/img/' + model_name + '/cone_inputs_w_naming.svg',
+    savedir = util.get_save_dirname(params, check_randomized=True)
+    fig1.savefig(savedir + 'cone_inputs_w_naming.svg',
                 edgecolor='none')
 
 
-def fit_linear_model(rg, results, model_name, opponent=True):
+def fit_linear_model(rg, results, params, opponent=True):
     # Switch depending upon opponent option
     if not opponent:
         predictors = results[:, [2, 3, 4, 10, 11, 12, 13, 14, 15, 16, 17, 18, 
@@ -314,7 +304,8 @@ def fit_linear_model(rg, results, model_name, opponent=True):
         ax.set_xlim([-1, 1])
     else:
         ax.plot([0, 1], [0, 1], 'k-')
-    fig.savefig('results/img/' + model_name + '/cone_inputs_model_error.svg',
+    savedir = util.get_save_dirname(params, check_randomized=True)
+    fig.savefig(params + 'cone_inputs_model_error.svg',
                 edgecolor='none')
 
 

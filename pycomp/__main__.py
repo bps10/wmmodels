@@ -10,9 +10,9 @@ def main():
     '''
     '''
     if 'human' in sys.argv: # or 'WT' in sys.argv:
-        SPECIES = 'human'
+        species = 'human'
     elif 'macaque' in sys.argv or 'WT' in sys.argv or 'BPS' in sys.argv:
-        SPECIES = 'macaque'
+        species = 'macaque'
 
     mosaic_file = 'mosaics/' + sys.argv[1]
 
@@ -32,15 +32,28 @@ def main():
     H2t = float(parse_flags(flags, 'H2t')[0][3:])
     randomized = parse_flags(flags, 'randomized')
     if randomized != []: randomized = randomized[0]
-    params = {'H1W': H1W, 'H2W': H2W, 'H2t': H2t,
-              'Random_Cones': randomized, }
-    for key in params.keys():
-        print key + '=' + str(params[key]) + '\t'
 
     # parse model name
     model = sys.argv[3] #mosaic_file.split('/')[1].split('.')[0]
 
-    plots = []
+    # create params dict
+    params = {'H1W': H1W, 'H2W': H2W, 'H2t': H2t,
+              'randomized': randomized, }
+    params['model_name'] = model
+    params['mosaic_file'] = mosaic_file
+    params['species'] = species
+    params['single_cone'] = True
+    params['block_plots'] = True
+    if 'spot' not in sys.argv: # stimulus shape
+        # used in s_dist nearest neighbor assumption
+        params['single_cone'] = False
+
+    if 'noblock' in sys.argv:
+        params['block_plots'] = False
+    for key in params.keys():
+        print key + '=' + str(params[key]) + '\t'
+
+    # options
     data = {}
     h1 = ['h1', 'verbose']
     h2 = ['h2', 'verbose']
@@ -51,16 +64,8 @@ def main():
     s_dist = ['s_dist']
     cone_inputs = ['cone_inputs']
     classify = ['vanhat', 'iso_classify']
-    single_cone = True
-    block_plots = True
 
-    if 'spot' not in sys.argv: # stimulus shape
-        # used in s_dist nearest neighbor assumption
-        single_cone = False
-
-    if 'noblock' in sys.argv:
-        block_plots = False
-
+    # read nd file if appropriate
     read_nd = []
     read_nd.extend(h_time)
     read_nd.extend(stack)
@@ -93,7 +98,8 @@ def main():
                 opt += '_H2t' + str(H2t)
                 randomized = False
             else:
-                raise('Randomized option' + randomized + ' not understood')
+                raise Exception('Randomized option' + randomized + 
+                                ' not understood')
 
         ndfilename = 'results/nd_files/' + model + '/' + opt + '.nd'
         # check if file exists:
@@ -101,53 +107,49 @@ def main():
             print 'reading nd file: ' + ndfilename
             d = nd_read(ndfilename)
         else:
-            raise(ndfilename + 'does not exist. Try running simulation.')
+            raise Exception(ndfilename + 
+                            ' does not exist. Try running simulation.')
 
+    # run plotting routines
     if option in h1:
         filename = 'results/pl_files/' + model + '/h1.dist.pl'
         print 'reading pl file: ' + filename
         data['h1'] = np.genfromtxt(filename, skip_header=2)
-        plot.dist(data, model, SPECIES, block_plots)
+        plot.dist(data, params)
 
     if option in h2:
         filename = 'results/pl_files/' + model + '/h2.dist.pl'
         print 'reading pl file: ' + filename
         data['h2'] = np.genfromtxt(filename, skip_header=2)
-        plot.dist(data, model, SPECIES, block_plots)
+        plot.dist(data, params)
 
     if option in stack:
-        plot.stack(d, model, block_plots)
+        plot.stack(d, params)
 
     if option in h_time:
-        plot.horiz_time_const(d, model, block_plots)
+        plot.horiz_time_const(d, params)
 
     if option in knn:
-        plot.knn(d, model, block_plots)
+        plot.knn(d, params)
 
     if option in tuning:
         tuning_type = option.split('_')[-1]
         cell_type = option.split('_')[0]
-        plot.tuning_curve(d, model, cell_type=cell_type, 
-                          tuning_type=tuning_type,
-                          block_plots=block_plots)
-        
-    if option in s_dist:
-        plot.s_cone_hist(model, mosaic_file, SPECIES, single_cone, block_plots)
-        
+        plot.tuning_curve(d, params, cell_type=cell_type, 
+                          tuning_type=tuning_type)
+                
     if option in cone_inputs:
         cell_type = 'bp'
-        plot.cone_inputs(d, model, mosaic_file, params, cell_type, block_plots, 
-                         [48.768, 22.265, 18.576])
+        plot.cone_inputs(d, params, cell_type, [48.768, 22.265, 18.576])
 
     if option in classify:
         cell_type = 'bp'
         print 'Analyze color categories (false=LMS): ', color_cats_switch
-        plot.classify_analysis(d, model, mosaic_file, cell_type, params,
-                               block_plots, color_cats=color_cats_switch)
+        plot.classify_analysis(d, params, color_cats=color_cats_switch)
 
     # decide what to plot
     if 'mosaic' in option:
-        plot.mosaic(model, block_plot=block_plots)
+        plot.mosaic(model, params)
 
 
 def parse_flags(flags, var_name):

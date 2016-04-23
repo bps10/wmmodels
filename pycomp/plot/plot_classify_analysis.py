@@ -11,8 +11,7 @@ import analysis as an
 import util
 
 
-def classify_analysis(d, model_name, mosaic_file, cell_type, 
-                      params, block_plots=True, color_cats=True,
+def classify_analysis(d, params, cell_type, color_cats=True,
                       purity_thresh=0.0, nseeds=10):
     '''
     '''
@@ -31,7 +30,7 @@ def classify_analysis(d, model_name, mosaic_file, cell_type,
                   'gamma': [0.0001, 0.001], }
     # -------------- #
     human_subjects = ['wt', 'bps']
-    if model_name.lower() not in human_subjects:
+    if params['model_name'].lower() not in human_subjects:
         raise('Model must be a human subject with psychopysics data')
 
     # no need to run a bunch of times since lms is easy to classify    
@@ -39,7 +38,7 @@ def classify_analysis(d, model_name, mosaic_file, cell_type,
         nseeds = 1 
 
     # get some info about the cones
-    nn_dat = util.get_nn_dat(model_name)
+    nn_dat = util.get_nn_dat(params['model_name'])
     celllist = util.get_cell_list(d)
     ncells = len(celllist)
     
@@ -65,9 +64,9 @@ def classify_analysis(d, model_name, mosaic_file, cell_type,
         cone_contrast=[48.768, 22.265, 18.576]
         r = an.response(d, cell_type, 'cone_inputs',
                         cone_contrast=cone_contrast)
-        output = an.associate_cone_color_resp(r, nn_dat, celllist, model_name, 
+        output = an.associate_cone_color_resp(r, nn_dat, celllist, params['model_name'], 
                                               bkgd=background, 
-                                              randomized=params['Random_Cones'])
+                                              randomized=params['randomized'])
         stim_cone_ids = output[:, -1]
         stim_cone_inds = np.zeros((1, len(stim_cone_ids)), dtype='int')
         for cone in range(len(stim_cone_ids)):
@@ -160,9 +159,7 @@ def classify_analysis(d, model_name, mosaic_file, cell_type,
                      'o', c=color)'''
 
     # save figs
-    savedir = util.get_save_dirname(params, model_name)
-    if params['Random_Cones']:
-        savedir += 'randomized_'
+    savedir = util.get_save_dirname(params, check_randomized=True)
     #fig1.savefig(savename + '_corr_matrix.eps', edgecolor='none')
     fig2.savefig(savedir + 'low_dim_rep.eps', edgecolor='none')
     #fig3.savefig(savename + '_3dplot.eps', edgecolor='none')
@@ -172,7 +169,7 @@ def classify_analysis(d, model_name, mosaic_file, cell_type,
         ax[0].plot(eigen, 'ko')
         fig4.savefig(savedir + 'eigenvals.eps', edgecolor='none')
 
-    plt.show(block=block_plots)
+    plt.show(block=params['block_plots'])
 
 
 def get_target_names_categories(color_cats, categories):

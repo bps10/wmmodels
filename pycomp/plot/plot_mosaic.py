@@ -6,7 +6,7 @@ from base import plot as pf
 from base import files as f
 
 
-def mosaic(model, FILE='mosaics/model.mosaic', block_plot=True, invert=False, 
+def mosaic(params, FILE='mosaics/model.mosaic', 
            return_ax=False):
 
     mosaic = np.genfromtxt(FILE)
@@ -28,13 +28,10 @@ def mosaic(model, FILE='mosaics/model.mosaic', block_plot=True, invert=False,
     ax.set_xlim([-1, 128])
     ax.set_ylim([-1, 128])
 
-    if invert:
-        pf.invert(ax, fig, bk_color='k')
-
     if not return_ax:
-        f.make_dir('results/img/' + model)
-        fig.savefig('results/img/' + model + '/mosaic.svg', edgecolor='none')
-        plt.show(block=block_plot)
+        savedir = util.get_save_dirname(params, check_randomized=True)
+        fig.savefig(savedir + 'mosaic.svg', edgecolor='none')
+        plt.show(block=params['block_plot'])
 
     else:
         return ax, fig

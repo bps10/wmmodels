@@ -20,12 +20,16 @@ def get_cell_type(cell_type):
     return cells
 
 
-def get_save_dirname(params, model_name, makedir=True):
-    savedir = 'results/img/' + model_name + '/'
+def get_save_dirname(params, makedir=True, check_randomized=False):
+    savedir = 'results/img/' + params['model_name'] + '/'
     savedir += 'H1W' + str(params['H1W']) + 'H2W' + str(params['H2W'])
     savedir += 'H2t' + str(params['H2t']) + '/'
     if makedir:
         f.make_dir(savedir)
+
+    if params['randomized']:
+        savedir += 'randomized_'
+
     return savedir
 
 
