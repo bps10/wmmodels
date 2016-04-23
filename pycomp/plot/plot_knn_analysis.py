@@ -5,8 +5,8 @@ import matplotlib.pylab as plt
 from base import plot as pf
 from base import files as f
 
+import util 
 from util import nearest_neighbor as nn
-from util import get_cell_list, get_cell_data, num, conversion_factors
 from util.nd_read import nd_read
 
 
@@ -15,7 +15,7 @@ def knn(d, params):
     TO DO:
 
     '''
-    celllist = get_cell_list(d)
+    celllist = util.get_cell_list(d)
     celldat = np.genfromtxt('results/txt_files/nn_results.txt')
     cellIDs = celldat[:, 0]
 
@@ -26,10 +26,10 @@ def knn(d, params):
     pf.AxisFormat(markersize=8)
     pf.TufteAxis(ax, ['bottom', 'left'], [5, 5])
 
-    N = num(d['const']['MOO_tn']['val']) # time steps
-    tf = num(d['const']['tf']['val']) # temporal frequency (Hz)
+    N = util.num(d['const']['MOO_tn']['val']) # time steps
+    tf = util.num(d['const']['tf']['val']) # temporal frequency (Hz)
 
-    keys = get_cell_data(d['tr'][0], 'h2')
+    keys = util.get_cell_data(d['tr'][0], 'h2')
     for i, r in enumerate(keys):
         # find distance to S
         cellID = int(celllist[i])

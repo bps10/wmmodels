@@ -6,6 +6,24 @@ import plot as plot
 from util.nd_read import nd_read
 
 
+def get_filename(params):
+    H1W = params['H1W']
+    H2W = params['H2W']
+    H2t = params['H2t']
+    randomized = params['randomized']
+    # handle randomized flag (passed in classify routines)
+    if randomized == 'randomized':
+        fname += '-H1W' + str(H1W) + '_H2W' + str(H2W) 
+        fname += '_H2t' + str(H2t) + '_randomized'
+        randomized = True
+    elif randomized == []:
+        fname = '-H1W' + str(H1W) + '_H2W' + str(H2W) 
+        fname += '_H2t' + str(H2t)
+        randomized = False
+    else:
+        raise Exception('Randomized option' + randomized + ' not understood')
+    return fname
+
 def main():
     '''
     '''
@@ -79,29 +97,17 @@ def main():
         # read in the proper nd_file: model and analysis specific
         tmp = option.split('_')[-1]
         if tmp in ['sf', 'tf']:
-            opt = tmp
+            fname = tmp
         elif tmp in ['verbose']:
-            opt = 'h_time'
+            fname = 'h_time'
         else:
-            opt = option
+            fname = option
             # these two share the same nd files
-            if opt == 'cone_inputs' or opt == 'iso_classify':
+            if fname == 'cone_inputs' or fname == 'iso_classify':
                 opt = 'sml_iso'
 
-            # handle randomized flag (passed in classify routines)
-            if randomized == 'randomized':
-                opt += '-H1W' + str(H1W) + '_H2W' + str(H2W) 
-                opt += '_H2t' + str(H2t) + '_randomized'
-                randomized = True
-            elif randomized == []:
-                opt += '-H1W' + str(H1W) + '_H2W' + str(H2W) 
-                opt += '_H2t' + str(H2t)
-                randomized = False
-            else:
-                raise Exception('Randomized option' + randomized + 
-                                ' not understood')
-
-        ndfilename = 'results/nd_files/' + model + '/' + opt + '.nd'
+            fname += get_filename(params)
+        ndfilename = 'results/nd_files/' + model + '/' + fname + '.nd'
         # check if file exists:
         if os.path.isfile(ndfilename):
             print 'reading nd file: ' + ndfilename
@@ -111,16 +117,18 @@ def main():
                             ' does not exist. Try running simulation.')
 
     # run plotting routines
-    if option in h1:
-        filename = 'results/pl_files/' + model + '/h1.dist.pl'
-        print 'reading pl file: ' + filename
-        data['h1'] = np.genfromtxt(filename, skip_header=2)
-        plot.dist(data, params)
+    if option in h1 or option in h2:
+        if option in h1:
+            filepath = 'results/pl_files/' + model + '/' 
+            filename = 'h1' + get_filename(params) + '.dist.pl' 
+            print 'reading pl file: ' + filepath + filename
+            data['h1'] = np.genfromtxt(filepath + filename, skip_header=2)
 
-    if option in h2:
-        filename = 'results/pl_files/' + model + '/h2.dist.pl'
-        print 'reading pl file: ' + filename
-        data['h2'] = np.genfromtxt(filename, skip_header=2)
+        if option in h2:
+            filepath = 'results/pl_files/' + model + '/' 
+            filename = 'h2' + get_filename(params) + '.dist.pl' 
+            print 'reading pl file: ' + filepath + filename
+            data['h2'] = np.genfromtxt(filepath + filename, skip_header=2)
         plot.dist(data, params)
 
     if option in stack:

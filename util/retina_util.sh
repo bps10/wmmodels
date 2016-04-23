@@ -270,8 +270,9 @@ function get_save_name {
 	else
 	    name=${OPTS[0]}-H1W${H1W}_H2W${H2W}_H2t${H2P0}${random_opt}
 	fi	
-    elif [ "$1" == "iso" ]; then
-	echo sml_iso-H1W${H1W}_H2W${H2W}_H2t${H2P0}${random_opt}
+    else 
+	# use passed variable 1 to create savename
+	echo $1-H1W${H1W}_H2W${H2W}_H2t${H2P0}${random_opt}
     fi
 }
 
@@ -476,24 +477,28 @@ function run_wm {
 	if [[ $OPTS == "h2" || $OPTS == "h1" ]]
 	then
 	    mkdir -p results/pl_files/${MODEL}
+	    savename=$(get_save_name ${OPTS})
 	    mv results/pl_files/${OPTS}.dist.pl \
-		results/pl_files/${MODEL}/${OPTS}.dist.pl
+		results/pl_files/${MODEL}/${savename}.dist.pl
 	elif [[ $OPTS == "h_sf" || $OPTS == "bp_sf" || $OPTS == "rgc_sf" ]]
 	then
 	    mkdir -p results/nd_files/${MODEL}
-	    mv results/nd_files/zz.nd results/nd_files/${MODEL}/sf.nd
+	    savename=$(get_save_name sf)
+	    mv results/nd_files/zz.nd results/nd_files/${MODEL}/${savename}.nd
 	elif [[ $OPTS == "h_tf" || $OPTS == "bp_tf" || $OPTS == "rgc_tf" ]]
 	then
 	    mkdir -p results/nd_files/${MODEL}
-	    mv results/nd_files/zz.nd results/nd_files/${MODEL}/tf.nd
+	    savename=$(get_save_name tf)
+	    mv results/nd_files/zz.nd results/nd_files/${MODEL}/${savename}.nd
 	elif [[ $OPTS == "iso_classify" || $OPTS == "cone_inputs" ]]
 	then
 	    mkdir -p results/nd_files/${MODEL}
-	    savename=$(get_save_name iso)
+	    savename=$(get_save_name iso_classify)
 	    mv results/nd_files/zz.nd results/nd_files/${MODEL}/${savename}.nd
 	else
 	    mkdir -p results/nd_files/${MODEL}
-	    mv results/nd_files/zz.nd results/nd_files/${MODEL}/${name}.nd
+	    savename=${name}
+	    mv results/nd_files/zz.nd results/nd_files/${MODEL}/${savename}.nd
 	fi
     fi
 

@@ -5,13 +5,13 @@ import matplotlib.pylab as plt
 from base import files as f
 from base import plot as pf
 
-from util.conversion import conversion_factors
+import util
 
 
-def dist(data, species, normalize=True):
+def dist(data, params, normalize=True):
     '''
     '''
-    deg_per_pix, mm_per_deg = conversion_factors(params['species'])
+    deg_per_pix, mm_per_deg = util.conversion_factors(params['species'])
 
     fig = plt.figure(figsize=(5.5, 6))
     fig.set_tight_layout(True)
@@ -37,9 +37,6 @@ def dist(data, species, normalize=True):
     ax.set_xlabel('distance ($\mu$m)')
     ax.set_xlim([-200, 200])
     ax.legend(fontsize=22)
-
-    if invert:
-        pf.invert(ax, fig, bk_color='k')
 
     savedir = util.get_save_dirname(params, check_randomized=True)
     fig.savefig(savedir + 'h_space_const.svg', edgecolor='none')

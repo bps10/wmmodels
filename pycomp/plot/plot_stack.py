@@ -6,7 +6,7 @@ from base import plot as pf
 from base import files as f
 
 import analysis as an
-import util as u
+import util
 
 
 def stack(d, params):
@@ -32,33 +32,33 @@ def stack(d, params):
         pf.TufteAxis(ax[1], ['left', ], [3, 3])
         pf.TufteAxis(ax[2], ['bottom', 'left'], [3, 3])
 
-        time = u.get_time(d)
+        time = util.get_time(d)
         # Subtract 10 points in so that zero offset
         for i in ax:
             ax[i].set_color_cycle(['r', 'g', 'b', 'c', 'm', 'y', 'k'])
 
-        keys = u.get_cell_data(d['tr'][t], 'cone')
+        keys = util.get_cell_data(d['tr'][t], 'cone')
         for r in keys:
             dat = d['tr'][t]['r'][r]['x']
             y = dat - dat[10]
             ax[0].plot(time, y)
             ylim = check_lims(y, ylim, 0)
 
-        keys = u.get_cell_data(d['tr'][t], 'h1')
+        keys = util.get_cell_data(d['tr'][t], 'h1')
         for r in keys:
             dat = d['tr'][t]['r'][r]['x']
             y = dat - dat[10] + 0.2
             ax[1].plot(time, y)
             ylim = check_lims(y, ylim, 1)
 
-        keys = u.get_cell_data(d['tr'][t], 'h2')
+        keys = util.get_cell_data(d['tr'][t], 'h2')
         for r in keys:
             dat = d['tr'][t]['r'][r]['x']
             y = dat - dat[10] + 0.1
             ax[1].plot(time, y)
             ylim = check_lims(y, ylim, 1)
 
-        keys = u.get_cell_data(d['tr'][t], 'bp')
+        keys = util.get_cell_data(d['tr'][t], 'bp')
         for r in keys:
             dat = d['tr'][t]['r'][r]['x']
             y = dat - dat[10]
@@ -92,14 +92,14 @@ def horiz_time_const(d, params):
     pf.AxisFormat()
     pf.TufteAxis(ax, ['bottom', 'left'], [3, 3])
 
-    time = u.get_time(d)
+    time = util.get_time(d)
     inds = np.where(np.logical_and(time >= 450, time <= 600))[0]
 
     time_ = time[inds] - 500
 
     for t in range(d['ntrial']):
-        h1 = u.get_cell_data(d['tr'][t], 'h1')
-        h2 = u.get_cell_data(d['tr'][t], 'h2')
+        h1 = util.get_cell_data(d['tr'][t], 'h1')
+        h2 = util.get_cell_data(d['tr'][t], 'h2')
 
         h1dat = d['tr'][t]['r'][h1[0]]['x'][inds]
         h2dat = d['tr'][t]['r'][h2[0]]['x'][inds]
@@ -142,14 +142,14 @@ def tuning_curve(d, params, cell_type='h1', tuning_type='sf'):
     r = an.response(d, cell_type, tuning_type)
 
     colors = ['k', 'gray', 'r', 'b', 'g', 'c', 'm' ]
-    cells = u.get_cell_type(cell_type)
+    cells = util.get_cell_type(cell_type)
     # set some smart axes for second axis
     ymax = -100 # start small
     ymin = 1000 # start large
     if tuning_type == 'sf':
-        x = u.num(d['const']['VAR_sf']['val']) # spatial freq (cpd)
+        x = util.num(d['const']['VAR_sf']['val']) # spatial freq (cpd)
     elif tuning_type == 'tf':
-        x = u.num(d['const']['VAR_tf']['val']) # temp freq
+        x = util.num(d['const']['VAR_tf']['val']) # temp freq
 
     for i, c in enumerate(cells):
         ax1.loglog(x, r[c][i, :], 'o-', color=colors[i], label=c)
