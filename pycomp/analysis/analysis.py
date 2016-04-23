@@ -14,8 +14,7 @@ import util
 from util import nearest_neighbor as nn
 import plot as pl
 
-def response(d, cell_type, analysis_type,
-             cone_contrast=[49, 22, 19]):
+def response(d, params):
     '''
     '''
     # Get cell list from data keys
@@ -30,20 +29,20 @@ def response(d, cell_type, analysis_type,
 
     normalize = False
     # analysis specific parameters
-    if analysis_type == 'cone_inputs':
+    if params['analysis_type'] == 'cone_inputs':
         normalize = True
         tf = util.num(d['const']['tf']['val']) # temporal frequency (Hz)
-    elif analysis_type == 'tf':
+    elif params['analysis_type'] == 'tf':
         sf = util.num(d['const']['sf']['val']) # spatial freq (cpd)
         tf = util.num(d['const']['VAR_tf']['val']) # temporal frequency (Hz)
-    elif analysis_type == 'sf':
+    elif params['analysis_type'] == 'sf':
         sf = util.num(d['const']['VAR_sf']['val']) # spatial freq (cpd)
         tf = util.num(d['const']['tf']['val']) # temporal frequency (Hz)
     else:
         raise InputError('analysis type not supported (cone_input, sf, tf)')
     
-    cells = util.get_cell_type(cell_type)
-    if cell_type == 'rgc':
+    cells = util.get_cell_type(params['cell_type'])
+    if params['cell_type'] == 'rgc':
         resp_ind = 'p'
     else:
         resp_ind = 'x'
@@ -58,21 +57,21 @@ def response(d, cell_type, analysis_type,
             for i, r in enumerate(keys['tr'][t]['r']): # for each cell
 
                 # handle case where TF is changing
-                if analysis_type == 'tf':
+                if params['analysis_type'] == 'tf':
                     _tf = int(tf[t])
                 else:
                     _tf = int(tf)
 
                 cell = d['tr'][t]['r'][r][resp_ind]
 
-                if cell_type == 'rgc':
+                if params['cell_type'] == 'rgc':
                     cell = compute_psth(cell, time.max(), delta_t=10)
 
                 fft =  np.fft.fft(cell)
                                 
-                if analysis_type == 'cone_inputs':
+                if params['analysis_type'] == 'cone_inputs':
                     amp  = np.real(fft[_tf]) * 2 / N
-                    resp[c][i, t] = amp / cone_contrast[t]
+                    resp[c][i, t] = amp / params['cone_contrast'][t]
                 else: 
                     amp  = np.abs(fft[_tf]) * 2 / N
                     resp[c][i, t] = amp
@@ -300,16 +299,15 @@ def get_data_matrix(d, cell_type):
     return data_mat
 
 
-def compute_s_dist_cone_weight(d, celldat, celllist, mosaic_file, cone_contrast,
-                               species='human'):
+def compute_s_dist_cone_weight(d, celldat, celllist, params):
     '''
     '''
-    deg_per_pix, mm_per_deg = util.conversion_factors(species)
+    deg_per_pix, mm_per_deg = util.conversion_factors(params['species'])
 
     cellIDs = celldat[:, 0]
 
     # convert pixels into arcmin
-    dist2S =  nn.find_nearest_S(celldat[:, 2:4], mosaic_file)[0]
+    dist2S =  nn.find_nearest_S(celldat[:, 2:4], params['mosaic_file'])[0]
     dist2S *= deg_per_pix * 60
 
     N = util.num(d['const']['MOO_tn']['val']) # time steps
@@ -331,7 +329,7 @@ def compute_s_dist_cone_weight(d, celldat, celllist, mosaic_file, cone_contrast,
             cell = d['tr'][t]['r'][r]['x']
             fft = np.fft.fft(cell)
             amp  = np.abs(fft[int(tf)]) * 2 / N
-            sml_weights[t] = amp / cone_contrast[t] 
+            sml_weights[t] = amp / params['cone_contrast'][t] 
 
         # skip S cones
         if celldat[ind, 1] != 0:

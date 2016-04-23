@@ -1,6 +1,7 @@
 from __future__ import division
 import numpy as np
 import matplotlib.pylab as plt
+from cycler import cycler
 
 from base import plot as pf
 from base import files as f
@@ -35,7 +36,7 @@ def stack(d, params):
         time = util.get_time(d)
         # Subtract 10 points in so that zero offset
         for i in ax:
-            ax[i].set_color_cycle(['r', 'g', 'b', 'c', 'm', 'y', 'k'])
+            ax[i].set_prop_cycle(cycler('color', ['r', 'g', 'b', 'c', 'm', 'y', 'k']))
 
         keys = util.get_cell_data(d['tr'][t], 'cone')
         for r in keys:
@@ -116,13 +117,14 @@ def horiz_time_const(d, params):
     plt.show(block=params['block_plots'])
 
 
-def tuning_curve(d, params, cell_type='h1', tuning_type='sf'):
+def tuning_curve(d, params):
     '''
     '''
     # Get this with conversion call
-    deg2um = 0.00534 # macaque conversion (cpd to micron)
+    deg_per_pix, mm_per_deg = util.conversion_factors(params['species'])
+    deg2um = mm_per_deg / 1000 #  conversion (micron / deg)
 
-    if tuning_type == 'sf':
+    if params['analysis_type'] == 'sf':
         figsize = (7, 7)
     else:
         figsize = (6, 5)
@@ -130,25 +132,25 @@ def tuning_curve(d, params, cell_type='h1', tuning_type='sf'):
     fig = plt.figure(figsize=figsize)
     fig.set_tight_layout(True)
     ax1 = fig.add_subplot(111)
-    if tuning_type == 'sf':
+    if params['analysis_type'] == 'sf':
         ax2 = ax1.twiny()
 
     pf.AxisFormat()
     pf.TufteAxis(ax1, ['bottom', 'left', ], [4, 4])
-    if tuning_type == 'sf':
+    if params['analysis_type'] == 'sf':
         pf.TufteAxis(ax2, ['top', ], [4, 4])
 
     # get the data
-    r = an.response(d, cell_type, tuning_type)
+    r = an.response(d, params)
 
     colors = ['k', 'gray', 'r', 'b', 'g', 'c', 'm' ]
-    cells = util.get_cell_type(cell_type)
+    cells = util.get_cell_type(params['cell_type'])
     # set some smart axes for second axis
     ymax = -100 # start small
     ymin = 1000 # start large
-    if tuning_type == 'sf':
+    if params['analysis_type'] == 'sf':
         x = util.num(d['const']['VAR_sf']['val']) # spatial freq (cpd)
-    elif tuning_type == 'tf':
+    elif params['analysis_type'] == 'tf':
         x = util.num(d['const']['VAR_tf']['val']) # temp freq
 
     for i, c in enumerate(cells):
@@ -168,10 +170,10 @@ def tuning_curve(d, params, cell_type='h1', tuning_type='sf'):
     ax1.set_ylabel('amplitude')
     ax1.legend(fontsize=22, loc='lower center')
 
-    if tuning_type == 'tf':
+    if params['analysis_type'] == 'tf':
         ax1.set_xlabel('temporal frequency (Hz)')
 
-    elif tuning_type == 'sf':
+    elif params['analysis_type'] == 'sf':
         ax1.set_xlabel('cycles / degree')
         ax2.xaxis.tick_top()
         ax2.yaxis.tick_left()
@@ -180,8 +182,8 @@ def tuning_curve(d, params, cell_type='h1', tuning_type='sf'):
         ax2.set_xscale('log')
 
     savedir = util.get_save_dirname(params, check_randomized=True)
-    fig.savefig(savedir + cell_type + '_' + tuning_type + '_tuning.eps',
-                edgecolor='none')
+    fig.savefig(savedir + params['cell_type'] + '_' + params['analysis_type'] + 
+                '_tuning.eps', edgecolor='none')
     plt.show(block=params['block_plots'])
 
 

@@ -516,7 +516,7 @@ function run_mosaic {
 	retina0/mesh_dump_type mosaic_coord \
 	retina0/mesh_dump_file mosaics/model.mosaic
     
-    python pycomp $MODEL $BLOCK_PLOTS mosaic
+    python pycomp ${MOSAIC_FILE} ${name} ${MODEL} ${BLOCK_PLOTS}
 
 }
 

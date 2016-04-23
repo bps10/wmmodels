@@ -11,7 +11,7 @@ import analysis as an
 import util
 
 
-def classify_analysis(d, params, cell_type, color_cats=True,
+def classify_analysis(d, params, color_cats=True,
                       purity_thresh=0.0, nseeds=10):
     '''
     '''
@@ -43,7 +43,7 @@ def classify_analysis(d, params, cell_type, color_cats=True,
     ncells = len(celllist)
     
     # put responses into a matrix for easy processing
-    data_matrix = an.get_data_matrix(d, cell_type)
+    data_matrix = an.get_data_matrix(d, params['cell_type'])
 
     # compute distance matrix
     corrmat = an.compute_corr_matrix(data_matrix)
@@ -62,8 +62,7 @@ def classify_analysis(d, params, cell_type, color_cats=True,
     if color_cats:
         # get response
         cone_contrast=[48.768, 22.265, 18.576]
-        r = an.response(d, cell_type, 'cone_inputs',
-                        cone_contrast=cone_contrast)
+        r = an.response(d, params)
         output = an.associate_cone_color_resp(r, nn_dat, celllist, params['model_name'], 
                                               bkgd=background, 
                                               randomized=params['randomized'])

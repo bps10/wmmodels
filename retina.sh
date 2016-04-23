@@ -23,10 +23,10 @@ done
 
 # setup conditions to specify behavior
 analysis=(siso miso liso coneiso h1 h2 \
-    h_time mosaic gui stack nd plot \
+    h_time mosaic gui step nd plot \
     verbose params knn h_sf bp_sf rgc_sf \
     h_tf bp_tf rgc_tf \
-    s_dist cone_inputs step vanhat iso_classify iso_classify_lms)
+    cone_inputs step vanhat iso_classify iso_classify_lms)
 runmod=(h1 h2 siso miso liso coneiso h_time knn h_sf bp_sf rgc_sf \
     h_tf bp_tf rgc_tf \
     cone_inputs gui step vanhat iso_classify iso_classify)

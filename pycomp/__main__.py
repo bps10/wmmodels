@@ -76,7 +76,7 @@ def main():
     h1 = ['h1', 'verbose']
     h2 = ['h2', 'verbose']
     h_time = ['h_time', 'verbose']
-    stack = ['siso', 'miso', 'liso', 'cone', 'stack', 'coneiso', 'step']
+    stack = ['siso', 'miso', 'liso', 'cone', 'coneiso', 'step']
     knn = ['knn']
     tuning = ['h_sf', 'bp_sf', 'rgc_sf', 'h_tf', 'bp_tf', 'rgc_tf']
     s_dist = ['s_dist']
@@ -104,7 +104,7 @@ def main():
             fname = option
             # these two share the same nd files
             if fname == 'cone_inputs' or fname == 'iso_classify':
-                opt = 'sml_iso'
+                fname = 'sml_iso'
 
             fname += get_filename(params)
         ndfilename = 'results/nd_files/' + model + '/' + fname + '.nd'
@@ -131,33 +131,36 @@ def main():
             data['h2'] = np.genfromtxt(filepath + filename, skip_header=2)
         plot.dist(data, params)
 
-    if option in stack:
-        plot.stack(d, params)
-
     if option in h_time:
         plot.horiz_time_const(d, params)
+
+    if option in stack:
+        plot.stack(d, params)
 
     if option in knn:
         plot.knn(d, params)
 
     if option in tuning:
-        tuning_type = option.split('_')[-1]
-        cell_type = option.split('_')[0]
-        plot.tuning_curve(d, params, cell_type=cell_type, 
-                          tuning_type=tuning_type)
+        params['cell_type'] = option.split('_')[0]
+        params['analysis_type'] = option.split('_')[-1]
+        plot.tuning_curve(d, params)
                 
     if option in cone_inputs:
-        cell_type = 'bp'
-        plot.cone_inputs(d, params, cell_type, [48.768, 22.265, 18.576])
+        params['cell_type'] = 'bp'
+        params['cone_contrast'] = [48.768, 22.265, 18.576]
+        params['analysis_type'] = 'cone_inputs'
+        plot.cone_inputs(d, params)
 
     if option in classify:
-        cell_type = 'bp'
+        params['cell_type'] = 'bp'        
+        params['cone_contrast'] = [48.768, 22.265, 18.576]
+        params['analysis_type'] = 'cone_inputs'
         print 'Analyze color categories (false=LMS): ', color_cats_switch
         plot.classify_analysis(d, params, color_cats=color_cats_switch)
 
     # decide what to plot
     if 'mosaic' in option:
-        plot.mosaic(model, params)
+        plot.mosaic(params)
 
 
 def parse_flags(flags, var_name):

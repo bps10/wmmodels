@@ -19,8 +19,7 @@ import analysis as an
 
 
 # need to add make color naming an option, not default. Won't work for models
-def cone_inputs(d, params, cell_type='bp', 
-                cone_contrast=[48.768, 22.265, 18.576]):
+def cone_inputs(d, params):
     '''
     '''
     # some options; should go into function options
@@ -35,8 +34,7 @@ def cone_inputs(d, params, cell_type='bp',
     celllist = util.get_cell_list(d)
 
     # get response
-    r = an.response(d, cell_type, 'cone_inputs',
-                    cone_contrast=cone_contrast)
+    r = an.response(d, params)
 
     if 'cone_weights' in args:
         plot_cone_weights(r, celldat, celllist, params)
@@ -58,7 +56,7 @@ def cone_inputs(d, params, cell_type='bp',
         results = an.associate_cone_color_resp(r, nn_dat, celllist, 
                                               params['model_name'], bkgd='white',
                                               randomized=False,
-                                              cell_type='bp')
+                                              cell_type=params['cell_type'])
 
         # cleanup results and remove zeros
         results = results[~np.all(results == 0, axis=1)]
@@ -114,8 +112,7 @@ def plot_cone_weights(r, celldat, celllist, params):
     ax.set_ylim([-1.1, 1.1])
 
     # get mosaic plot
-    mos, mos_fig = mosaic(params['model_name'], FILE=params['mosaic_file'], 
-                          return_ax=True)
+    mos, mos_fig = mosaic(params, return_ax=True)
 
     for c in r: # for each cell type in results
         for cone in range(0, len(r[c][:, 0])):
@@ -149,10 +146,8 @@ def s_cone_weights(d, cone_contrast, celllist, celldat, params):
     '''
     '''
 
-    lm_midgets = an.compute_s_dist_cone_weight(d, celldat, celllist, 
-                                               params['mosaic_file'], 
-                                               cone_contrast,
-                                               species='human')
+    lm_midgets = an.compute_s_dist_cone_weight(d, celldat, celllist, params)
+
     # plotting routines    
     ax, fig1 = pf.get_axes(1, 1, nticks=[4, 5], return_fig=True)
     ax[0].plot(lm_midgets[:, 0], lm_midgets[:, 1], 'ko')

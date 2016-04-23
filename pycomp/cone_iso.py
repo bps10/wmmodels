@@ -171,10 +171,10 @@ if __name__ == '__main__':
         cone_iso(fund, print_cone=['s'], filters=f)
 
     if sys.argv[1] == 'miso':
-        cone_iso(fund, print_cone['m'], filters=f)
+        cone_iso(fund, print_cone=['m'], filters=f)
 
     if sys.argv[1] == 'liso':
-        cone_iso(fund, print_cone['l'], filters=f)
+        cone_iso(fund, print_cone=['l'], filters=f)
 
     if sys.argv[1] == 'coneiso':
         cone_iso(fund, print_var_link=True, filters=f,
