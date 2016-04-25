@@ -41,7 +41,7 @@ def cone_inputs(d, params):
 
 
     if 's_cone_weights' in args:
-        s_cone_weights(d, cone_contrast, celllist, celldat, params)
+        s_cone_weights(d, celllist, celldat, params)
 
     # -------------------------------------------------
     # if model is a human subject make additional plots
@@ -142,7 +142,7 @@ def plot_cone_weights(r, celldat, celllist, params):
     mos_fig.savefig(savedir + 'cone_inputs_mosaic.eps', edgecolor='none')
 
 
-def s_cone_weights(d, cone_contrast, celllist, celldat, params):
+def s_cone_weights(d, celllist, celldat, params):
     '''
     '''
 
