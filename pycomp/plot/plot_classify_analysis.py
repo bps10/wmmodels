@@ -11,8 +11,7 @@ import analysis as an
 import util
 
 
-def classify_analysis(d, params, color_cats=True,
-                      purity_thresh=0.0, nseeds=10):
+def classify_analysis(d, params, purity_thresh=0.0, nseeds=10):
     '''
     '''
     # --- params --- #
@@ -34,7 +33,7 @@ def classify_analysis(d, params, color_cats=True,
         raise('Model must be a human subject with psychopysics data')
 
     # no need to run a bunch of times since lms is easy to classify    
-    if not color_cats:
+    if not params['color_cats_switch']:
         nseeds = 1 
 
     # get some info about the cones
@@ -59,9 +58,9 @@ def classify_analysis(d, params, color_cats=True,
     xy_lms = an.get_cone_xy_lms(d, nn_dat, celllist)
 
     # threshold rg that separates red, white, green
-    if color_cats:
+    if params['color_cats_switch']:
         # get response
-        cone_contrast=[48.768, 22.265, 18.576]
+        cone_contrast=params['cone_contrast']
         r = an.response(d, params)
         output = an.associate_cone_color_resp(r, nn_dat, celllist, params['model_name'], 
                                               bkgd=background, 
@@ -105,16 +104,19 @@ def classify_analysis(d, params, color_cats=True,
     print '\tRGmetric=' + str(rg_metric)
     print '\tbackground=' + background
 
-    target_names, class_cats = get_target_names_categories(color_cats, class_cats)
-    clf = an.svm_classify(data_matrix, class_cats, param_grid, target_names, 
+    target_names, class_cats = get_target_names_categories(params['color_cats_switch'], 
+                                                           class_cats)
+    clf, report = an.svm_classify(data_matrix, class_cats, param_grid, target_names, 
                           cmdscaling, dims=dims, display_verbose=True, 
                           rand_seed=2264235, Nseeds=nseeds, test_size=test_size,
                           kernel=kernel)
+    print report
+
     # --------------------------------------------------- #
     print 'plotting results from SVM'
 
     # undo category shift of plotting 
-    if background == 'blue' and color_cats:
+    if background == 'blue' and params['color_cats_switch']:
         class_cats[class_cats > 0] += 1
 
     # need to order corrmat based on color category
@@ -134,12 +136,11 @@ def classify_analysis(d, params, color_cats=True,
     Z = Z.reshape(xx.shape)
     ax[0].contourf(xx, yy, -Z, cmap=plt.cm.Paired, alpha=0.8)
                          
-    '''fig3 = plt.figure()
-    ax3d = fig3.add_subplot(111, projection='3d')'''
     for cone in range(ncells):
-        if class_cats[cone] == 0 and color_cats is False or class_cats[cone] == 3:
+        if (class_cats[cone] == 0 and params['color_cats_switch'] is False 
+            or class_cats[cone] == 3):
             color = [0, 0, 1]
-        elif class_cats[cone] == 0 and color_cats is True:  
+        elif class_cats[cone] == 0 and params['color_cats_switch'] is True:  
             color = [0.7, 0.7, 0.7]
         elif class_cats[cone] == 1:
             color = [0, 1, 0]
@@ -152,13 +153,16 @@ def classify_analysis(d, params, color_cats=True,
 
         ax[0].plot(config_mat[cone, 0], config_mat[cone, 1], 'o', markersize=8,
                    alpha=0.8, color=color, markeredgecolor='k')
-        '''ax[1].plot(config_mat[cone, 0], config_mat[cone, 2], 'o', markersize=8,
-                   alpha=0.8, color=color, markeredgecolor='k')
-        ax3d.scatter(config_mat[cone, 0], config_mat[cone, 1], config_mat[cone, 2],
-                     'o', c=color)'''
+
+
+    # save output
+    savedir = util.get_save_dirname(params, check_randomized=True)
+    # save txt file
+    fhandle = open(savedir + 'classification_report.txt', 'w')
+    fhandle.write(report)
+    fhandle.close()
 
     # save figs
-    savedir = util.get_save_dirname(params, check_randomized=True)
     #fig1.savefig(savename + '_corr_matrix.eps', edgecolor='none')
     fig2.savefig(savedir + 'low_dim_rep.eps', edgecolor='none')
     #fig3.savefig(savename + '_3dplot.eps', edgecolor='none')
@@ -167,7 +171,6 @@ def classify_analysis(d, params, color_cats=True,
         ax, fig4 = pf.get_axes(1, 1, nticks=[3, 3], return_fig=True)
         ax[0].plot(eigen, 'ko')
         fig4.savefig(savedir + 'eigenvals.eps', edgecolor='none')
-
     plt.show(block=params['block_plots'])
 
 

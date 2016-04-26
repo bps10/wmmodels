@@ -493,7 +493,7 @@ function run_wm {
 	elif [[ $OPTS == "iso_classify" || $OPTS == "cone_inputs" ]]
 	then
 	    mkdir -p results/nd_files/${MODEL}
-	    savename=$(get_save_name iso_classify)
+	    savename=$(get_save_name sml_iso)
 	    mv results/nd_files/zz.nd results/nd_files/${MODEL}/${savename}.nd
 	else
 	    mkdir -p results/nd_files/${MODEL}

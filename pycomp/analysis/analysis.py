@@ -149,20 +149,24 @@ def svm_classify(data_matrix, categories, param_grid, target_names, cmdscaling,
         total_y_true = np.append(total_y_true, y_test)
         total_y_pred = np.append(total_y_pred, y_pred)
 
-    # print the summary results
-    print 'Classification report'
-    print '======================'
-    print 'N simulations: ', Nseeds
-    print 'Dimensions used: ', dims 
-    print param_grid
-    print '\n'
 
     n_classes = len(target_names)
-    print classification_report(total_y_true, total_y_pred,
+    report = classification_report(total_y_true, total_y_pred,
                                 target_names=target_names)
-    print confusion_matrix(total_y_true, total_y_pred, labels=range(n_classes))
+    confusion_mat = confusion_matrix(total_y_true, total_y_pred, 
+                                     labels=range(n_classes))
 
-    return clf
+    # print the summary results
+    print_output = 'Classification report\n======================\n'
+    print_output += 'N simulations: ' + str(Nseeds) + '\n' 
+    for key in param_grid.keys():
+        print_output += key + ':\t'
+        print_output += ''.join('%10.3f' % x for x in param_grid[key]) + '\n'
+        #print_output += ''.join(map(str, param_grid[key])) + '\n'
+    print_output += '\n' + report + '\n'
+    print_output += np.array_str(confusion_mat)
+
+    return clf, print_output
 
 
 def associate_cone_color_resp(r, nn_dat, celllist, mod_name, bkgd='white',
