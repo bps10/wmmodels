@@ -85,7 +85,7 @@ def get_data(option, params, read_nd, h_space):
             if fname == 'cone_inputs' or fname == 'iso_classify':
                 fname = 'sml_iso'
 
-            fname += get_filename(params)
+        fname += get_filename(params)
         ndfilename = 'results/nd_files/' + model + '/' + fname + '.nd'
         # check if file exists:
         if os.path.isfile(ndfilename):
@@ -116,7 +116,7 @@ def get_filename(params):
     randomized = params['randomized']
     # handle randomized flag (passed in classify routines)
     if randomized == 'randomized':
-        fname += '-H1W' + str(H1W) + '_H2W' + str(H2W) 
+        fname = '-H1W' + str(H1W) + '_H2W' + str(H2W) 
         fname += '_H2t' + str(H2t) + '_randomized'
         randomized = True
     elif randomized == []:
