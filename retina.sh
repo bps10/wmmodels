@@ -82,10 +82,7 @@ change_parameters
 #-- 5. Change system matrix
 change_sys_matrix
 
-#-- 6. Delete old output files
-delete_old_file
-
-# name for saving and passing to plot
+#-- 6. name for saving and passing to plot
 get_save_name
 
 #-- 7. Perform the simulation(s)
@@ -99,6 +96,9 @@ then
     echo "running s cone distance analysis"
     run_s_dist_analysis
 
+elif [ $OPTS == "verbose" ]
+then
+    run_verbose
 else
     if [ $(exists_in ${OPTS} "${runmod[*]}") == true ]
     then

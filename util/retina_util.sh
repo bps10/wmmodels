@@ -108,19 +108,18 @@ function change_parameters {
     OUT_FILE=zz.nd
     RESP_FILE=retina
     HVAR=h2
+    MESH_DUMP_FILE=h1.dist.pl
 
     # handle analysis options
     if [ $OPTS == "h1" ]
     then
-	OUT_FILE=h1.dist.pl
 	STIM_OVERRIDE=1
 	MESH_DUMP_TYPE=h_v_dist
 
     elif  [ $OPTS == "h2" ]
     then
 	HVAR=h1 # flip around so changing h2 in moo file
-	MOO_FILE=Ret_Mesh_H2_H1_reverse
-	OUT_FILE=h2.dist.pl
+	MESH_DUMP_FILE=h2.dist.pl
 	STIM_OVERRIDE=1
 	MESH_DUMP_TYPE=h_v_dist
 
@@ -382,15 +381,6 @@ function print_info {
 }
 
 
-function delete_old_file {
-    if [ -e "results/pl_files/$OUT_FILE" ] 
-    then
-	rm results/pl_files/${MODEL}/${OUT_FILE}
-	echo "rm results/pl_files/rm $OUT_FILE"
-    fi	
-}
-
-
 function run_s_dist_analysis {
 
     # make dir for data if doesn't exist already
@@ -444,6 +434,29 @@ function run_s_dist_analysis {
 }
 
 
+function run_verbose {
+
+	echo "running H1 simulation\n"
+	OPTS=h1
+	change_parameters
+	run_wm ${MODEL} ${STIM_FILE}
+
+	echo "running H2 simulation\n"
+	OPTS=h2
+	change_parameters
+	run_wm ${MODEL} ${STIM_FILE}
+
+	echo "running h_time simulation\n"
+	OPTS=h_time
+	change_parameters
+	get_save_name
+	run_wm ${MODEL} ${STIM_FILE}
+	
+	# Change $name and $OPTS back to verbose for plotting
+	OPTS=verbose
+	get_save_name
+}
+
 function run_wm {
 
     wm mod models/$1/run.moo \
@@ -468,6 +481,7 @@ function run_wm {
 	retina0/stim_override ${STIM_OVERRIDE}\
         retina0/mesh_dump_type ${MESH_DUMP_TYPE} \
 	retina0/mesh_dump_cid ${MESH_DUMP_CID} \
+	retina0/mesh_dump_file results/pl_files/${MESH_DUMP_FILE} \
 	retina0/stim_override_binary ${STIM_OVERRIDE_BINARY} \
     	gui_flag ${GUI}
 
