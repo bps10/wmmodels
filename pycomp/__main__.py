@@ -12,48 +12,45 @@ def main():
     option, params = parse_args(sys.argv)
 
     # options
-    h_space = ['h1', 'h2', 'verbose']
+    h_space = ['h1', 'h2', 'verbose', 'h_space']
     h_time = ['h_time', 'verbose']
     stack = ['siso', 'miso', 'liso', 'cone', 'coneiso', 'step']
     knn = ['knn']
-    tuning = ['h_sf', 'bp_sf', 'rgc_sf', 'h_tf', 'bp_tf', 'rgc_tf']
+    tuning = ['h_sf', 'bp_sf', 'rgc_sf', 'h_tf', 'bp_tf', 'rgc_tf', 'verbose']
     s_dist = ['s_dist']
-    cone_inputs = ['cone_inputs']
-    classify = ['vanhat', 'iso_classify']
+    cone_inputs = ['cone_inputs', 'verbose']
+    classify = ['vanhat', 'iso_classify', 'verbose']
 
-    # analyses that require an nd file
-    read_nd = []
-    read_nd.extend(h_time)
-    read_nd.extend(stack)
-    read_nd.extend(knn)
-    read_nd.extend(tuning) 
-    read_nd.extend(cone_inputs)
-    read_nd.extend( classify)
-
-    # read appropriate data
-    nd_data, pl_data = get_data(option, params, read_nd, h_space)
-
+    # read appropriate data and plot
     if option in h_space:
+        pl_data = get_data(params, 'h_space', 'h_space')
         plot.dist(pl_data, params)
 
     if option in h_time:
+        nd_data = get_data(params, 'h_time', 'nd')
         plot.horiz_time_const(nd_data, params)
 
     if option in stack:
+        nd_data = get_data(params, option, 'nd')
         plot.stack(nd_data, params)
 
     if option in knn:
+        nd_data = get_data(params, 'knn', 'nd')
         plot.knn(nd_data, params)
 
     if option in tuning:
-        params['cell_type'] = option.split('_')[0]
-        params['analysis_type'] = option.split('_')[-1]
+        if option == 'verbose':
+            params['analysis_type'] = 'sf' # only run sf analysis
+        else:
+            params['analysis_type'] = option.split('_')[-1]
+        nd_data = get_data(params, 'sf', 'nd')
         plot.tuning_curve(nd_data, params)
                 
     if option in cone_inputs:
-        params['cell_type'] = 'bp'
+        params['cell_type'] = 'bp'        
         params['cone_contrast'] = [48.768, 22.265, 18.576] # compute from stm file
         params['analysis_type'] = 'cone_inputs'
+        nd_data = get_data(params, 'sml_iso', 'nd')
         plot.cone_inputs(nd_data, params)
 
     if option in classify:
@@ -61,30 +58,19 @@ def main():
         params['cone_contrast'] = [48.768, 22.265, 18.576]
         params['analysis_type'] = 'cone_inputs'
         print 'Analyze color categories (false=LMS): ', params['color_cats_switch']
+        nd_data = get_data(params, 'sml_iso', 'nd')
         plot.classify_analysis(nd_data, params)
 
-    # decide what to plot
     if 'mosaic' in option:
         plot.mosaic(params)
 
 
-def get_data(option, params, read_nd, h_space):
-    nd_data, pl_data = {}, {}
+def get_data(params, analysis, data_type):
     model = params['model_name']
+    fname = analysis
     # read nd file if necessary
-    if option in read_nd:
+    if data_type.lower() == 'nd':
         # read in the proper nd_file: model and analysis specific
-        tmp = option.split('_')[-1]
-        if tmp in ['sf', 'tf']:
-            fname = tmp
-        elif tmp in ['verbose']:
-            fname = 'h_time'
-        else:
-            fname = option
-            # these two share the same nd files
-            if fname == 'cone_inputs' or fname == 'iso_classify':
-                fname = 'sml_iso'
-
         fname += get_filename(params)
         ndfilename = 'results/nd_files/' + model + '/' + fname + '.nd'
         # check if file exists:
@@ -94,20 +80,28 @@ def get_data(option, params, read_nd, h_space):
         else:
             raise Exception(ndfilename + 
                             ' does not exist. Try running simulation.')
+        return nd_data
         
     # get h_space data
-    if option in h_space:
+    elif data_type.lower() ==  'h_space':
+        pl_data = {}
         filepath = 'results/pl_files/' + model + '/' 
-        if option == 'h1' or option == 'verbose':
-            filename = 'h1' + get_filename(params) + '.dist.pl' 
-            print 'reading pl file: ' + filepath + filename
-            pl_data['h1'] = np.genfromtxt(filepath + filename, skip_header=2)
 
-        if option == 'h2' or option == 'verbose':
-            filename = 'h2' + get_filename(params) + '.dist.pl' 
-            print 'reading pl file: ' + filepath + filename
-            pl_data['h2'] = np.genfromtxt(filepath + filename, skip_header=2)
-    return nd_data, pl_data
+        # first load h1 data
+        filename = 'h1' + get_filename(params) + '.dist.pl' 
+        print 'reading pl file: ' + filepath + filename
+        pl_data['h1'] = np.genfromtxt(filepath + filename, skip_header=2)
+
+        # then load h2 data
+        filename = 'h2' + get_filename(params) + '.dist.pl' 
+        print 'reading pl file: ' + filepath + filename
+        pl_data['h2'] = np.genfromtxt(filepath + filename, skip_header=2)
+
+        return pl_data
+
+    else:
+        raise Exception('data_type: ' + data_type + ' not understood')
+
 
 def get_filename(params):
     H1W = params['H1W']
@@ -164,14 +158,26 @@ def parse_args(args):
     params['mosaic_file'] = mosaic_file
     params['species'] = species
     params['color_cats_switch'] = color_cats_switch
+
+    # stimulus shape
     params['single_cone'] = True
-    params['block_plots'] = True
-    if 'spot' not in args: # stimulus shape
+    if 'spot' not in args: 
         # used in s_dist nearest neighbor assumption
         params['single_cone'] = False
 
+    # decide to block plots
+    params['block_plots'] = True
     if 'noblock' in args:
         params['block_plots'] = False
+
+    # parse cell type if passed in option
+    params['cell_type'] = 'bp'
+    if option[-2:] in ['tf', 'sf']:
+        params['cell_type'] = option.split('_')[0]
+    elif option == 'verbose':
+        params['cell_type'] = 'h'
+
+    # print params
     for key in params.keys():
         print key + '=' + str(params[key]) + '\t'
 

@@ -35,10 +35,8 @@ def cone_inputs(d, params):
 
     # get response
     r = an.response(d, params)
-
     if 'cone_weights' in args:
         plot_cone_weights(r, celldat, celllist, params)
-
 
     if 's_cone_weights' in args:
         s_cone_weights(d, celllist, celldat, params)
@@ -113,7 +111,6 @@ def plot_cone_weights(r, celldat, celllist, params):
 
     # get mosaic plot
     mos, mos_fig = mosaic(params, return_ax=True)
-
     for c in r: # for each cell type in results
         for cone in range(0, len(r[c][:, 0])):
             ind = np.where(celldat[:, 0] == float(celllist[cone]))[0]

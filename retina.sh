@@ -22,15 +22,15 @@ done
 #-- 2. Get analysis option
 
 # setup conditions to specify behavior
-analysis=(siso miso liso coneiso h1 h2 \
+analysis=(siso miso liso coneiso h_space \
     h_time mosaic gui step nd plot \
     verbose params knn h_sf bp_sf rgc_sf \
     h_tf bp_tf rgc_tf \
     cone_inputs step vanhat iso_classify iso_classify_lms)
-runmod=(h1 h2 siso miso liso coneiso h_time knn h_sf bp_sf rgc_sf \
+runmod=(h_space siso miso liso coneiso h_time knn h_sf bp_sf rgc_sf \
     h_tf bp_tf rgc_tf \
-    cone_inputs gui step vanhat iso_classify iso_classify)
-plots=(h1 h2 siso miso liso coneiso stack h_time verbose knn h_sf \
+    cone_inputs gui step vanhat iso_classify iso_classify_lms)
+plots=(h_space siso miso liso coneiso stack h_time verbose knn h_sf \
     bp_sf rgc_sf h_tf bp_tf rgc_tf s_dist cone_inputs step vanhat \
     iso_classify iso_classify_lms)
 dump=(siso miso liso coneiso h_time knn h_sf bp_sf rgc_sf \
@@ -70,7 +70,6 @@ while [ $i -lt $# ]; do
     i=$((i+1))
 done
 check_gui_flag
-
 check_block_plots_flag
 
 #-- 3. Print some info about parameters or a help file
@@ -95,6 +94,10 @@ elif [ $OPTS == "s_dist" ]
 then
     echo "running s cone distance analysis"
     run_s_dist_analysis
+
+elif [ $OPTS == "h_space" ]
+then
+    run_h_space
 
 elif [ $OPTS == "verbose" ]
 then

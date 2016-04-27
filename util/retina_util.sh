@@ -251,6 +251,7 @@ function knn_resp {
     # Paste the second part of the stimulus file
     echo "creating rsp file and computing nearest neighbors"
     echo "mosaic file: $MOSAIC_FILE"
+    echo "N cones: $Ncones"
     python pycomp/util/nearest_neighbor.py ${coneID} ${Ncones} ${cell_type} \
 	${MOSAIC_FILE} >> response/knn_resp.rsp 
 
@@ -434,28 +435,48 @@ function run_s_dist_analysis {
 }
 
 
-function run_verbose {
-
-	echo "running H1 simulation\n"
+function run_h_space {
+    
+	echo -e "\nrunning H1 simulation\n"
 	OPTS=h1
 	change_parameters
 	run_wm ${MODEL} ${STIM_FILE}
 
-	echo "running H2 simulation\n"
+	echo -e "\nrunning H2 simulation\n"
 	OPTS=h2
 	change_parameters
 	run_wm ${MODEL} ${STIM_FILE}
-
-	echo "running h_time simulation\n"
-	OPTS=h_time
-	change_parameters
-	get_save_name
-	run_wm ${MODEL} ${STIM_FILE}
 	
-	# Change $name and $OPTS back to verbose for plotting
-	OPTS=verbose
-	get_save_name
+	# change $OPTS back to h_space for plotting
+	OPTS=h_space
 }
+
+
+function run_verbose {
+    run_h_space
+    
+    echo -e "\nrunning h_time simulation\n"
+    OPTS=h_time
+    change_parameters
+    get_save_name
+    run_wm ${MODEL} ${STIM_FILE}
+    
+    echo -e "\nrunning sf simulation\n"
+    OPTS=h_sf
+    change_parameters
+    run_wm ${MODEL} ${STIM_FILE}
+    
+    echo -e "\nrunning iso (cone inputs) simulation\n"
+    OPTS=iso_classify
+    change_parameters
+    run_wm ${MODEL} ${STIM_FILE}
+    
+    # Change $name and $OPTS back to verbose for plotting
+    OPTS=verbose
+    get_save_name
+    BLOCK_PLOTS=noblock # don't block plots
+}
+
 
 function run_wm {
 
