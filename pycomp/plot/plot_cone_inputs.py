@@ -5,10 +5,10 @@ import matplotlib.pylab as plt
 import scipy.spatial as spat
 
 import statsmodels.api as sm
-from sklearn import cross_validation
+from sklearn import model_selection
 from sklearn.metrics import mean_absolute_error
 from sklearn.linear_model import LinearRegression, Ridge
-from sklearn.cross_validation import train_test_split
+from sklearn.model_selection import train_test_split
 
 from base import plot as pf
 from base import data as dat
@@ -273,7 +273,7 @@ def fit_linear_model(rg, results, params, opponent=True):
     Ntrials = 100
     mae = np.zeros((Ntrials, 1))
     for i in range(Ntrials):
-        x_train, x_test, y_train, y_test = cross_validation.train_test_split(
+        x_train, x_test, y_train, y_test = model_selection.train_test_split(
             predictors, rg, test_size=0.15)
 
         for clf in clfs:

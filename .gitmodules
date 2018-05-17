@@ -1,0 +1,3 @@
+[submodule "pycomp/base"]
+	path = pycomp/base
+	url = https://github.com/bps10/base

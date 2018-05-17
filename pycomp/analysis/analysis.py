@@ -3,10 +3,9 @@ import numpy as np
 import scipy.spatial as spat
 from sklearn.svm import SVC
 from sklearn.decomposition import PCA
-from sklearn.grid_search import GridSearchCV
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
-from sklearn.cross_validation import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 
 from base import data as dat
 
